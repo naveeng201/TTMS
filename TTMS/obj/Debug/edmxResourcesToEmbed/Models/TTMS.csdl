@@ -1,0 +1,428 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TTMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="TTMSEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Employees" EntityType="TTMSModel.Employee" />
+    <EntitySet Name="Suppliers" EntityType="TTMSModel.Supplier" />
+    <EntitySet Name="BrandsMasters" EntityType="TTMSModel.BrandsMaster" />
+    <EntitySet Name="ProductCategories" EntityType="TTMSModel.ProductCategory" />
+    <EntitySet Name="EmployeeAttendances" EntityType="TTMSModel.EmployeeAttendance" />
+    <EntitySet Name="Order_Employee" EntityType="TTMSModel.Order_Employee" />
+    <EntitySet Name="Order_Master" EntityType="TTMSModel.Order_Master" />
+    <EntitySet Name="OrderDetails" EntityType="TTMSModel.OrderDetail" />
+    <EntitySet Name="Orders" EntityType="TTMSModel.Order" />
+    <EntitySet Name="Products" EntityType="TTMSModel.Product" />
+    <EntitySet Name="PurchaseEntries" EntityType="TTMSModel.PurchaseEntry" />
+    <EntitySet Name="PurchaseOrders" EntityType="TTMSModel.PurchaseOrder" />
+    <EntitySet Name="Units" EntityType="TTMSModel.Unit" />
+    <AssociationSet Name="FK_Products_BrandsMaster" Association="TTMSModel.FK_Products_BrandsMaster">
+      <End Role="BrandsMaster" EntitySet="BrandsMasters" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EmployeeAttendance_Employee" Association="TTMSModel.FK_EmployeeAttendance_Employee">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="EmployeeAttendance" EntitySet="EmployeeAttendances" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Master_Orders" Association="TTMSModel.FK_Order_Master_Orders">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="Order_Master" EntitySet="Order_Master" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Products_ProductCategory" Association="TTMSModel.FK_Products_ProductCategory">
+      <End Role="ProductCategory" EntitySet="ProductCategories" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <EntitySet Name="EmployeePerformances" EntityType="TTMSModel.EmployeePerformance" />
+    <AssociationSet Name="FK_EmployeePerformance_Employee" Association="TTMSModel.FK_EmployeePerformance_Employee">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="EmployeePerformance" EntitySet="EmployeePerformances" />
+    </AssociationSet>
+    <EntitySet Name="Deliveries" EntityType="TTMSModel.Delivery" />
+    <AssociationSet Name="FK_Delivery_Orders" Association="TTMSModel.FK_Delivery_Orders">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="Delivery" EntitySet="Deliveries" />
+    </AssociationSet>
+    <EntitySet Name="Accounts" EntityType="TTMSModel.Account" />
+    <EntitySet Name="EmployeePayments" EntityType="TTMSModel.EmployeePayment" />
+    <AssociationSet Name="FK_EmployeePayment_Employee" Association="TTMSModel.FK_EmployeePayment_Employee">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="EmployeePayment" EntitySet="EmployeePayments" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ContactNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="AlternateContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="Int32" />
+    <Property Name="City" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Country" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Zip" Type="String" MaxLength="7" FixedLength="true" Unicode="true" />
+    <Property Name="Designation" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="MasterEmp" Type="Boolean" />
+    <Property Name="ExperiencedField" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Experience" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Salary" Type="Int32" />
+    <Property Name="NoLeavesPerMonth" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="EmployeeAttendances" Relationship="TTMSModel.FK_EmployeeAttendance_Employee" FromRole="Employee" ToRole="EmployeeAttendance" />
+    <NavigationProperty Name="EmployeePerformances" Relationship="TTMSModel.FK_EmployeePerformance_Employee" FromRole="Employee" ToRole="EmployeePerformance" />
+    <NavigationProperty Name="EmployeePayments" Relationship="TTMSModel.FK_EmployeePayment_Employee" FromRole="Employee" ToRole="EmployeePayment" />
+  </EntityType>
+  <EntityType Name="Supplier">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrganizationName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Pin" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+    <Property Name="ContactPersonName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ContactNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="AlternateContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="EmailId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="GSTNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+  </EntityType>
+  <EntityType Name="BrandsMaster">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BrandName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="Products" Relationship="TTMSModel.FK_Products_BrandsMaster" FromRole="BrandsMaster" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="ProductCategory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="Products" Relationship="TTMSModel.FK_Products_ProductCategory" FromRole="ProductCategory" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="EmployeeAttendance">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+    <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="EndTime" Type="Time" Precision="7" />
+    <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="TTMSModel.FK_EmployeeAttendance_Employee" FromRole="EmployeeAttendance" ToRole="Employee" />
+  </EntityType>
+  <EntityType Name="Order_Employee">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Field" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="NoOfWorksPerDay" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Order_Master">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderID" Type="Int32" Nullable="false" />
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+    <Property Name="Material" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="Order" Relationship="TTMSModel.FK_Order_Master_Orders" FromRole="Order_Master" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="OrderDetail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PurchaseOrderID" Type="Int32" Nullable="false" />
+    <Property Name="BrandID" Type="Int32" Nullable="false" />
+    <Property Name="ProductName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ProductColor" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ProductType" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="TypeOfUnits" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerOrganizationName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Country" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Zip" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ContactPersonName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ContactNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProductType" Type="Int32" />
+    <Property Name="Size" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeliveryDate" Type="DateTime" Precision="0" />
+    <Property Name="PricePerUnit" Type="Double" />
+    <Property Name="TotalPrice" Type="Double" />
+    <Property Name="GrandTotalWithTax" Type="Double" />
+    <Property Name="Advance" Type="Double" />
+    <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="Order_Master" Relationship="TTMSModel.FK_Order_Master_Orders" FromRole="Order" ToRole="Order_Master" />
+    <NavigationProperty Name="Deliveries" Relationship="TTMSModel.FK_Delivery_Orders" FromRole="Order" ToRole="Delivery" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ShorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Size" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Color" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="BrandID" Type="Int32" />
+    <Property Name="ProductCategoryID" Type="Int32" />
+    <Property Name="Price" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="BrandsMaster" Relationship="TTMSModel.FK_Products_BrandsMaster" FromRole="Product" ToRole="BrandsMaster" />
+    <NavigationProperty Name="ProductCategory" Relationship="TTMSModel.FK_Products_ProductCategory" FromRole="Product" ToRole="ProductCategory" />
+  </EntityType>
+  <EntityType Name="PurchaseEntry">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PurchaseOrderID" Type="Int32" />
+    <Property Name="InvoiceChallan" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="InvoiceChallanNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="InvoiceDate" Type="DateTime" Precision="3" />
+    <Property Name="BrandID" Type="Int32" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ProductColor" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ProductType" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ReceivedQuantity" Type="Int32" Nullable="false" />
+    <Property Name="Price" Type="Double" Nullable="false" />
+    <Property Name="CGST" Type="Double" />
+    <Property Name="SGST" Type="Double" />
+    <Property Name="TotalAmount" Type="Double" Nullable="false" />
+    <Property Name="PaidAmount" Type="Double" />
+    <Property Name="PaymentDate" Type="DateTime" Precision="3" />
+    <Property Name="PaymentMode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="PaymentRefNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="DueAmount" Type="Double" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+  </EntityType>
+  <EntityType Name="PurchaseOrder">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PurchaseOrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SupplierID" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Unit">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+  </EntityType>
+  <Association Name="FK_Products_BrandsMaster">
+    <End Type="TTMSModel.BrandsMaster" Role="BrandsMaster" Multiplicity="0..1" />
+    <End Type="TTMSModel.Product" Role="Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BrandsMaster">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="BrandID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EmployeeAttendance_Employee">
+    <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TTMSModel.EmployeeAttendance" Role="EmployeeAttendance" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="EmployeeAttendance">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Master_Orders">
+    <End Type="TTMSModel.Order" Role="Order" Multiplicity="1" />
+    <End Type="TTMSModel.Order_Master" Role="Order_Master" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order_Master">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Products_ProductCategory">
+    <End Type="TTMSModel.ProductCategory" Role="ProductCategory" Multiplicity="0..1" />
+    <End Type="TTMSModel.Product" Role="Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategory">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="ProductCategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="EmployeePerformance">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+    <Property Name="JobType" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="Employee" Relationship="TTMSModel.FK_EmployeePerformance_Employee" FromRole="EmployeePerformance" ToRole="Employee" />
+  </EntityType>
+  <Association Name="FK_EmployeePerformance_Employee">
+    <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TTMSModel.EmployeePerformance" Role="EmployeePerformance" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="EmployeePerformance">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Delivery">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderID" Type="Int32" />
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+    <Property Name="DeliveryDate" Type="DateTime" Precision="3" />
+    <Property Name="ChallanNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="DeliveredProducts" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="BalanceOrder" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="Order" Relationship="TTMSModel.FK_Delivery_Orders" FromRole="Delivery" ToRole="Order" />
+  </EntityType>
+  <Association Name="FK_Delivery_Orders">
+    <End Type="TTMSModel.Order" Role="Order" Multiplicity="0..1" />
+    <End Type="TTMSModel.Delivery" Role="Delivery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Delivery">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ExpendetureType" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ExpendetureAmount" Type="Double" Nullable="false" />
+    <Property Name="ExpendetureRef" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ExpendetureImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+  </EntityType>
+  <EntityType Name="EmployeePayment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+    <Property Name="PaymentID" Type="Int32" Nullable="false" />
+    <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Amount" Type="Double" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="Employee" Relationship="TTMSModel.FK_EmployeePayment_Employee" FromRole="EmployeePayment" ToRole="Employee" />
+  </EntityType>
+  <Association Name="FK_EmployeePayment_Employee">
+    <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TTMSModel.EmployeePayment" Role="EmployeePayment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="EmployeePayment">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
