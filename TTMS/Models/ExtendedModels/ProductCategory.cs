@@ -12,6 +12,7 @@ namespace TTMS.Models
     }
     public  class ProductCategoryMetadata
     {
+        [Required]
         public string Name { get; set; }
     }
      

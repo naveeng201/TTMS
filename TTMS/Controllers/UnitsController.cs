@@ -10,6 +10,7 @@ using TTMS.Models;
 
 namespace TTMS.Controllers
 {
+    [Authorize]
     public class UnitsController : Controller
     {
         private TTMSEntities db = new TTMSEntities();

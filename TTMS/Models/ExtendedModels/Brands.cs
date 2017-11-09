@@ -15,6 +15,7 @@ namespace TTMS.Models
     public class BrandsMasterMetaData
     {
         [Required]
+        [Display(Name = "Brand Name")]
         public string BrandName { get; set; }
     }
 }

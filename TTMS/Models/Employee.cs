@@ -18,8 +18,8 @@ namespace TTMS.Models
         public Employee()
         {
             this.EmployeeAttendances = new HashSet<EmployeeAttendance>();
-            this.EmployeePerformances = new HashSet<EmployeePerformance>();
             this.EmployeePayments = new HashSet<EmployeePayment>();
+            this.EmployeePerformances = new HashSet<EmployeePerformance>();
         }
     
         public int ID { get; set; }
@@ -27,7 +27,7 @@ namespace TTMS.Models
         public string LastName { get; set; }
         public string ContactNo { get; set; }
         public string AlternateContactNo { get; set; }
-        public Nullable<int> Address { get; set; }
+        public string Address { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
@@ -46,8 +46,8 @@ namespace TTMS.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeeAttendance> EmployeeAttendances { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EmployeePerformance> EmployeePerformances { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeePayment> EmployeePayments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeePerformance> EmployeePerformances { get; set; }
     }
 }

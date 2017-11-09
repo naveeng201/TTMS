@@ -13,7 +13,9 @@ namespace TTMS.Models
     public class ProductMetadata
     {
         [Required]
+        [Display(Name = "Product Name")]
         public string Name { get; set; }
+        [Display(Name = "Product Short Name")]
         public string ShorName { get; set; }
         [Required]
         public string Size { get; set; }

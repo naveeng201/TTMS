@@ -56,7 +56,7 @@
           <Property Name="LastName" Type="nvarchar" MaxLength="200" />
           <Property Name="ContactNo" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AlternateContactNo" Type="nvarchar" MaxLength="50" />
-          <Property Name="Address" Type="int" />
+          <Property Name="Address" Type="nvarchar(max)" />
           <Property Name="City" Type="nvarchar" MaxLength="200" />
           <Property Name="State" Type="nvarchar" MaxLength="200" />
           <Property Name="Country" Type="nvarchar" MaxLength="200" />
@@ -421,7 +421,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="TTMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="TTMSEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Employees" EntityType="TTMSModel.Employee" />
           <EntitySet Name="Suppliers" EntityType="TTMSModel.Supplier" />
           <EntitySet Name="BrandsMasters" EntityType="TTMSModel.BrandsMaster" />
           <EntitySet Name="ProductCategories" EntityType="TTMSModel.ProductCategory" />
@@ -438,10 +437,6 @@
             <End Role="BrandsMaster" EntitySet="BrandsMasters" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FK_EmployeeAttendance_Employee" Association="TTMSModel.FK_EmployeeAttendance_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeeAttendance" EntitySet="EmployeeAttendances" />
-          </AssociationSet>
           <AssociationSet Name="FK_Order_Master_Orders" Association="TTMSModel.FK_Order_Master_Orders">
             <End Role="Order" EntitySet="Orders" />
             <End Role="Order_Master" EntitySet="Order_Master" />
@@ -451,10 +446,6 @@
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
           <EntitySet Name="EmployeePerformances" EntityType="TTMSModel.EmployeePerformance" />
-          <AssociationSet Name="FK_EmployeePerformance_Employee" Association="TTMSModel.FK_EmployeePerformance_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeePerformance" EntitySet="EmployeePerformances" />
-          </AssociationSet>
           <EntitySet Name="Deliveries" EntityType="TTMSModel.Delivery" />
           <AssociationSet Name="FK_Delivery_Orders" Association="TTMSModel.FK_Delivery_Orders">
             <End Role="Order" EntitySet="Orders" />
@@ -462,39 +453,20 @@
           </AssociationSet>
           <EntitySet Name="Accounts" EntityType="TTMSModel.Account" />
           <EntitySet Name="EmployeePayments" EntityType="TTMSModel.EmployeePayment" />
+          <EntitySet Name="Employees" EntityType="TTMSModel.Employee" />
+          <AssociationSet Name="FK_EmployeeAttendance_Employee" Association="TTMSModel.FK_EmployeeAttendance_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeAttendance" EntitySet="EmployeeAttendances" />
+          </AssociationSet>
           <AssociationSet Name="FK_EmployeePayment_Employee" Association="TTMSModel.FK_EmployeePayment_Employee">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="EmployeePayment" EntitySet="EmployeePayments" />
           </AssociationSet>
+          <AssociationSet Name="FK_EmployeePerformance_Employee" Association="TTMSModel.FK_EmployeePerformance_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeePerformance" EntitySet="EmployeePerformances" />
+          </AssociationSet>
           </EntityContainer>
-        <EntityType Name="Employee">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="ContactNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AlternateContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="Int32" />
-          <Property Name="City" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Zip" Type="String" MaxLength="7" FixedLength="true" Unicode="true" />
-          <Property Name="Designation" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="MasterEmp" Type="Boolean" />
-          <Property Name="ExperiencedField" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Experience" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Salary" Type="Int32" />
-          <Property Name="NoLeavesPerMonth" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <NavigationProperty Name="EmployeeAttendances" Relationship="TTMSModel.FK_EmployeeAttendance_Employee" FromRole="Employee" ToRole="EmployeeAttendance" />
-          <NavigationProperty Name="EmployeePerformances" Relationship="TTMSModel.FK_EmployeePerformance_Employee" FromRole="Employee" ToRole="EmployeePerformance" />
-          <NavigationProperty Name="EmployeePayments" Relationship="TTMSModel.FK_EmployeePayment_Employee" FromRole="Employee" ToRole="EmployeePayment" />
-        </EntityType>
         <EntityType Name="Supplier">
           <Key>
             <PropertyRef Name="ID" />
@@ -711,18 +683,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_EmployeeAttendance_Employee">
-          <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
-          <End Type="TTMSModel.EmployeeAttendance" Role="EmployeeAttendance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="EmployeeAttendance">
-              <PropertyRef Name="EmployeeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Order_Master_Orders">
           <End Type="TTMSModel.Order" Role="Order" Multiplicity="1" />
           <End Type="TTMSModel.Order_Master" Role="Order_Master" Multiplicity="*" />
@@ -762,18 +722,6 @@
           <Property Name="ModifiedBy" Type="Int32" />
           <NavigationProperty Name="Employee" Relationship="TTMSModel.FK_EmployeePerformance_Employee" FromRole="EmployeePerformance" ToRole="Employee" />
         </EntityType>
-        <Association Name="FK_EmployeePerformance_Employee">
-          <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
-          <End Type="TTMSModel.EmployeePerformance" Role="EmployeePerformance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="EmployeePerformance">
-              <PropertyRef Name="EmployeeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Delivery">
           <Key>
             <PropertyRef Name="ID" />
@@ -833,6 +781,46 @@
           <Property Name="ModifiedBy" Type="Int32" />
           <NavigationProperty Name="Employee" Relationship="TTMSModel.FK_EmployeePayment_Employee" FromRole="EmployeePayment" ToRole="Employee" />
         </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AlternateContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="7" FixedLength="true" Unicode="true" />
+          <Property Name="Designation" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="MasterEmp" Type="Boolean" />
+          <Property Name="ExperiencedField" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Experience" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Salary" Type="Int32" />
+          <Property Name="NoLeavesPerMonth" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="EmployeeAttendances" Relationship="TTMSModel.FK_EmployeeAttendance_Employee" FromRole="Employee" ToRole="EmployeeAttendance" />
+          <NavigationProperty Name="EmployeePayments" Relationship="TTMSModel.FK_EmployeePayment_Employee" FromRole="Employee" ToRole="EmployeePayment" />
+          <NavigationProperty Name="EmployeePerformances" Relationship="TTMSModel.FK_EmployeePerformance_Employee" FromRole="Employee" ToRole="EmployeePerformance" />
+        </EntityType>
+        <Association Name="FK_EmployeeAttendance_Employee">
+          <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="TTMSModel.EmployeeAttendance" Role="EmployeeAttendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="EmployeeAttendance">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EmployeePayment_Employee">
           <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
           <End Type="TTMSModel.EmployeePayment" Role="EmployeePayment" Multiplicity="*" />
@@ -845,38 +833,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EmployeePerformance_Employee">
+          <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="TTMSModel.EmployeePerformance" Role="EmployeePerformance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="EmployeePerformance">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="TTMSModelStoreContainer" CdmEntityContainer="TTMSEntities">
-          <EntitySetMapping Name="Employees">
-            <EntityTypeMapping TypeName="TTMSModel.Employee">
-              <MappingFragment StoreEntitySet="Employee">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="NoLeavesPerMonth" ColumnName="NoLeavesPerMonth" />
-                <ScalarProperty Name="Salary" ColumnName="Salary" />
-                <ScalarProperty Name="Experience" ColumnName="Experience" />
-                <ScalarProperty Name="ExperiencedField" ColumnName="ExperiencedField" />
-                <ScalarProperty Name="MasterEmp" ColumnName="MasterEmp" />
-                <ScalarProperty Name="Designation" ColumnName="Designation" />
-                <ScalarProperty Name="Zip" ColumnName="Zip" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="AlternateContactNo" ColumnName="AlternateContactNo" />
-                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Suppliers">
             <EntityTypeMapping TypeName="TTMSModel.Supplier">
               <MappingFragment StoreEntitySet="Suppliers">
@@ -1144,6 +1118,32 @@
                 <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
                 <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="TTMSModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="NoLeavesPerMonth" ColumnName="NoLeavesPerMonth" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="Experience" ColumnName="Experience" />
+                <ScalarProperty Name="ExperiencedField" ColumnName="ExperiencedField" />
+                <ScalarProperty Name="MasterEmp" ColumnName="MasterEmp" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="AlternateContactNo" ColumnName="AlternateContactNo" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

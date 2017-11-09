@@ -17,6 +17,7 @@ namespace TTMS.Models
         [Required]
         public int PaymentID { get; set; }
         [Required]
+        [Display(Name = "Payment Date")]
         public System.DateTime PaymentDate { get; set; }
         [Required]
         public double Amount { get; set; }

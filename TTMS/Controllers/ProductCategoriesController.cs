@@ -10,6 +10,7 @@ using TTMS.Models;
 
 namespace TTMS.Controllers
 {
+    [Authorize]
     public class ProductCategoriesController : Controller
     {
         private TTMSEntities db = new TTMSEntities();

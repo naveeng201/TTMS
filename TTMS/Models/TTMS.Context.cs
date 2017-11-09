@@ -25,7 +25,6 @@ namespace TTMS.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<BrandsMaster> BrandsMasters { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
@@ -42,5 +41,6 @@ namespace TTMS.Models
         public virtual DbSet<Delivery> Deliveries { get; set; }
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<EmployeePayment> EmployeePayments { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
     }
 }

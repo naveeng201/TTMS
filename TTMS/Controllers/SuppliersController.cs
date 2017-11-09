@@ -10,6 +10,7 @@ using TTMS.Models;
 
 namespace TTMS.Controllers
 {
+    [Authorize]
     public class SuppliersController : Controller
     {
         private TTMSEntities db = new TTMSEntities();
@@ -41,9 +42,7 @@ namespace TTMS.Controllers
             return View();
         }
 
-        // POST: Suppliers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+ 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,OrganizationName,Address,City,State,Country,Pin,ContactPersonName,ContactNo,EmailId,GSTNo,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Supplier supplier)
@@ -73,9 +72,6 @@ namespace TTMS.Controllers
             return View(supplier);
         }
 
-        // POST: Suppliers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,OrganizationName,Address,City,State,Country,Pin,ContactPersonName,ContactNo,EmailId,GSTNo,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Supplier supplier)
