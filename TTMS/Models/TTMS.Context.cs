@@ -25,22 +25,22 @@ namespace TTMS.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<BrandsMaster> BrandsMasters { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<EmployeeAttendance> EmployeeAttendances { get; set; }
         public virtual DbSet<Order_Employee> Order_Employee { get; set; }
         public virtual DbSet<Order_Master> Order_Master { get; set; }
-        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<PurchaseEntry> PurchaseEntries { get; set; }
-        public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
         public virtual DbSet<Unit> Units { get; set; }
         public virtual DbSet<EmployeePerformance> EmployeePerformances { get; set; }
         public virtual DbSet<Delivery> Deliveries { get; set; }
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<EmployeePayment> EmployeePayments { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
     }
 }

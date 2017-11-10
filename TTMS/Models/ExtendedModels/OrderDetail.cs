@@ -15,7 +15,7 @@ namespace TTMS.Models
         [Required]
         public int PurchaseOrderID { get; set; }
         [Required]
-        public int BrandID { get; set; }
+        public int ProductID { get; set; }
         public string ProductName { get; set; }
         public string ProductColor { get; set; }
         public string ProductType { get; set; }

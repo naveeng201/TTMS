@@ -16,7 +16,7 @@ namespace TTMS.Models
     {
         public int ID { get; set; }
         public int PurchaseOrderID { get; set; }
-        public int BrandID { get; set; }
+        public int ProductID { get; set; }
         public string ProductName { get; set; }
         public string ProductColor { get; set; }
         public string ProductType { get; set; }
@@ -26,5 +26,8 @@ namespace TTMS.Models
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
+    
+        public virtual Product Product { get; set; }
+        public virtual PurchaseOrder PurchaseOrder { get; set; }
     }
 }

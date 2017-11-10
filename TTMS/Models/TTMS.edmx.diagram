@@ -5,23 +5,17 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d7889b6099454410a2f5b6e76b56aefb" Name="Diagram1" ZoomLevel="75">
-        <EntityTypeShape EntityType="TTMSModel.Supplier" Width="1.5" PointX="2" PointY="0.75" />
         <EntityTypeShape EntityType="TTMSModel.BrandsMaster" Width="1.5" PointX="6.5" PointY="0.75" />
         <EntityTypeShape EntityType="TTMSModel.ProductCategory" Width="1.5" PointX="4.375" PointY="0.75" />
         <EntityTypeShape EntityType="TTMSModel.EmployeeAttendance" Width="1.5" PointX="4.375" PointY="12.125" />
-        <EntityTypeShape EntityType="TTMSModel.Order_Employee" Width="1.5" PointX="12.125" PointY="5.25" />
-        <EntityTypeShape EntityType="TTMSModel.Order_Master" Width="1.5" PointX="10.25" PointY="5.25" />
-        <EntityTypeShape EntityType="TTMSModel.OrderDetail" Width="1.5" PointX="10.375" PointY="8.625" />
-        <EntityTypeShape EntityType="TTMSModel.Order" Width="1.5" PointX="8.25" PointY="5.25" />
-        <EntityTypeShape EntityType="TTMSModel.Product" Width="1.5" PointX="8.875" PointY="0.75" />
-        <EntityTypeShape EntityType="TTMSModel.PurchaseEntry" Width="1.5" PointX="12.625" PointY="8.5" />
-        <EntityTypeShape EntityType="TTMSModel.PurchaseOrder" Width="1.5" PointX="11" PointY="0.875" />
-        <EntityTypeShape EntityType="TTMSModel.Unit" Width="1.5" PointX="14.25" PointY="5.375" />
-        <AssociationConnector Association="TTMSModel.FK_Products_BrandsMaster" />
+        <EntityTypeShape EntityType="TTMSModel.Order_Employee" Width="1.5" PointX="12" PointY="7.375" />
+        <EntityTypeShape EntityType="TTMSModel.Order_Master" Width="1.5" PointX="10.125" PointY="7.375" />
+        <EntityTypeShape EntityType="TTMSModel.Order" Width="1.5" PointX="8.125" PointY="7.375" />
+        <EntityTypeShape EntityType="TTMSModel.PurchaseEntry" Width="1.5" PointX="17.25" PointY="0.875" />
+        <EntityTypeShape EntityType="TTMSModel.Unit" Width="1.5" PointX="14.125" PointY="7.5" />
         <AssociationConnector Association="TTMSModel.FK_Order_Master_Orders" />
-        <AssociationConnector Association="TTMSModel.FK_Products_ProductCategory" />
         <EntityTypeShape EntityType="TTMSModel.EmployeePerformance" Width="1.5" PointX="0.5" PointY="11.625" />
-        <EntityTypeShape EntityType="TTMSModel.Delivery" Width="1.5" PointX="8.375" PointY="11.5" />
+        <EntityTypeShape EntityType="TTMSModel.Delivery" Width="1.5" PointX="8" PointY="14.25" />
         <AssociationConnector Association="TTMSModel.FK_Delivery_Orders" />
         <EntityTypeShape EntityType="TTMSModel.Account" Width="1.5" PointX="4.375" PointY="4.75" />
         <EntityTypeShape EntityType="TTMSModel.EmployeePayment" Width="1.5" PointX="4.75" PointY="15.5" />
@@ -29,6 +23,15 @@
         <AssociationConnector Association="TTMSModel.FK_EmployeeAttendance_Employee" />
         <AssociationConnector Association="TTMSModel.FK_EmployeePayment_Employee" />
         <AssociationConnector Association="TTMSModel.FK_EmployeePerformance_Employee" />
+        <EntityTypeShape EntityType="TTMSModel.PurchaseOrder" Width="1.5" PointX="12.875" PointY="1.75" />
+        <EntityTypeShape EntityType="TTMSModel.Supplier" Width="1.5" PointX="10.75" PointY="1.5" />
+        <AssociationConnector Association="TTMSModel.FK_PurchaseOrder_Suppliers" />
+        <EntityTypeShape EntityType="TTMSModel.OrderDetail" Width="1.5" PointX="15.125" PointY="0.75" />
+        <EntityTypeShape EntityType="TTMSModel.Product" Width="1.5" PointX="8.75" PointY="0.75" />
+        <AssociationConnector Association="TTMSModel.FK_Products_BrandsMaster" />
+        <AssociationConnector Association="TTMSModel.FK_OrderDetails_Products" />
+        <AssociationConnector Association="TTMSModel.FK_OrderDetails_PurchaseOrder" />
+        <AssociationConnector Association="TTMSModel.FK_Products_ProductCategory" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

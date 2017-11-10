@@ -14,6 +14,12 @@ namespace TTMS.Models
     
     public partial class Product
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Product()
+        {
+            this.OrderDetails = new HashSet<OrderDetail>();
+        }
+    
         public int ID { get; set; }
         public string Name { get; set; }
         public string ShorName { get; set; }
@@ -29,6 +35,8 @@ namespace TTMS.Models
         public Nullable<int> ModifiedBy { get; set; }
     
         public virtual BrandsMaster BrandsMaster { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }
     }
 }
