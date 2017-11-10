@@ -17,8 +17,16 @@ namespace TTMS.Controllers
         // GET: PurchaseOrders
         public ActionResult Index()
         {
-            var purchaseOrder = db.PurchaseOrders.Include(p => p.Supplier);
-            return View(purchaseOrder.ToList());
+            //var purchaseOrder = db.PurchaseOrders.Include(p => p.Supplier);
+            //return View(purchaseOrder.ToList());
+            ViewBag.SupplierID = new SelectList(db.Suppliers, "ID", "OrganizationName");
+            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
+            var PO = new PurcheseOrderVM();
+            PO._orderDetail = new  OrderDetail();
+            PO.purchaseOrder = new PurchaseOrder();
+            PO.purchaseOrder.OrderDetails = db.OrderDetails.ToList();
+            return View(PO);
+
         }
 
         // GET: PurchaseOrders/Details/5
@@ -48,16 +56,30 @@ namespace TTMS.Controllers
 
         public ActionResult AjaxHandler(jQueryDataTableParamModel param)
         {
-            var allOrders = db.OrderDetails;
+            //return Json(new
+            //{
+            //    sEcho = param.sEcho,
+            //    iTotalRecords = 97,
+            //    iTotalDisplayRecords = 3,
+            //    aaData = new List<string[]>() {
+            //        new string[] {"1", "Microsoft", "Redmond", "USA"},
+            //        new string[] {"2", "Google", "Mountain View", "USA"},
+            //        new string[] {"3", "Gowi", "Pancevo", "Serbia"}
+            //        }
+            //},
+            //JsonRequestBehavior.AllowGet);
 
-            var result = from c in allOrders
-                         select new[] { c.ProductName, c.Quantity, c.ProductColor };
+
+            var allOrderDetails = db.OrderDetails.ToList();
+
+            var result = from c in allOrderDetails
+                         select new[] {c.ProductID.ToString(), c.ProductName, c.ProductType, c.Quantity };
 
             return Json(new
             {
                 sEcho = param.sEcho,
-                iTotalRecords = allOrders.Count(),
-                iTotalDisplayRecords = allOrders.Count(),
+                iTotalRecords = allOrderDetails.Count(),
+                iTotalDisplayRecords = allOrderDetails.Count(),
                 aaData = result
             },
                             JsonRequestBehavior.AllowGet);
@@ -67,8 +89,10 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,PurchaseOrderNo,SupplierID,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] PurchaseOrder purchaseOrder)
+        public ActionResult Create(/*[Bind(Include = "ID,PurchaseOrderNo,SupplierID,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")]*/ PurcheseOrderVM purchaseOrderVM)
         {
+            PurchaseOrder purchaseOrder = new PurchaseOrder();
+            purchaseOrder = purchaseOrderVM.purchaseOrder;
             if (ModelState.IsValid)
             {
                 db.PurchaseOrders.Add(purchaseOrder);
@@ -99,8 +123,10 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,PurchaseOrderNo,SupplierID,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] PurchaseOrder purchaseOrder)
+        public ActionResult Edit(/*[Bind(Include = "ID,PurchaseOrderNo,SupplierID,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")]*/ PurcheseOrderVM purchaseOrderVM)
         {
+            PurchaseOrder purchaseOrder = new PurchaseOrder();
+            purchaseOrder = purchaseOrderVM.purchaseOrder;
             if (ModelState.IsValid)
             {
                 db.Entry(purchaseOrder).State = EntityState.Modified;

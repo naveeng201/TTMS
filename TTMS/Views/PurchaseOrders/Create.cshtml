@@ -1,134 +1,121 @@
 ﻿@model TTMS.Models.PurchaseOrder
 
- 
 
-<!DOCTYPE html>
-@*https://www.codeproject.com/Articles/155422/jQuery-DataTables-and-ASP-NET-MVC-Integration-Part*@
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-</head>
-<body>
-    @using (Html.BeginForm()) 
-    {
-        @Html.AntiForgeryToken()
-        
-        <div class="form-horizontal">
-            <h4>PurchaseOrder</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.PurchaseOrderNo, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.PurchaseOrderNo, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.PurchaseOrderNo, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.SupplierID, "SupplierID", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("SupplierID", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.SupplierID, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div>----------------------------------------------------------------------------------------------------</div>
-          <table>
-              @foreach(var orderDetail in Model.OrderDetails)
-              {
-                  <tr>
-                      <td>
-                          <div class="form-group">
-                              @Html.LabelFor(model => orderDetail.ProductID, "ProductID", htmlAttributes: new { @class = "control-label col-md-2" })
-                              <div class="col-md-10">
-                                  @Html.DropDownList("ProductID", null, htmlAttributes: new { @class = "form-control" })
-                                  @Html.ValidationMessageFor(model => orderDetail.ProductID, "", new { @class = "text-danger" })
-                              </div>
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-group">
-                              @Html.LabelFor(model => orderDetail.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
-                              <div class="col-md-10">
-                                  @Html.EditorFor(model => orderDetail.ProductName, new { htmlAttributes = new { @class = "form-control" } })
-                                  @Html.ValidationMessageFor(model => orderDetail.ProductName, "", new { @class = "text-danger" })
-                              </div>
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-group">
-                              @Html.LabelFor(model => orderDetail.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
-                              <div class="col-md-10">
-                                  @Html.EditorFor(model => orderDetail.Quantity, new { htmlAttributes = new { @class = "form-control" } })
-                                  @Html.ValidationMessageFor(model => orderDetail.Quantity, "", new { @class = "text-danger" })
-                              </div>
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-group">
-                              @Html.LabelFor(model => orderDetail.ProductColor, htmlAttributes: new { @class = "control-label col-md-2" })
-                              <div class="col-md-10">
-                                  @Html.EditorFor(model => orderDetail.ProductColor, new { htmlAttributes = new { @class = "form-control" } })
-                                  @Html.ValidationMessageFor(model => orderDetail.ProductColor, "", new { @class = "text-danger" })
-                              </div>
-                          </div>
-                      </td>
-                  </tr>
-              }
-          </table>
-
-            <table id="tblPurchaseOrder" class="display">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Product name</th>
-                        <th>Quantity</th>
-                        <th>Quantity</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
+    <div class="form-horizontal">
+        <h4>PurchaseOrder</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.PurchaseOrderNo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PurchaseOrderNo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PurchaseOrderNo, "", new { @class = "text-danger" })
             </div>
         </div>
-    }
-    
-    <div>
-        @Html.ActionLink("Back to List", "Index")
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SupplierID, "SupplierID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("SupplierID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SupplierID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div>----------------------------------------------------------------------------------------------------</div>
+        <table>
+            @foreach (var orderDetail in Model.OrderDetails)
+            {
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            @Html.LabelFor(model => orderDetail.ProductID, "ProductID", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("ProductID", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => orderDetail.ProductID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            @Html.LabelFor(model => orderDetail.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => orderDetail.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => orderDetail.ProductName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            @Html.LabelFor(model => orderDetail.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => orderDetail.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => orderDetail.Quantity, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            @Html.LabelFor(model => orderDetail.ProductColor, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => orderDetail.ProductColor, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => orderDetail.ProductColor, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <table id="myDataTable" class="display">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Company name</th>
+                    <th>Address</th>
+                    <th>Town</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
     </div>
+}
 
-    <script>
-        $(document).ready(function () {
-            $('#tblPurchaseOrder').dataTable({
-                "bServerSide": true,
-                "sAjaxSource": "PurchaseOrders/AjaxHandler",
-                "bProcessing": true,
-                "aoColumns": [
-                                {
-                                    "sName": "ID",
-                                    "bSearchable": false,
-                                    "bSortable": false,
-                                    "fnRender": function (oObj) {
-                                        return '<a href=\"Details/' +
-                                        oObj.aData[0] + '\">View</a>';
-                                    }
-                                },
-                                { "sName": "PRODUCT_NAME" },
-                                { "sName": "QUANTITY" },
-                                { "sName": "PRODUCT_COLOR" }
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
 
-                ]
-            });
+<script>
+    $(document).ready(function () {
+
+        $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "AjaxHandler",
+            "bProcessing": true,
+            "aoColumns": [
+                {
+                    "sName": "ID",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "fnRender": function (oObj) {
+                        return '<a href=\"Details/' +
+                            oObj.aData[0] + '\">View</a>';
+                    }
+                },
+                { "sName": "COMPANY_NAME" },
+                { "sName": "ADDRESS" },
+                { "sName": "TOWN" }
+            ]
         });
-    </script>
-</body>
-</html>
+    });
+</script>
+

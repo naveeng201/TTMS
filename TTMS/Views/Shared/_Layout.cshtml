@@ -13,6 +13,7 @@
     <link href="~/Content/app.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
     <script>
             var themeSettings = (localStorage.getItem('themeSettings')) ? JSON.parse(localStorage.getItem('themeSettings')) :
             {};
@@ -264,7 +265,8 @@
                                     </li>
                                 </ul>*@
                             </li>
-                            <li>
+                            <li>@Html.ActionLink("Purchase Orders", "Index", "PurchaseOrders")</li>
+<li>
                                 <a href="">
                                     <i class="fa fa-sitemap"></i> Menu Levels
                                     <i class="fa arrow"></i>
@@ -538,9 +540,10 @@
             <div class="color-secondary"></div>
         </div>
     </div>
-    <script src="Scripts/vendor.js"></script>
-    <script src="Scripts/app.js"></script>
-    @Scripts.Render("~/bundles/jquery")
+    @*<script src="Scripts/vendor.js"></script>
+    <script src="Scripts/app.js"></script>*@
+
+
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 

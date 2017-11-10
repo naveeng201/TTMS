@@ -15,7 +15,7 @@ namespace TTMS.Controllers
         {
             PurcheseOrderVM POVM = new PurcheseOrderVM();
             POVM.purchaseOrder = db.PurchaseOrders.FirstOrDefault();
-            POVM.orderDetails = db.OrderDetails.ToList();
+            POVM._orderDetail = db.OrderDetails.SingleOrDefault();
             return View();
         }
 

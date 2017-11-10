@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace TTMS.Controllers
 {
-    [Authorize]
+    
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -20,7 +20,7 @@ namespace TTMS.Controllers
 
             return View();
         }
-
+        
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
