@@ -13,6 +13,7 @@ namespace TTMS.Models
     public class PurchaseOrderMetadata
     {
         [Required]
+        [RegularExpression("([0-9]+)")]
         public string PurchaseOrderNo { get; set; }
         [Required]
         public int SupplierID { get; set; }

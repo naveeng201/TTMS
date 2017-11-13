@@ -21,12 +21,11 @@ namespace TTMS.Controllers
             //return View(purchaseOrder.ToList());
             ViewBag.SupplierID = new SelectList(db.Suppliers, "ID", "OrganizationName");
             ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
-            var PO = new PurcheseOrderVM();
-            PO._orderDetail = new  OrderDetail();
-            PO.purchaseOrder = new PurchaseOrder();
-            PO.purchaseOrder.OrderDetails = db.OrderDetails.ToList();
-            return View(PO);
-
+            var poList = db.PurchaseOrders.ToList();
+            //PO._orderDetail = new List<OrderDetail>();
+            //PO.purchaseOrder = new PurchaseOrder();
+            //PO.purchaseOrder.OrderDetails = db.OrderDetails.ToList();
+            return View(poList);
         }
 
         // GET: PurchaseOrders/Details/5
@@ -48,51 +47,67 @@ namespace TTMS.Controllers
         public ActionResult Create()
         {
             ViewBag.SupplierID = new SelectList(db.Suppliers, "ID", "OrganizationName");
+            ViewBag.Suppliers = db.Suppliers.ToList();
             ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
-            var purchaseOrder = new PurchaseOrder();
-            purchaseOrder.OrderDetails = new List<OrderDetail> { new OrderDetail()};
+            var purchaseOrder = new PurchaseOrderVM();
+            purchaseOrder.purchaseOrder = new PurchaseOrder();
+            purchaseOrder._orderDetail = new List<OrderDetail> { new OrderDetail() };
             return View(purchaseOrder);
         }
 
-        public ActionResult AjaxHandler(jQueryDataTableParamModel param)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddProductDetails(string submitAction, PurchaseOrderVM purchaseOrderVM)
         {
-            //return Json(new
-            //{
-            //    sEcho = param.sEcho,
-            //    iTotalRecords = 97,
-            //    iTotalDisplayRecords = 3,
-            //    aaData = new List<string[]>() {
-            //        new string[] {"1", "Microsoft", "Redmond", "USA"},
-            //        new string[] {"2", "Google", "Mountain View", "USA"},
-            //        new string[] {"3", "Gowi", "Pancevo", "Serbia"}
-            //        }
-            //},
-            //JsonRequestBehavior.AllowGet);
-
-
-            var allOrderDetails = db.OrderDetails.ToList();
-
-            var result = from c in allOrderDetails
-                         select new[] {c.ProductID.ToString(), c.ProductName, c.ProductType, c.Quantity };
-
-            return Json(new
+            if (ModelState.IsValid)
             {
-                sEcho = param.sEcho,
-                iTotalRecords = allOrderDetails.Count(),
-                iTotalDisplayRecords = allOrderDetails.Count(),
-                aaData = result
-            },
-                            JsonRequestBehavior.AllowGet);
+                PurchaseOrder po = new PurchaseOrder();
+                po.SupplierID = purchaseOrderVM.purchaseOrder.SupplierID;
+                po.PurchaseOrderNo = purchaseOrderVM.purchaseOrder.PurchaseOrderNo;
+                foreach (var od in purchaseOrderVM._orderDetail)
+                {
+                    if (od.ProductID == 0)
+                        continue;
+                    po.OrderDetails.Add(od);
+                }
+                db.PurchaseOrders.Add(po);
+                db.SaveChanges();
+                var poList = db.PurchaseOrders.ToList();
+                return View("Index", poList);
+            }
+            return View("Createt");
+        }
+        [HttpGet]
+        public ActionResult GetPurchaseOrderNo()
+        {
+            var result = db.PurchaseOrders.Max(x => x.PurchaseOrderNo).SingleOrDefault();
+            int iNumber = 0;
+            int.TryParse(result.ToString(), out iNumber);
+            iNumber = iNumber + 1;
+            return Json(iNumber, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GetProdectDetails(int id)
+        {
+
+            //do the logic for taking the value for textbox
+            var result = from c in db.Products
+                         where c.ID == id
+                         select new {c.Price,c.ShorName };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         // POST: PurchaseOrders/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(/*[Bind(Include = "ID,PurchaseOrderNo,SupplierID,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")]*/ PurcheseOrderVM purchaseOrderVM)
+        public ActionResult Create(/*[Bind(Include = "ID,PurchaseOrderNo,SupplierID,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] */PurchaseOrderVM purchaseOrderVM)
         {
             PurchaseOrder purchaseOrder = new PurchaseOrder();
             purchaseOrder = purchaseOrderVM.purchaseOrder;
+            purchaseOrder.OrderDetails = purchaseOrderVM._orderDetail;
             if (ModelState.IsValid)
             {
                 db.PurchaseOrders.Add(purchaseOrder);
@@ -123,7 +138,7 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(/*[Bind(Include = "ID,PurchaseOrderNo,SupplierID,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")]*/ PurcheseOrderVM purchaseOrderVM)
+        public ActionResult Edit(/*[Bind(Include = "ID,PurchaseOrderNo,SupplierID,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")]*/ PurchaseOrderVM purchaseOrderVM)
         {
             PurchaseOrder purchaseOrder = new PurchaseOrder();
             purchaseOrder = purchaseOrderVM.purchaseOrder;
@@ -172,42 +187,4 @@ namespace TTMS.Controllers
         }
     }
 
-    public class jQueryDataTableParamModel
-    {
-        /// <summary>
-        /// Request sequence number sent by DataTable,
-        /// same value must be returned in response
-        /// </summary>       
-        public string sEcho { get; set; }
-
-        /// <summary>
-        /// Text used for filtering
-        /// </summary>
-        public string sSearch { get; set; }
-
-        /// <summary>
-        /// Number of records that should be shown in table
-        /// </summary>
-        public int iDisplayLength { get; set; }
-
-        /// <summary>
-        /// First record that should be shown(used for paging)
-        /// </summary>
-        public int iDisplayStart { get; set; }
-
-        /// <summary>
-        /// Number of columns in table
-        /// </summary>
-        public int iColumns { get; set; }
-
-        /// <summary>
-        /// Number of columns that are used in sorting
-        /// </summary>
-        public int iSortingCols { get; set; }
-
-        /// <summary>
-        /// Comma separated list of column names
-        /// </summary>
-        public string sColumns { get; set; }
-    }
 }

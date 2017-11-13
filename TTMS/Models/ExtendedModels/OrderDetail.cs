@@ -12,9 +12,7 @@ namespace TTMS.Models
     }
     public class OrderDetailMetadata
     {
-        [Required]
         public int PurchaseOrderID { get; set; }
-        [Required]
         public int ProductID { get; set; }
         public string ProductName { get; set; }
         public string ProductColor { get; set; }

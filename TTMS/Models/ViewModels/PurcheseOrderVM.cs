@@ -5,9 +5,11 @@ using System.Web;
 
 namespace TTMS.Models
 {
-    public class PurcheseOrderVM
+    public class PurchaseOrderVM
     {
+       
         public PurchaseOrder purchaseOrder { get; set; }
-        public OrderDetail _orderDetail { get; set; } 
+        public List<OrderDetail> _orderDetail { get; set; } 
+        
     }
 }

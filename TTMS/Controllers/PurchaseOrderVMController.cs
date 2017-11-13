@@ -13,9 +13,9 @@ namespace TTMS.Controllers
         // GET: PurchaseOrderVM
         public ActionResult Index()
         {
-            PurcheseOrderVM POVM = new PurcheseOrderVM();
+            PurchaseOrderVM POVM = new PurchaseOrderVM();
             POVM.purchaseOrder = db.PurchaseOrders.FirstOrDefault();
-            POVM._orderDetail = db.OrderDetails.SingleOrDefault();
+            POVM._orderDetail = db.OrderDetails.ToList();
             return View();
         }
 
@@ -33,12 +33,33 @@ namespace TTMS.Controllers
         // GET: PurchaseOrderVM/Create
         public ActionResult Create()
         {
-            return View();
+            ViewBag.SupplierID = new SelectList(db.Suppliers, "ID", "OrganizationName");
+            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
+            PurchaseOrderVM POVM = new PurchaseOrderVM();
+            POVM.purchaseOrder = new PurchaseOrder();
+            POVM._orderDetail = new List<OrderDetail> {
+                new OrderDetail {
+                    ProductName ="Tee",
+                    ProductColor = "Red",
+                    ProductType ="Type1"
+            },
+                new OrderDetail {
+                    ProductName ="Shirt",
+                    ProductColor = "Blue",
+                    ProductType ="Type2"
+            },
+               new OrderDetail {
+                    ProductName ="Pant",
+                    ProductColor = "green",
+                    ProductType ="Type3"
+            }};
+             
+            return View(POVM);
         }
 
         // POST: PurchaseOrderVM/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(PurchaseOrderVM collection)
         {
             try
             {
