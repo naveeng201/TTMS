@@ -144,8 +144,12 @@
     <Property Name="ProductName" Type="nvarchar" MaxLength="500" />
     <Property Name="ProductColor" Type="nvarchar" MaxLength="200" />
     <Property Name="ProductType" Type="nvarchar" MaxLength="200" />
-    <Property Name="Quantity" Type="nvarchar" MaxLength="200" />
-    <Property Name="TypeOfUnits" Type="nvarchar" MaxLength="50" />
+    <Property Name="Quantity" Type="int" />
+    <Property Name="ReceivedQuantity" Type="int" />
+    <Property Name="UnitID" Type="int" />
+    <Property Name="CostPrice" Type="float" />
+    <Property Name="MRP" Type="float" />
+    <Property Name="SalePrice" Type="float" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
@@ -217,20 +221,30 @@
     <Property Name="InvoiceChallan" Type="nvarchar" MaxLength="200" />
     <Property Name="InvoiceChallanNo" Type="nvarchar" MaxLength="200" />
     <Property Name="InvoiceDate" Type="datetime" />
-    <Property Name="BrandID" Type="int" />
-    <Property Name="ProductName" Type="nvarchar" MaxLength="500" Nullable="false" />
-    <Property Name="ProductColor" Type="nvarchar" MaxLength="200" Nullable="false" />
-    <Property Name="ProductType" Type="nvarchar" MaxLength="200" Nullable="false" />
-    <Property Name="ReceivedQuantity" Type="int" Nullable="false" />
-    <Property Name="Price" Type="float" Nullable="false" />
     <Property Name="CGST" Type="float" />
     <Property Name="SGST" Type="float" />
+    <Property Name="DiscountAmount" Type="float" />
     <Property Name="TotalAmount" Type="float" Nullable="false" />
-    <Property Name="PaidAmount" Type="float" />
-    <Property Name="PaymentDate" Type="datetime" />
-    <Property Name="PaymentMode" Type="nvarchar" MaxLength="200" />
-    <Property Name="PaymentRefNo" Type="nvarchar" MaxLength="100" />
     <Property Name="DueAmount" Type="float" />
+    <Property Name="Status" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPayment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="PurchaseEntryPayment">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="PaymentDate" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PurchaseEntryID" Type="int" />
+    <Property Name="PaymentDate" Type="datetime" Nullable="false" />
+    <Property Name="PaymentMode" Type="nvarchar" MaxLength="200" />
+    <Property Name="PaymentRefNo" Type="nvarchar" MaxLength="200" />
+    <Property Name="PaidAmount" Type="float" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
@@ -243,6 +257,7 @@
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="PurchaseOrderNo" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="SupplierID" Type="int" Nullable="false" />
+    <Property Name="IsPurcheseEntry" Type="bit" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
@@ -364,6 +379,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_OrderDetails_Units">
+    <End Role="Units" Type="Self.Units" Multiplicity="0..1" />
+    <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Units">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="OrderDetails">
+        <PropertyRef Name="UnitID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Products_BrandsMaster">
     <End Role="BrandsMaster" Type="Self.BrandsMaster" Multiplicity="0..1" />
     <End Role="Products" Type="Self.Products" Multiplicity="*" />
@@ -385,6 +412,30 @@
       </Principal>
       <Dependent Role="Products">
         <PropertyRef Name="ProductCategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PurchaseEntry_PurchaseOrder">
+    <End Role="PurchaseOrder" Type="Self.PurchaseOrder" Multiplicity="0..1" />
+    <End Role="PurchaseEntry" Type="Self.PurchaseEntry" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PurchaseOrder">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PurchaseEntry">
+        <PropertyRef Name="PurchaseOrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PurchaseEntryPayment_PurchaseEntry">
+    <End Role="PurchaseEntry" Type="Self.PurchaseEntry" Multiplicity="0..1" />
+    <End Role="PurchaseEntryPayment" Type="Self.PurchaseEntryPayment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PurchaseEntry">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PurchaseEntryPayment">
+        <PropertyRef Name="PurchaseEntryID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -418,6 +469,20 @@
     <EntitySet Name="PurchaseOrder" EntityType="Self.PurchaseOrder" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Units" EntityType="Self.Units" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PurchaseEntryPayment" EntityType="Self.PurchaseEntryPayment" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [PurchaseEntryPayment].[ID] AS [ID], 
+    [PurchaseEntryPayment].[PurchaseEntryID] AS [PurchaseEntryID], 
+    [PurchaseEntryPayment].[PaymentDate] AS [PaymentDate], 
+    [PurchaseEntryPayment].[PaymentMode] AS [PaymentMode], 
+    [PurchaseEntryPayment].[PaymentRefNo] AS [PaymentRefNo], 
+    [PurchaseEntryPayment].[PaidAmount] AS [PaidAmount], 
+    [PurchaseEntryPayment].[CreatedDate] AS [CreatedDate], 
+    [PurchaseEntryPayment].[CreatedBy] AS [CreatedBy], 
+    [PurchaseEntryPayment].[ModifiedDate] AS [ModifiedDate], 
+    [PurchaseEntryPayment].[ModifiedBy] AS [ModifiedBy]
+    FROM [dbo].[PurchaseEntryPayment] AS [PurchaseEntryPayment]</DefiningQuery>
+    </EntitySet>
     <AssociationSet Name="FK_Delivery_Orders" Association="Self.FK_Delivery_Orders">
       <End Role="Orders" EntitySet="Orders" />
       <End Role="Delivery" EntitySet="Delivery" />
@@ -446,6 +511,10 @@
       <End Role="PurchaseOrder" EntitySet="PurchaseOrder" />
       <End Role="OrderDetails" EntitySet="OrderDetails" />
     </AssociationSet>
+    <AssociationSet Name="FK_OrderDetails_Units" Association="Self.FK_OrderDetails_Units">
+      <End Role="Units" EntitySet="Units" />
+      <End Role="OrderDetails" EntitySet="OrderDetails" />
+    </AssociationSet>
     <AssociationSet Name="FK_Products_BrandsMaster" Association="Self.FK_Products_BrandsMaster">
       <End Role="BrandsMaster" EntitySet="BrandsMaster" />
       <End Role="Products" EntitySet="Products" />
@@ -453,6 +522,14 @@
     <AssociationSet Name="FK_Products_ProductCategory" Association="Self.FK_Products_ProductCategory">
       <End Role="ProductCategory" EntitySet="ProductCategory" />
       <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PurchaseEntry_PurchaseOrder" Association="Self.FK_PurchaseEntry_PurchaseOrder">
+      <End Role="PurchaseOrder" EntitySet="PurchaseOrder" />
+      <End Role="PurchaseEntry" EntitySet="PurchaseEntry" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PurchaseEntryPayment_PurchaseEntry" Association="Self.FK_PurchaseEntryPayment_PurchaseEntry">
+      <End Role="PurchaseEntry" EntitySet="PurchaseEntry" />
+      <End Role="PurchaseEntryPayment" EntitySet="PurchaseEntryPayment" />
     </AssociationSet>
     <AssociationSet Name="FK_PurchaseOrder_Suppliers" Association="Self.FK_PurchaseOrder_Suppliers">
       <End Role="Suppliers" EntitySet="Suppliers" />

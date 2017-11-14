@@ -149,8 +149,12 @@
           <Property Name="ProductName" Type="nvarchar" MaxLength="500" />
           <Property Name="ProductColor" Type="nvarchar" MaxLength="200" />
           <Property Name="ProductType" Type="nvarchar" MaxLength="200" />
-          <Property Name="Quantity" Type="nvarchar" MaxLength="200" />
-          <Property Name="TypeOfUnits" Type="nvarchar" MaxLength="50" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="ReceivedQuantity" Type="int" />
+          <Property Name="UnitID" Type="int" />
+          <Property Name="CostPrice" Type="float" />
+          <Property Name="MRP" Type="float" />
+          <Property Name="SalePrice" Type="float" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
@@ -222,20 +226,30 @@
           <Property Name="InvoiceChallan" Type="nvarchar" MaxLength="200" />
           <Property Name="InvoiceChallanNo" Type="nvarchar" MaxLength="200" />
           <Property Name="InvoiceDate" Type="datetime" />
-          <Property Name="BrandID" Type="int" />
-          <Property Name="ProductName" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="ProductColor" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="ProductType" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="ReceivedQuantity" Type="int" Nullable="false" />
-          <Property Name="Price" Type="float" Nullable="false" />
           <Property Name="CGST" Type="float" />
           <Property Name="SGST" Type="float" />
+          <Property Name="DiscountAmount" Type="float" />
           <Property Name="TotalAmount" Type="float" Nullable="false" />
-          <Property Name="PaidAmount" Type="float" />
-          <Property Name="PaymentDate" Type="datetime" />
-          <Property Name="PaymentMode" Type="nvarchar" MaxLength="200" />
-          <Property Name="PaymentRefNo" Type="nvarchar" MaxLength="100" />
           <Property Name="DueAmount" Type="float" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPayment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PurchaseEntryPayment">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="PaymentDate" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseEntryID" Type="int" />
+          <Property Name="PaymentDate" Type="datetime" Nullable="false" />
+          <Property Name="PaymentMode" Type="nvarchar" MaxLength="200" />
+          <Property Name="PaymentRefNo" Type="nvarchar" MaxLength="200" />
+          <Property Name="PaidAmount" Type="float" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
@@ -248,6 +262,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PurchaseOrderNo" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SupplierID" Type="int" Nullable="false" />
+          <Property Name="IsPurcheseEntry" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
@@ -369,6 +384,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_OrderDetails_Units">
+          <End Role="Units" Type="Self.Units" Multiplicity="0..1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Units">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Products_BrandsMaster">
           <End Role="BrandsMaster" Type="Self.BrandsMaster" Multiplicity="0..1" />
           <End Role="Products" Type="Self.Products" Multiplicity="*" />
@@ -390,6 +417,30 @@
             </Principal>
             <Dependent Role="Products">
               <PropertyRef Name="ProductCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseEntry_PurchaseOrder">
+          <End Role="PurchaseOrder" Type="Self.PurchaseOrder" Multiplicity="0..1" />
+          <End Role="PurchaseEntry" Type="Self.PurchaseEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PurchaseOrder">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseEntry">
+              <PropertyRef Name="PurchaseOrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseEntryPayment_PurchaseEntry">
+          <End Role="PurchaseEntry" Type="Self.PurchaseEntry" Multiplicity="0..1" />
+          <End Role="PurchaseEntryPayment" Type="Self.PurchaseEntryPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PurchaseEntry">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseEntryPayment">
+              <PropertyRef Name="PurchaseEntryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -423,6 +474,20 @@
           <EntitySet Name="PurchaseOrder" EntityType="Self.PurchaseOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Units" EntityType="Self.Units" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseEntryPayment" EntityType="Self.PurchaseEntryPayment" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PurchaseEntryPayment].[ID] AS [ID], 
+    [PurchaseEntryPayment].[PurchaseEntryID] AS [PurchaseEntryID], 
+    [PurchaseEntryPayment].[PaymentDate] AS [PaymentDate], 
+    [PurchaseEntryPayment].[PaymentMode] AS [PaymentMode], 
+    [PurchaseEntryPayment].[PaymentRefNo] AS [PaymentRefNo], 
+    [PurchaseEntryPayment].[PaidAmount] AS [PaidAmount], 
+    [PurchaseEntryPayment].[CreatedDate] AS [CreatedDate], 
+    [PurchaseEntryPayment].[CreatedBy] AS [CreatedBy], 
+    [PurchaseEntryPayment].[ModifiedDate] AS [ModifiedDate], 
+    [PurchaseEntryPayment].[ModifiedBy] AS [ModifiedBy]
+    FROM [dbo].[PurchaseEntryPayment] AS [PurchaseEntryPayment]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Delivery_Orders" Association="Self.FK_Delivery_Orders">
             <End Role="Orders" EntitySet="Orders" />
             <End Role="Delivery" EntitySet="Delivery" />
@@ -451,6 +516,10 @@
             <End Role="PurchaseOrder" EntitySet="PurchaseOrder" />
             <End Role="OrderDetails" EntitySet="OrderDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Units" Association="Self.FK_OrderDetails_Units">
+            <End Role="Units" EntitySet="Units" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_Products_BrandsMaster" Association="Self.FK_Products_BrandsMaster">
             <End Role="BrandsMaster" EntitySet="BrandsMaster" />
             <End Role="Products" EntitySet="Products" />
@@ -458,6 +527,14 @@
           <AssociationSet Name="FK_Products_ProductCategory" Association="Self.FK_Products_ProductCategory">
             <End Role="ProductCategory" EntitySet="ProductCategory" />
             <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseEntry_PurchaseOrder" Association="Self.FK_PurchaseEntry_PurchaseOrder">
+            <End Role="PurchaseOrder" EntitySet="PurchaseOrder" />
+            <End Role="PurchaseEntry" EntitySet="PurchaseEntry" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseEntryPayment_PurchaseEntry" Association="Self.FK_PurchaseEntryPayment_PurchaseEntry">
+            <End Role="PurchaseEntry" EntitySet="PurchaseEntry" />
+            <End Role="PurchaseEntryPayment" EntitySet="PurchaseEntryPayment" />
           </AssociationSet>
           <AssociationSet Name="FK_PurchaseOrder_Suppliers" Association="Self.FK_PurchaseOrder_Suppliers">
             <End Role="Suppliers" EntitySet="Suppliers" />
@@ -475,7 +552,6 @@
           <EntitySet Name="Order_Employee" EntityType="TTMSModel.Order_Employee" />
           <EntitySet Name="Order_Master" EntityType="TTMSModel.Order_Master" />
           <EntitySet Name="Orders" EntityType="TTMSModel.Order" />
-          <EntitySet Name="PurchaseEntries" EntityType="TTMSModel.PurchaseEntry" />
           <EntitySet Name="Units" EntityType="TTMSModel.Unit" />
           <AssociationSet Name="FK_Order_Master_Orders" Association="TTMSModel.FK_Order_Master_Orders">
             <End Role="Order" EntitySet="Orders" />
@@ -502,18 +578,20 @@
             <End Role="Employee" EntitySet="Employees" />
             <End Role="EmployeePerformance" EntitySet="EmployeePerformances" />
           </AssociationSet>
-          <EntitySet Name="PurchaseOrders" EntityType="TTMSModel.PurchaseOrder" />
           <EntitySet Name="Suppliers" EntityType="TTMSModel.Supplier" />
-          <AssociationSet Name="FK_PurchaseOrder_Suppliers" Association="TTMSModel.FK_PurchaseOrder_Suppliers">
-            <End Role="Supplier" EntitySet="Suppliers" />
-            <End Role="PurchaseOrder" EntitySet="PurchaseOrders" />
-          </AssociationSet>
-          <EntitySet Name="OrderDetails" EntityType="TTMSModel.OrderDetail" />
           <EntitySet Name="Products" EntityType="TTMSModel.Product" />
           <AssociationSet Name="FK_Products_BrandsMaster" Association="TTMSModel.FK_Products_BrandsMaster">
             <End Role="BrandsMaster" EntitySet="BrandsMasters" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
+          <AssociationSet Name="FK_Products_ProductCategory" Association="TTMSModel.FK_Products_ProductCategory">
+            <End Role="ProductCategory" EntitySet="ProductCategories" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <EntitySet Name="OrderDetails" EntityType="TTMSModel.OrderDetail" />
+          <EntitySet Name="PurchaseEntries" EntityType="TTMSModel.PurchaseEntry" />
+          <EntitySet Name="PurchaseOrders" EntityType="TTMSModel.PurchaseOrder" />
+          <EntitySet Name="PurchaseEntryPayments" EntityType="TTMSModel.PurchaseEntryPayment" />
           <AssociationSet Name="FK_OrderDetails_Products" Association="TTMSModel.FK_OrderDetails_Products">
             <End Role="Product" EntitySet="Products" />
             <End Role="OrderDetail" EntitySet="OrderDetails" />
@@ -522,9 +600,21 @@
             <End Role="PurchaseOrder" EntitySet="PurchaseOrders" />
             <End Role="OrderDetail" EntitySet="OrderDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK_Products_ProductCategory" Association="TTMSModel.FK_Products_ProductCategory">
-            <End Role="ProductCategory" EntitySet="ProductCategories" />
-            <End Role="Product" EntitySet="Products" />
+          <AssociationSet Name="FK_OrderDetails_Units" Association="TTMSModel.FK_OrderDetails_Units">
+            <End Role="Unit" EntitySet="Units" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseEntry_PurchaseOrder" Association="TTMSModel.FK_PurchaseEntry_PurchaseOrder">
+            <End Role="PurchaseOrder" EntitySet="PurchaseOrders" />
+            <End Role="PurchaseEntry" EntitySet="PurchaseEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseEntryPayment_PurchaseEntry" Association="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry">
+            <End Role="PurchaseEntry" EntitySet="PurchaseEntries" />
+            <End Role="PurchaseEntryPayment" EntitySet="PurchaseEntryPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrder_Suppliers" Association="TTMSModel.FK_PurchaseOrder_Suppliers">
+            <End Role="Supplier" EntitySet="Suppliers" />
+            <End Role="PurchaseOrder" EntitySet="PurchaseOrders" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="BrandsMaster">
@@ -622,34 +712,6 @@
           <NavigationProperty Name="Order_Master" Relationship="TTMSModel.FK_Order_Master_Orders" FromRole="Order" ToRole="Order_Master" />
           <NavigationProperty Name="Deliveries" Relationship="TTMSModel.FK_Delivery_Orders" FromRole="Order" ToRole="Delivery" />
         </EntityType>
-        <EntityType Name="PurchaseEntry">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PurchaseOrderID" Type="Int32" />
-          <Property Name="InvoiceChallan" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="InvoiceChallanNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="InvoiceDate" Type="DateTime" Precision="3" />
-          <Property Name="BrandID" Type="Int32" />
-          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ProductColor" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="ProductType" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="ReceivedQuantity" Type="Int32" Nullable="false" />
-          <Property Name="Price" Type="Double" Nullable="false" />
-          <Property Name="CGST" Type="Double" />
-          <Property Name="SGST" Type="Double" />
-          <Property Name="TotalAmount" Type="Double" Nullable="false" />
-          <Property Name="PaidAmount" Type="Double" />
-          <Property Name="PaymentDate" Type="DateTime" Precision="3" />
-          <Property Name="PaymentMode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PaymentRefNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DueAmount" Type="Double" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-        </EntityType>
         <EntityType Name="Unit">
           <Key>
             <PropertyRef Name="ID" />
@@ -660,6 +722,7 @@
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="OrderDetails" Relationship="TTMSModel.FK_OrderDetails_Units" FromRole="Unit" ToRole="OrderDetail" />
         </EntityType>
         <Association Name="FK_Order_Master_Orders">
           <End Type="TTMSModel.Order" Role="Order" Multiplicity="1" />
@@ -811,20 +874,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="PurchaseOrder">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PurchaseOrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SupplierID" Type="Int32" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <NavigationProperty Name="Supplier" Relationship="TTMSModel.FK_PurchaseOrder_Suppliers" FromRole="PurchaseOrder" ToRole="Supplier" />
-          <NavigationProperty Name="OrderDetails" Relationship="TTMSModel.FK_OrderDetails_PurchaseOrder" FromRole="PurchaseOrder" ToRole="OrderDetail" />
-        </EntityType>
         <EntityType Name="Supplier">
           <Key>
             <PropertyRef Name="ID" />
@@ -847,37 +896,6 @@
           <Property Name="ModifiedBy" Type="Int32" />
           <NavigationProperty Name="PurchaseOrders" Relationship="TTMSModel.FK_PurchaseOrder_Suppliers" FromRole="Supplier" ToRole="PurchaseOrder" />
         </EntityType>
-        <Association Name="FK_PurchaseOrder_Suppliers">
-          <End Type="TTMSModel.Supplier" Role="Supplier" Multiplicity="1" />
-          <End Type="TTMSModel.PurchaseOrder" Role="PurchaseOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Supplier">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="PurchaseOrder">
-              <PropertyRef Name="SupplierID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="OrderDetail">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PurchaseOrderID" Type="Int32" Nullable="false" />
-          <Property Name="ProductID" Type="Int32" Nullable="false" />
-          <Property Name="ProductName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ProductColor" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="ProductType" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Quantity" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="TypeOfUnits" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <NavigationProperty Name="Product" Relationship="TTMSModel.FK_OrderDetails_Products" FromRole="OrderDetail" ToRole="Product" />
-          <NavigationProperty Name="PurchaseOrder" Relationship="TTMSModel.FK_OrderDetails_PurchaseOrder" FromRole="OrderDetail" ToRole="PurchaseOrder" />
-        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="ID" />
@@ -896,8 +914,8 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <NavigationProperty Name="BrandsMaster" Relationship="TTMSModel.FK_Products_BrandsMaster" FromRole="Product" ToRole="BrandsMaster" />
-          <NavigationProperty Name="OrderDetails" Relationship="TTMSModel.FK_OrderDetails_Products" FromRole="Product" ToRole="OrderDetail" />
           <NavigationProperty Name="ProductCategory" Relationship="TTMSModel.FK_Products_ProductCategory" FromRole="Product" ToRole="ProductCategory" />
+          <NavigationProperty Name="OrderDetails" Relationship="TTMSModel.FK_OrderDetails_Products" FromRole="Product" ToRole="OrderDetail" />
         </EntityType>
         <Association Name="FK_Products_BrandsMaster">
           <End Type="TTMSModel.BrandsMaster" Role="BrandsMaster" Multiplicity="0..1" />
@@ -911,6 +929,97 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Products_ProductCategory">
+          <End Type="TTMSModel.ProductCategory" Role="ProductCategory" Multiplicity="0..1" />
+          <End Type="TTMSModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseOrderID" Type="Int32" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ProductColor" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ProductType" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="ReceivedQuantity" Type="Int32" />
+          <Property Name="UnitID" Type="Int32" />
+          <Property Name="CostPrice" Type="Double" />
+          <Property Name="MRP" Type="Double" />
+          <Property Name="SalePrice" Type="Double" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="Product" Relationship="TTMSModel.FK_OrderDetails_Products" FromRole="OrderDetail" ToRole="Product" />
+          <NavigationProperty Name="PurchaseOrder" Relationship="TTMSModel.FK_OrderDetails_PurchaseOrder" FromRole="OrderDetail" ToRole="PurchaseOrder" />
+          <NavigationProperty Name="Unit" Relationship="TTMSModel.FK_OrderDetails_Units" FromRole="OrderDetail" ToRole="Unit" />
+        </EntityType>
+        <EntityType Name="PurchaseEntry">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseOrderID" Type="Int32" />
+          <Property Name="InvoiceChallan" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceChallanNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceDate" Type="DateTime" Precision="3" />
+          <Property Name="CGST" Type="Double" />
+          <Property Name="SGST" Type="Double" />
+          <Property Name="DiscountAmount" Type="Double" />
+          <Property Name="TotalAmount" Type="Double" Nullable="false" />
+          <Property Name="DueAmount" Type="Double" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="PurchaseOrder" Relationship="TTMSModel.FK_PurchaseEntry_PurchaseOrder" FromRole="PurchaseEntry" ToRole="PurchaseOrder" />
+          <NavigationProperty Name="PurchaseEntryPayments" Relationship="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry" FromRole="PurchaseEntry" ToRole="PurchaseEntryPayment" />
+        </EntityType>
+        <EntityType Name="PurchaseOrder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseOrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SupplierID" Type="Int32" Nullable="false" />
+          <Property Name="IsPurcheseEntry" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="OrderDetails" Relationship="TTMSModel.FK_OrderDetails_PurchaseOrder" FromRole="PurchaseOrder" ToRole="OrderDetail" />
+          <NavigationProperty Name="PurchaseEntries" Relationship="TTMSModel.FK_PurchaseEntry_PurchaseOrder" FromRole="PurchaseOrder" ToRole="PurchaseEntry" />
+          <NavigationProperty Name="Supplier" Relationship="TTMSModel.FK_PurchaseOrder_Suppliers" FromRole="PurchaseOrder" ToRole="Supplier" />
+        </EntityType>
+        <EntityType Name="PurchaseEntryPayment">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="PaymentDate" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseEntryID" Type="Int32" />
+          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PaymentMode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentRefNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PaidAmount" Type="Double" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="PurchaseEntry" Relationship="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry" FromRole="PurchaseEntryPayment" ToRole="PurchaseEntry" />
+        </EntityType>
         <Association Name="FK_OrderDetails_Products">
           <End Type="TTMSModel.Product" Role="Product" Multiplicity="1" />
           <End Type="TTMSModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
@@ -935,15 +1044,51 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Products_ProductCategory">
-          <End Type="TTMSModel.ProductCategory" Role="ProductCategory" Multiplicity="0..1" />
-          <End Type="TTMSModel.Product" Role="Product" Multiplicity="*" />
+        <Association Name="FK_OrderDetails_Units">
+          <End Type="TTMSModel.Unit" Role="Unit" Multiplicity="0..1" />
+          <End Type="TTMSModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProductCategory">
+            <Principal Role="Unit">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Product">
-              <PropertyRef Name="ProductCategoryID" />
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseEntry_PurchaseOrder">
+          <End Type="TTMSModel.PurchaseOrder" Role="PurchaseOrder" Multiplicity="0..1" />
+          <End Type="TTMSModel.PurchaseEntry" Role="PurchaseEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PurchaseOrder">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseEntry">
+              <PropertyRef Name="PurchaseOrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseEntryPayment_PurchaseEntry">
+          <End Type="TTMSModel.PurchaseEntry" Role="PurchaseEntry" Multiplicity="0..1" />
+          <End Type="TTMSModel.PurchaseEntryPayment" Role="PurchaseEntryPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PurchaseEntry">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseEntryPayment">
+              <PropertyRef Name="PurchaseEntryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrder_Suppliers">
+          <End Type="TTMSModel.Supplier" Role="Supplier" Multiplicity="1" />
+          <End Type="TTMSModel.PurchaseOrder" Role="PurchaseOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseOrder">
+              <PropertyRef Name="SupplierID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1044,35 +1189,6 @@
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="CustomerOrganizationName" ColumnName="CustomerOrganizationName" />
                 <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PurchaseEntries">
-            <EntityTypeMapping TypeName="TTMSModel.PurchaseEntry">
-              <MappingFragment StoreEntitySet="PurchaseEntry">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="DueAmount" ColumnName="DueAmount" />
-                <ScalarProperty Name="PaymentRefNo" ColumnName="PaymentRefNo" />
-                <ScalarProperty Name="PaymentMode" ColumnName="PaymentMode" />
-                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
-                <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
-                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-                <ScalarProperty Name="SGST" ColumnName="SGST" />
-                <ScalarProperty Name="CGST" ColumnName="CGST" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="ReceivedQuantity" ColumnName="ReceivedQuantity" />
-                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
-                <ScalarProperty Name="ProductColor" ColumnName="ProductColor" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
-                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
-                <ScalarProperty Name="InvoiceChallanNo" ColumnName="InvoiceChallanNo" />
-                <ScalarProperty Name="InvoiceChallan" ColumnName="InvoiceChallan" />
-                <ScalarProperty Name="PurchaseOrderID" ColumnName="PurchaseOrderID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1178,19 +1294,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PurchaseOrders">
-            <EntityTypeMapping TypeName="TTMSModel.PurchaseOrder">
-              <MappingFragment StoreEntitySet="PurchaseOrder">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
-                <ScalarProperty Name="PurchaseOrderNo" ColumnName="PurchaseOrderNo" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Suppliers">
             <EntityTypeMapping TypeName="TTMSModel.Supplier">
               <MappingFragment StoreEntitySet="Suppliers">
@@ -1213,24 +1316,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OrderDetails">
-            <EntityTypeMapping TypeName="TTMSModel.OrderDetail">
-              <MappingFragment StoreEntitySet="OrderDetails">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="TypeOfUnits" ColumnName="TypeOfUnits" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
-                <ScalarProperty Name="ProductColor" ColumnName="ProductColor" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-                <ScalarProperty Name="PurchaseOrderID" ColumnName="PurchaseOrderID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="TTMSModel.Product">
               <MappingFragment StoreEntitySet="Products">
@@ -1246,6 +1331,79 @@
                 <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="ShorName" ColumnName="ShorName" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="TTMSModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetails">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="MRP" ColumnName="MRP" />
+                <ScalarProperty Name="CostPrice" ColumnName="CostPrice" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="ReceivedQuantity" ColumnName="ReceivedQuantity" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+                <ScalarProperty Name="ProductColor" ColumnName="ProductColor" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="PurchaseOrderID" ColumnName="PurchaseOrderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseEntries">
+            <EntityTypeMapping TypeName="TTMSModel.PurchaseEntry">
+              <MappingFragment StoreEntitySet="PurchaseEntry">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DueAmount" ColumnName="DueAmount" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
+                <ScalarProperty Name="SGST" ColumnName="SGST" />
+                <ScalarProperty Name="CGST" ColumnName="CGST" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="InvoiceChallanNo" ColumnName="InvoiceChallanNo" />
+                <ScalarProperty Name="InvoiceChallan" ColumnName="InvoiceChallan" />
+                <ScalarProperty Name="PurchaseOrderID" ColumnName="PurchaseOrderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseOrders">
+            <EntityTypeMapping TypeName="TTMSModel.PurchaseOrder">
+              <MappingFragment StoreEntitySet="PurchaseOrder">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsPurcheseEntry" ColumnName="IsPurcheseEntry" />
+                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
+                <ScalarProperty Name="PurchaseOrderNo" ColumnName="PurchaseOrderNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseEntryPayments">
+            <EntityTypeMapping TypeName="TTMSModel.PurchaseEntryPayment">
+              <MappingFragment StoreEntitySet="PurchaseEntryPayment">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+                <ScalarProperty Name="PaymentRefNo" ColumnName="PaymentRefNo" />
+                <ScalarProperty Name="PaymentMode" ColumnName="PaymentMode" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="PurchaseEntryID" ColumnName="PurchaseEntryID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

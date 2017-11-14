@@ -1,33 +1,66 @@
 ﻿@model IEnumerable<TTMS.Models.PurchaseOrder>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.PurchaseOrderNo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Supplier.OrganizationName)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.PurchaseOrderNo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Supplier.OrganizationName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.min.js")"></script>
 }
+<link href="~/Content/demo_table.css" rel="stylesheet" />
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+<script>
+        $(document).ready(function () {
+            var oTable = $('#tblPurchaseOrder').dataTable({
+
+            });
+        });
+</script>
+
+
+
+<h4>PurchaseOrder</h4>
+
+<div class="panel-heading">
+    Purchase Order
+
+    <span class="tools pull-right">
+        @Html.ActionLink("Add Purchase Order", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
+    </span>
+</div>
+<br /><br />
+<table id="tblPurchaseOrder" class="display">
+    <thead>
+        <tr>
+            <th>Sl.No</th>
+            <th>
+                @Html.DisplayNameFor(model => model.PurchaseOrderNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Supplier.OrganizationName)
+            </th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PurchaseOrderNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supplier.OrganizationName)
+                </td>
+                <td>NA</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-success" })
+                    @Html.ActionLink("Print", "Details", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-default" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        </tbody>
+    }
 
 </table>

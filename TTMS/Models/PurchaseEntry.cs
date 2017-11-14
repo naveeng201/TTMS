@@ -14,28 +14,30 @@ namespace TTMS.Models
     
     public partial class PurchaseEntry
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PurchaseEntry()
+        {
+            this.PurchaseEntryPayments = new HashSet<PurchaseEntryPayment>();
+        }
+    
         public int ID { get; set; }
         public Nullable<int> PurchaseOrderID { get; set; }
         public string InvoiceChallan { get; set; }
         public string InvoiceChallanNo { get; set; }
         public Nullable<System.DateTime> InvoiceDate { get; set; }
-        public Nullable<int> BrandID { get; set; }
-        public string ProductName { get; set; }
-        public string ProductColor { get; set; }
-        public string ProductType { get; set; }
-        public int ReceivedQuantity { get; set; }
-        public double Price { get; set; }
         public Nullable<double> CGST { get; set; }
         public Nullable<double> SGST { get; set; }
+        public Nullable<double> DiscountAmount { get; set; }
         public double TotalAmount { get; set; }
-        public Nullable<double> PaidAmount { get; set; }
-        public Nullable<System.DateTime> PaymentDate { get; set; }
-        public string PaymentMode { get; set; }
-        public string PaymentRefNo { get; set; }
         public Nullable<double> DueAmount { get; set; }
+        public bool Status { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
+    
+        public virtual PurchaseOrder PurchaseOrder { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchaseEntryPayment> PurchaseEntryPayments { get; set; }
     }
 }

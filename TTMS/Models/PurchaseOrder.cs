@@ -18,18 +18,22 @@ namespace TTMS.Models
         public PurchaseOrder()
         {
             this.OrderDetails = new HashSet<OrderDetail>();
+            this.PurchaseEntries = new HashSet<PurchaseEntry>();
         }
     
         public int ID { get; set; }
         public string PurchaseOrderNo { get; set; }
         public int SupplierID { get; set; }
+        public bool IsPurcheseEntry { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
     
-        public virtual Supplier Supplier { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchaseEntry> PurchaseEntries { get; set; }
+        public virtual Supplier Supplier { get; set; }
     }
 }

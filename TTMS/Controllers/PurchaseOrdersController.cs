@@ -59,14 +59,21 @@ namespace TTMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddProductDetails(string submitAction, PurchaseOrderVM purchaseOrderVM)
         {
+            //Remove first template record.
+            purchaseOrderVM._orderDetail.RemoveAt(0);
+
             if (ModelState.IsValid)
             {
                 PurchaseOrder po = new PurchaseOrder();
                 po.SupplierID = purchaseOrderVM.purchaseOrder.SupplierID;
                 po.PurchaseOrderNo = purchaseOrderVM.purchaseOrder.PurchaseOrderNo;
+                if (purchaseOrderVM.purchaseOrder.ID != 0)
+                    po.ID = purchaseOrderVM.purchaseOrder.ID;
                 foreach (var od in purchaseOrderVM._orderDetail)
                 {
                     if (od.ProductID == 0)
+                        continue;
+                    if (db.OrderDetails.Where(x => x.PurchaseOrderID == purchaseOrderVM.purchaseOrder.ID && x.ProductID == od.ProductID).ToList().Count > 0)
                         continue;
                     po.OrderDetails.Add(od);
                 }
@@ -75,7 +82,7 @@ namespace TTMS.Controllers
                 var poList = db.PurchaseOrders.ToList();
                 return View("Index", poList);
             }
-            return View("Createt");
+            return View("Create", purchaseOrderVM);
         }
         [HttpGet]
         public ActionResult GetPurchaseOrderNo()
@@ -130,7 +137,15 @@ namespace TTMS.Controllers
             {
                 return HttpNotFound();
             }
-            return View(purchaseOrder);
+
+            ViewBag.SupplierID = new SelectList(db.Suppliers, "ID", "OrganizationName");
+            ViewBag.Suppliers = db.Suppliers.ToList();
+            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
+            var purchaseOrderVM = new PurchaseOrderVM();
+            purchaseOrderVM.purchaseOrder = purchaseOrder;
+            purchaseOrderVM._orderDetail = db.OrderDetails.Where(x => x.PurchaseOrderID == id).ToList();
+            purchaseOrderVM._orderDetail.Insert(0, new OrderDetail { });
+            return View("Create",purchaseOrderVM);
         }
 
         // POST: PurchaseOrders/Edit/5

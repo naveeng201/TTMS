@@ -35,8 +35,8 @@ namespace TTMS.Models
         public Nullable<int> ModifiedBy { get; set; }
     
         public virtual BrandsMaster BrandsMaster { get; set; }
+        public virtual ProductCategory ProductCategory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-        public virtual ProductCategory ProductCategory { get; set; }
     }
 }

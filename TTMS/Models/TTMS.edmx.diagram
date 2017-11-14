@@ -11,7 +11,6 @@
         <EntityTypeShape EntityType="TTMSModel.Order_Employee" Width="1.5" PointX="12" PointY="7.375" />
         <EntityTypeShape EntityType="TTMSModel.Order_Master" Width="1.5" PointX="10.125" PointY="7.375" />
         <EntityTypeShape EntityType="TTMSModel.Order" Width="1.5" PointX="8.125" PointY="7.375" />
-        <EntityTypeShape EntityType="TTMSModel.PurchaseEntry" Width="1.5" PointX="17.25" PointY="0.875" />
         <EntityTypeShape EntityType="TTMSModel.Unit" Width="1.5" PointX="14.125" PointY="7.5" />
         <AssociationConnector Association="TTMSModel.FK_Order_Master_Orders" />
         <EntityTypeShape EntityType="TTMSModel.EmployeePerformance" Width="1.5" PointX="0.5" PointY="11.625" />
@@ -23,15 +22,20 @@
         <AssociationConnector Association="TTMSModel.FK_EmployeeAttendance_Employee" />
         <AssociationConnector Association="TTMSModel.FK_EmployeePayment_Employee" />
         <AssociationConnector Association="TTMSModel.FK_EmployeePerformance_Employee" />
-        <EntityTypeShape EntityType="TTMSModel.PurchaseOrder" Width="1.5" PointX="12.875" PointY="1.75" />
         <EntityTypeShape EntityType="TTMSModel.Supplier" Width="1.5" PointX="10.75" PointY="1.5" />
-        <AssociationConnector Association="TTMSModel.FK_PurchaseOrder_Suppliers" />
-        <EntityTypeShape EntityType="TTMSModel.OrderDetail" Width="1.5" PointX="15.125" PointY="0.75" />
         <EntityTypeShape EntityType="TTMSModel.Product" Width="1.5" PointX="8.75" PointY="0.75" />
         <AssociationConnector Association="TTMSModel.FK_Products_BrandsMaster" />
+        <AssociationConnector Association="TTMSModel.FK_Products_ProductCategory" />
+        <EntityTypeShape EntityType="TTMSModel.OrderDetail" Width="1.5" PointX="18.375" PointY="6" />
+        <EntityTypeShape EntityType="TTMSModel.PurchaseEntry" Width="1.5" PointX="15.25" PointY="1.5" />
+        <EntityTypeShape EntityType="TTMSModel.PurchaseOrder" Width="1.5" PointX="13" PointY="2.125" />
+        <EntityTypeShape EntityType="TTMSModel.PurchaseEntryPayment" Width="1.5" PointX="17.5" PointY="2.125" />
         <AssociationConnector Association="TTMSModel.FK_OrderDetails_Products" />
         <AssociationConnector Association="TTMSModel.FK_OrderDetails_PurchaseOrder" />
-        <AssociationConnector Association="TTMSModel.FK_Products_ProductCategory" />
+        <AssociationConnector Association="TTMSModel.FK_OrderDetails_Units" />
+        <AssociationConnector Association="TTMSModel.FK_PurchaseEntry_PurchaseOrder" />
+        <AssociationConnector Association="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry" />
+        <AssociationConnector Association="TTMSModel.FK_PurchaseOrder_Suppliers" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

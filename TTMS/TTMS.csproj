@@ -178,7 +178,6 @@
     <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\PurchaseOrdersController.cs" />
-    <Compile Include="Controllers\PurchaseOrderVMController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\UnitsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -244,6 +243,9 @@
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PurchaseEntry.cs">
+      <DependentUpon>TTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PurchaseEntryPayment.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PurchaseOrder.cs">

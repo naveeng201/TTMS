@@ -20,8 +20,12 @@ namespace TTMS.Models
         public string ProductName { get; set; }
         public string ProductColor { get; set; }
         public string ProductType { get; set; }
-        public string Quantity { get; set; }
-        public string TypeOfUnits { get; set; }
+        public Nullable<int> Quantity { get; set; }
+        public Nullable<int> ReceivedQuantity { get; set; }
+        public Nullable<int> UnitID { get; set; }
+        public Nullable<double> CostPrice { get; set; }
+        public Nullable<double> MRP { get; set; }
+        public Nullable<double> SalePrice { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
@@ -29,5 +33,6 @@ namespace TTMS.Models
     
         public virtual Product Product { get; set; }
         public virtual PurchaseOrder PurchaseOrder { get; set; }
+        public virtual Unit Unit { get; set; }
     }
 }
