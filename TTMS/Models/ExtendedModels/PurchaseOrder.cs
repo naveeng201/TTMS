@@ -17,5 +17,6 @@ namespace TTMS.Models
         public string PurchaseOrderNo { get; set; }
      
         public int SupplierID { get; set; }
+        public bool IsPurcheseEntry { get; set; }
     }
 }

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<TTMS.Models.PurchaseEntry>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>Sl.No.</th>
+            <th>
+                @Html.DisplayNameFor(model => model.PurchaseOrder.PurchaseOrderNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PurchaseOrder.Supplier.OrganizationName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>Actions</th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseOrder.PurchaseOrderNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseOrder.Supplier.OrganizationName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.ID }) 
+                @Html.ActionLink("Details", "Details", new { id=item.ID }) 
+                @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            </td>
+        </tr>
+    }
+    
+    </table>
+ 

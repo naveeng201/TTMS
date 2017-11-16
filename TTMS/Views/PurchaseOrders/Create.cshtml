@@ -1,14 +1,6 @@
 ﻿@model TTMS.Models.PurchaseOrderVM
-@section Scripts
-{
-    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/jquery.dataTables.min.js")"></script>
-}
+ 
 
-<link href="~/Content/demo_table.css" rel="stylesheet" />
-<link href="~/Content/demo_table_jui.css" rel="stylesheet" />
-<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
-<link href="~/Content/themes/smoothness/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
 <style>
     hr.style3 {
         border-top: 1px dashed #8c8b8b;
@@ -156,11 +148,11 @@
         <div class="row">
             <div class="col-sm-6">
                 <div>
-                    @Html.HiddenFor(model => model.purchaseOrder.ID);
+                    @Html.HiddenFor(model => model.purchaseOrder.ID)
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.purchaseOrder.PurchaseOrderNo, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-8">
+                    <div class="col-md-4 control-label col-md-3">Purchase Order No</div>
+                    <div class="col-md-5">
                         @Html.EditorFor(model => model.purchaseOrder.PurchaseOrderNo, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.purchaseOrder.PurchaseOrderNo, "", new { @class = "text-danger" })
                     </div>
@@ -168,8 +160,8 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.purchaseOrder.SupplierID, "SupplierID", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                    <div class="col-md-4 control-label col-md-3">Supplier</div>
+                    <div class="col-md-5">
                         @Html.DropDownListFor(model => model.purchaseOrder.SupplierID, new SelectList(ViewBag.Suppliers, "ID", "OrganizationName"), "Select Supplier", htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.purchaseOrder.SupplierID, "", new { @class = "text-danger" })
                         <div style="color:red;" id="msg_SupplierId"></div>
@@ -278,7 +270,7 @@
             </div>
         </div>
     </div>
-                    }
+ }
 <br />
 <br />
 

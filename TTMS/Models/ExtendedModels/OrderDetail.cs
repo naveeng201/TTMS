@@ -17,7 +17,11 @@ namespace TTMS.Models
         public string ProductName { get; set; }
         public string ProductColor { get; set; }
         public string ProductType { get; set; }
-        public string Quantity { get; set; }
-        public string TypeOfUnits { get; set; }
+        public Nullable<int> Quantity { get; set; }
+        public Nullable<int> ReceivedQuantity { get; set; }
+        public Nullable<int> UnitID { get; set; }
+        public Nullable<double> CostPrice { get; set; }
+        public Nullable<double> MRP { get; set; }
+        public Nullable<double> SalePrice { get; set; }
     }
 }

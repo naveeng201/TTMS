@@ -69,6 +69,7 @@ namespace TTMS.Controllers
                 po.PurchaseOrderNo = purchaseOrderVM.purchaseOrder.PurchaseOrderNo;
                 if (purchaseOrderVM.purchaseOrder.ID != 0)
                     po.ID = purchaseOrderVM.purchaseOrder.ID;
+                po.IsPurcheseEntry = false; // set this is false for Purchase Order
                 foreach (var od in purchaseOrderVM._orderDetail)
                 {
                     if (od.ProductID == 0)
@@ -87,9 +88,9 @@ namespace TTMS.Controllers
         [HttpGet]
         public ActionResult GetPurchaseOrderNo()
         {
-            var result = db.PurchaseOrders.Max(x => x.PurchaseOrderNo).SingleOrDefault();
+            var result = db.PurchaseOrders.Select(x => x.PurchaseOrderNo).DefaultIfEmpty().Max();
             int iNumber = 0;
-            int.TryParse(result.ToString(), out iNumber);
+            int.TryParse(result == null ? "0" : result.ToString(), out iNumber);
             iNumber = iNumber + 1;
             return Json(iNumber, JsonRequestBehavior.AllowGet);
         }

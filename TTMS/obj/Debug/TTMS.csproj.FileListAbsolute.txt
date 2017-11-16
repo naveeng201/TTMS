@@ -135,4 +135,3 @@ C:\Users\Naveen\Source\Repos\TTMS\TTMS\bin\Microsoft.Owin.Security.MicrosoftAcco
 C:\Users\Naveen\Source\Repos\TTMS\TTMS\obj\Debug\TTMS.csprojResolveAssemblyReference.cache
 C:\Users\Naveen\Source\Repos\TTMS\TTMS\obj\Debug\TTMS.dll
 C:\Users\Naveen\Source\Repos\TTMS\TTMS\obj\Debug\TTMS.pdb
-C:\Naveen\TTMS\TTMS\obj\Debug\TTMS.csprojResolveAssemblyReference.cache

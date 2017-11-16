@@ -177,6 +177,7 @@
     <Compile Include="Controllers\OrderDetailsController.cs" />
     <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\PurchaseEntriesController.cs" />
     <Compile Include="Controllers\PurchaseOrdersController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\UnitsController.cs" />
@@ -272,6 +273,7 @@
     <Compile Include="Models\Unit.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModels\PurchaseEntryVM.cs" />
     <Compile Include="Models\ViewModels\PurcheseOrderVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -363,6 +365,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\vendor.js" />
+    <Content Include="Scripts\WaterMark.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -440,6 +443,11 @@
     <Content Include="Views\PurchaseOrderVM\Create.cshtml" />
     <Content Include="Views\PurchaseOrders\Index.cshtml" />
     <Content Include="Views\Shared\_PlainLayout.cshtml" />
+    <Content Include="Views\PurchaseEntries\Create.cshtml" />
+    <Content Include="Views\PurchaseEntries\Delete.cshtml" />
+    <Content Include="Views\PurchaseEntries\Details.cshtml" />
+    <Content Include="Views\PurchaseEntries\Edit.cshtml" />
+    <Content Include="Views\PurchaseEntries\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

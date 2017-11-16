@@ -1,0 +1,138 @@
+﻿@model TTMS.Models.PurchaseEntry
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>PurchaseEntry</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.InvoiceChallan)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.InvoiceChallan)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.InvoiceChallanNo)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.InvoiceChallanNo)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.InvoiceDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.InvoiceDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CGST)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CGST)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.SGST)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.SGST)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.DiscountAmount)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.DiscountAmount)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.TotalAmount)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.TotalAmount)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.DueAmount)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.DueAmount)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CreatedDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CreatedBy)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifiedDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ModifiedDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifiedBy)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ModifiedBy)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PurchaseOrder.PurchaseOrderNo)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PurchaseOrder.PurchaseOrderNo)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>
