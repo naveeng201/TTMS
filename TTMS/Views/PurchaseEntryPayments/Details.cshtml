@@ -1,0 +1,47 @@
+﻿@model TTMS.Models.PurchaseEntryPayment
+
+ 
+    <div>
+        <h4>PurchaseEntryPayment</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.PaymentMode)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PaymentMode)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PaymentRefNo)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PaymentRefNo)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PaidAmount)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PaidAmount)
+            </dd>
+    
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PurchaseEntry.InvoiceChallan)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PurchaseEntry.InvoiceChallan)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+ 

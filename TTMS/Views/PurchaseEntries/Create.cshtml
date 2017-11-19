@@ -4,16 +4,22 @@
     hr.style3 {
         border-top: 1px dashed #8c8b8b;
     }
+
 </style>
 <script>
     $(document).ready(function () {
-        var oTable = $('#myDataTable').dataTable({
+        $('#myDataTable').dataTable({
+            "initComplete": function (settings, json) {
+                alert('intcomplete');
+            }
         });
 
         $("#purchaseEntry_InvoiceChallanNo, #purchaseEntry_InvoiceDate").WaterMark();
 
         $("#ProductShorName, #ProductType, #Quantity, #CostPrice, #MRPPrice , #SalePrice").WaterMark();
+
     });
+
     $(document).ready(function () {
         $('.add-button').click(function (e) {
             // validate
@@ -30,6 +36,7 @@
             var productID = $('#ProductID').val();
             //validate if product is already exist in table
 
+           
             var count = $("tr.contacts-record").length + 1;
             var template = $('.contacts-record-template').clone();
             var productName = $('#ProductID').find('option:selected').text();
@@ -82,8 +89,25 @@
                 $(this).attr('name', name);
                 $(this).val(SalePrice);
             });
-            template.removeClass('contacts-record-template')
-                                               .addClass('contacts-record').show();
+            var total = parseFloat(Quantity) * parseFloat(CostPrice);
+            $.each(template.find('#Total1'), function () {
+                $(this).val(total.toFixed(2));
+            });
+
+            //caliculate total
+            var $tblfootrows = $("#myDataTable tfoot tr");
+            $tblfootrows.each(function () {
+                var $tblfootrow = $(this);
+                var gt = $tblfootrow.find('.grdtot').val();
+                if (gt != undefined && gt != NaN && gt !== "") {
+                    var grandtotal = parseFloat(gt) + parseFloat(total)
+                    $tblfootrow.find('.grdtot').val(grandtotal.toFixed(2));
+                }
+                else
+                    $tblfootrow.find('.grdtot').val(total.toFixed(2));
+            });
+            calculateGrandTotal(total);
+            template.removeClass('contacts-record-template').addClass('contacts-record').show();
 
             // clear controls
             $('#ProductID').val(null);
@@ -158,12 +182,92 @@
             return true;
         }
     }
+    $(document).ready(function () {
+        calculateTotal();
+    })   
+   function calculateTotal() {
+        //$('.pnm, .price, .subtot, .grdtot').prop('readonly', true);
+        var $tblrows = $("#myDataTable tbody tr");
+        var grandtotal = 0;
+        $tblrows.each(function () {
+            var $tblrow = $(this);
 
-    function calculateTotal() {
-        //http://www.dotnetcurry.com/jquery/1189/jquery-table-calculate-sum-all-rows
-    };
+                var qty = $tblrow.find(".qty").val();
+                var price = $tblrow.find(".price").val();
+                var subTotal = parseInt(qty, 10) * parseFloat(price);
+
+                if (!isNaN(subTotal)) {
+
+                    $tblrow.find('.subtot').val(subTotal.toFixed(2));
+
+                    grandtotal = grandtotal + subTotal;
+                    //$(".subtot").each(function () {
+                    //    var stval = parseFloat($(this).val());
+                    //    grandTotal += isNaN(stval) ? 0 : stval;
+                    //});
+
+                    //$('.grdtot').val(grandTotal.toFixed(2));
+                }
+        });
+
+        var $tblfootrows = $("#myDataTable tfoot tr");
+        $tblfootrows.each(function () {
+            var $tblfootrow = $(this);
+            var gt = $tblfootrow.find('.grdtot').val();
+            if (gt != undefined)
+                $tblfootrow.find('.grdtot').val(grandtotal.toFixed(2));
+        });
+        calculateGrandTotal(0);
+    };
+   function calculateGrandTotal(total)
+   {
+       var $tblfootrows = $("#myDataTable tfoot tr");
+       var cgst = 0; var gst = 0; var sgst = 0;
+       var discount = 0;
+       var gtotal = 0;
+       var ggTotal = 0;
+       var i = 0;
+       $tblfootrows.each(function () {
+           var $tblfootrow = $(this);
+           if (i == 0) gtotal = $tblfootrow.find('.grdtot').val();
+           if (i == 1)  sgst = $tblfootrow.find('.sgst').val();
+           if (i == 2)  cgst = $tblfootrow.find('.cgst').val();
+           if (i == 3) discount = $tblfootrow.find('.discount').val();
+           if (i == 4) {
+               if (sgst != undefined && sgst != NaN && sgst != "" && sgst != 0) gst = parseInt(sgst);
+               if (cgst != undefined && cgst != NaN && cgst != "" && cgst != 0) gst = gst + parseInt(cgst);
+               if (total != undefined && total != 0)
+                   gtotal = parseFloat(total);
+               ggTotal = parseFloat(gtotal);
+               if (gst != 0) ggTotal = parseFloat(gtotal) + parseFloat((gtotal / 100) * gst)
+               if (discount != undefined && discount != NaN && discount != "" && discount != 0)
+                   ggTotal = ggTotal - parseFloat((gtotal / 100) * parseInt(discount))
+
+               if (ggTotal != undefined && ggTotal != NaN)
+                   $tblfootrow.find('.grandgrdtot').val(ggTotal.toFixed(2));
+           }
+           i++;
+       });
+   }
+
+   $(function () {
+       $('body').on('click', '.modal-link', function (e) {
+           e.preventDefault();
+           $(this).attr('data-target', '#modal-container');
+           $(this).attr('data-toggle', 'modal');
+       });
+       $('body').on('click', '.modal-close-btn', function () {
+           $('#modal-container').modal('hide');
+       });
+       $('#modal-container').on('hidden.bs.modal', function () {
+           $(this).removeData('bs.modal');
+       });
+       $('#CancelModal').on('click', function () {
+           return false;
+       });
+   });
 </script>
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "PurchaseEntries"))
 {
     @Html.AntiForgeryToken()
 
@@ -175,6 +279,7 @@
                 <div>
                     @Html.HiddenFor(model => model.purchaseOrder.ID)
                 </div>
+                <div>@Html.HiddenFor(model => model.purchaseOrder.ID)</div>
                 <div class="form-group">
                     <div class="col-md-4 control-label col-md-3">Purchase Entry No</div>
                     
@@ -197,52 +302,55 @@
         </div>
         <div class="row">
             <div class="col-sm-4">
-                @Html.DropDownListFor(model => model.purchaseEntry.InvoiceChallan, new SelectList(ViewBag.InvoiceChallan,"Text", "Value"), "Select Invoice/Challen", htmlAttributes : new { @class = "form-control  input-sm" } )
+                @Html.DropDownListFor(model => model.purchaseEntry.InvoiceChallan, new SelectList(ViewBag.InvoiceChallan, "Text", "Value"), "Select Invoice/Challen", htmlAttributes: new { @class = "form-control  input-sm" })
                 @Html.ValidationMessageFor(model => model.purchaseEntry.InvoiceChallan, "", new { @class = "text-danger" })
             </div>
             <div class="col-sm-4">
-                @Html.TextBoxFor(model => model.purchaseEntry.InvoiceChallanNo, htmlAttributes : new { @class = "form-control  input-sm", title = "Invoice/Challen Number" } )
+                @Html.TextBoxFor(model => model.purchaseEntry.InvoiceChallanNo, htmlAttributes: new { @class = "form-control  input-sm", title = "Invoice/Challen Number" })
                 @Html.ValidationMessageFor(model => model.purchaseEntry.InvoiceChallanNo, "", new { @class = "text-danger" })
             </div>
             <div class="col-sm-4">
-                @Html.TextBoxFor(model => model.purchaseEntry.InvoiceDate, htmlAttributes: new { @class = "form-control  input-sm", Title = "Invoice Date" } )
+                @Html.TextBoxFor(model => model.purchaseEntry.InvoiceDate, htmlAttributes: new { @class = "form-control  input-sm", Title = "Invoice Date" })
                 @Html.ValidationMessageFor(model => model.purchaseEntry.InvoiceDate, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <h4>ADD PRODUCTS</h4>
-        <hr class="style3" />
-        <div></div>
-        <div class="row">
-            <div class="col-sm-3">
-                @Html.DropDownList("ProductID", null, "Select Product", htmlAttributes: new { @class = "form-control input-sm" })
-                <div style="color:red;" id="msg_id"></div>
-            </div>
-            <div class="col-sm-3">
-                @Html.TextBox("ProductShorName", null, htmlAttributes: new { @class = "form-control  input-sm", @readonly = true, title = "Short Name" })
-            </div>
-            <div class="col-sm-3">
-                @Html.TextBox("ProductType", null, htmlAttributes: new { @class = "form-control  input-sm", @readonly = true, title = " Product Type" })
-            </div>
-            <div class="col-sm-2">
-                @Html.TextBox("Quantity", null, htmlAttributes: new { @class = "form-control  input-sm", title = "Quantity" })
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col-sm-3">
-                @Html.TextBox("CostPrice", null, htmlAttributes: new { @class = "form-control  input-sm", title = "Cost Price" })
-            </div>
-            <div class="col-sm-3">
-                @Html.TextBox("MRPPrice", null, htmlAttributes: new { @class = "form-control  input-sm", title = "MRP" })
-            </div>
-            <div class="col-sm-3">
-                @Html.TextBox("SalePrice", null, htmlAttributes: new { @class = "form-control  input-sm", title = "Sale Price" })
-            </div>
-            <div class="col-sm-2">
-                <input type="button" id="addRow" value="Add" class="add-button" />
-            </div>
-        </div>
+        @{ 
+            if (ViewBag.Edit == false)
+            {         <h4>ADD PRODUCTS</h4>
+                    <hr class="style3" />
+                    <div></div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            @Html.DropDownList("ProductID", null, "Select Product", htmlAttributes: new { @class = "form-control input-sm" })
+                            <div style="color:red;" id="msg_id"></div>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBox("ProductShorName", null, htmlAttributes: new { @class = "form-control  input-sm", @readonly = true, title = "Short Name" })
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBox("ProductType", null, htmlAttributes: new { @class = "form-control  input-sm", @readonly = true, title = " Product Type" })
+                        </div>
+                        <div class="col-sm-2">
+                            @Html.TextBox("Quantity", null, htmlAttributes: new { @class = "form-control  input-sm", title = "Quantity" })
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-3">
+                            @Html.TextBox("CostPrice", null, htmlAttributes: new { @class = "form-control  input-sm", title = "Cost Price" })
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBox("MRPPrice", null, htmlAttributes: new { @class = "form-control  input-sm", title = "MRP" })
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBox("SalePrice", null, htmlAttributes: new { @class = "form-control  input-sm", title = "Sale Price" })
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="button" id="addRow" value="Add" class="add-button" />
+                        </div>
+                    </div>
+                }
+            }
         <br />
         <table id="myDataTable" class="display">
             <thead>
@@ -268,7 +376,10 @@
                         {
                             <tr class="contacts-record-template" style="display:none">
                                 <td style="display:none">
-                                    @Html.TextBoxFor(model => model._orderDetail[i].ProductID, new { @id = "ProductID1" })
+                                    @Html.TextBoxFor(model => model._orderDetail[i].ID, new { @id = "ID1", @class = "form-control input-sm" })
+                                </td>
+                                <td style="display:none">
+                                    @Html.TextBoxFor(model => model._orderDetail[i].ProductID, new { @id = "ProductID1", @class = "form-control input-sm" })
                                 </td>
                                 <td class="col-xs-2">
                                     @Html.TextBoxFor(model => model._orderDetail[i].ProductName, new { @id = "ProductName1", @class = "form-control input-sm" })
@@ -277,19 +388,19 @@
                                     @Html.TextBoxFor(model => model._orderDetail[i].ProductType, new { @id = "ProductType1", @class = "form-control input-sm" })
                                 </td>
                                 <td>
-                                    @Html.TextBoxFor(model => model._orderDetail[i].Quantity, new { @id = "Quantity1", @class = "form-control input-sm", onchange = "calculateTotal()" })
+                                    @Html.TextBoxFor(model => model._orderDetail[i].Quantity, new { @id = "Quantity1", @class = "form-control input-sm qty", onchange = "calculateTotal()" })
                                 </td>
                                 <td>
-                                    @Html.TextBoxFor(model => model._orderDetail[i].CostPrice, new { @id = "CostPrice1", @class = "form-control input-sm" })
+                                    @Html.TextBoxFor(model => model._orderDetail[i].CostPrice, new { @id = "CostPrice1", @class = "form-control input-sm price", onchange = "calculateTotal()" })
                                 </td>
                                 <td>
-                                    @Html.TextBoxFor(model => model._orderDetail[i].MRP, new { @id = "MRP1", @class = "form-control input-sm", onchange = "calculateTotal()" })
+                                    @Html.TextBoxFor(model => model._orderDetail[i].MRP, new { @id = "MRP1", @class = "form-control input-sm" })
                                 </td>
                                 <td>
                                     @Html.TextBoxFor(model => model._orderDetail[i].SalePrice, new { @id = "SalePrice1", @class = "form-control input-sm" })
                                 </td>
                                 <td class="col-xs-2">
-                                    <input type="text" id="Total1" class="form-control input-sm" />
+                                    <input type="text" id="Total1" class="form-control input-sm subtot" />
                                 </td>
                             </tr>
                         }
@@ -297,19 +408,22 @@
                         {
                             <tr class="contacts-record">
                                 <td style="display:none">
-                                    @Html.TextBoxFor(model => model._orderDetail[i].ProductID, new { @id = "ProductID_" + i })
+                                    @Html.TextBoxFor(model => model._orderDetail[i].ID, new { @id = "ID_" + i, @class = "form-control input-sm" })
+                                </td>
+                                <td style="display:none">
+                                    @Html.TextBoxFor(model => model._orderDetail[i].ProductID, new { @id = "ProductID_" + i, @class = "form-control input-sm" })
                                 </td>
                                 <td class="col-xs-2">
-                                    @Html.TextBoxFor(model => model._orderDetail[i].ProductName, new { @id = "ItemCode_" + i, @class = "form-control input-sm" })
+                                    @Html.TextBoxFor(model => model._orderDetail[i].ProductName, new { @id = "ItemCode_" + i , @class = "form-control input-sm" })
                                 </td>
                                 <td>
                                     @Html.TextBoxFor(model => model._orderDetail[i].ProductType, new { @id = "ProductName_" + i, @class = "form-control input-sm" })
                                 </td>
                                 <td>
-                                    @Html.TextBoxFor(model => model._orderDetail[i].Quantity, new { @id = "Qty_" + i, @class = "form-control input-sm", onchange = "calculateTotal()" })
+                                    @Html.TextBoxFor(model => model._orderDetail[i].Quantity, new { @id = "Qty_" + i, @class = "form-control input-sm qty", onchange = "calculateTotal()" })
                                 </td>
                                 <td>
-                                    @Html.TextBoxFor(model => model._orderDetail[i].CostPrice, new { @id = "CostPrice_" + i, @class = "form-control input-sm", onchange = "calculateTotal()" })
+                                    @Html.TextBoxFor(model => model._orderDetail[i].CostPrice, new { @id = "CostPrice_" + i, @class = "form-control input-sm price", onchange = "calculateTotal()" })
                                 </td>
                                 <td>
                                     @Html.TextBoxFor(model => model._orderDetail[i].MRP, new { @id = "MRP_" + i, @class = "form-control input-sm" })
@@ -318,17 +432,27 @@
                                     @Html.TextBoxFor(model => model._orderDetail[i].SalePrice, new { @id = "SalePrice_" + i, @class = "form-control input-sm" })
                                 </td>
                                 <td class="col-xs-2">
-                                    <input type="text" id="Total_" class="form-control input-sm" />
+                                    <input type="text" id="Total_" class="form-control input-sm subtot" />
                                 </td>
                             </tr>
-
                         }
                         i++;
                     }
                 }
             </tbody>
             <tfoot>
-                <tr class="">
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>Total :</th>
+                    <th>
+                        <input type="text" id="GrandTotal_" class="form-control input-sm grdtot" readonly />
+                    </th>
+                </tr>
+                <tr>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -336,8 +460,7 @@
                     <th></th>
                     <th>SGST :</th>
                     <th class="col-xs-2">
-                        @Html.EditorFor(model => model.purchaseEntry.SGST, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                        @Html.ValidationMessageFor(model => model.purchaseEntry.CGST, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.purchaseEntry.SGST, new { htmlAttributes = new { @class = "sgst", onchange = "calculateGrandTotal(0)" } })
                     </th>
                 </tr>
                 <tr>
@@ -348,8 +471,7 @@
                     <th></th>
                     <th>CGST :</th>
                     <th class="col-xs-2">
-                        @Html.EditorFor(model => model.purchaseEntry.CGST, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                        @Html.ValidationMessageFor(model => model.purchaseEntry.CGST, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.purchaseEntry.CGST, new { htmlAttributes = new { @class = "cgst", onchange = "calculateGrandTotal(0)" } })
                     </th>
                 </tr>
                 <tr>
@@ -360,8 +482,7 @@
                     <th></th>
                     <th>Discount :</th>
                     <th class="col-xs-2">
-                        @Html.EditorFor(model => model.purchaseEntry.DiscountAmount, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                        @Html.ValidationMessageFor(model => model.purchaseEntry.DiscountAmount, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.purchaseEntry.DiscountAmount, new { htmlAttributes = new { @class = "discount", onchange = "calculateGrandTotal(0)" } })
                     </th>
                 </tr>
                 <tr>
@@ -370,28 +491,39 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th>Total :</th>
+                    <th>Grand Total :</th>
                     <th class="col-xs-2">
-                        @Html.EditorFor(model => model.purchaseEntry.TotalAmount, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                        @Html.ValidationMessageFor(model => model.purchaseEntry.TotalAmount, "", new { @class = "text-danger" })
+                        <input type="text" id="GrandGrandTotal_" value="0.00" class="form-control input-sm grandgrdtot" readonly />
                     </th>
                 </tr>
             </tfoot>
         </table>
-
-        <div class="row">
-            <div class="col-sm-2">
-                @Html.LabelFor(model => model.purchaseEntry.DueAmount, htmlAttributes: new { @class = "control-label col-sm-1" })
-            </div>
-            <div class="col-sm-2">
-                   @Html.EditorFor(model => model.purchaseEntry.DueAmount, new { htmlAttributes = new { @class = "form-control  input-sm" } })
-                   @Html.ValidationMessageFor(model => model.purchaseEntry.DueAmount, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-xs-2 pull-left left">
-                <input type="submit" value="Pay Due Amount" onclick="return validateSave()" class="btn btn-outline-light" />
-            </div>
-        </div>
-
+        <br />
+        @{ 
+            if (ViewBag.Edit == true && ViewBag.PurchaseEntryID !=0 ) {
+                if (ViewBag.NoDue == false)
+                {
+                    <div class="row">
+                        <div class="col-sm-2">
+                            @Html.LabelFor(model => model.purchaseEntry.DueAmount, htmlAttributes: new { @class = "control-label col-sm-1" })
+                        </div>
+                        <div class="col-sm-2">
+                               @Html.EditorFor(model => model.purchaseEntry.DueAmount, new { htmlAttributes = new { @class = "form-control  input-sm" } })
+                               @Html.ValidationMessageFor(model => model.purchaseEntry.DueAmount, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-xs-2">
+                            @Html.ActionLink("Pay", "Create", "PurchaseEntryPayments", new { iPurchaseEntryID = ViewBag.PurchaseEntryID }, new { @class = "modal-link btn btn-success" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <strong>Wow!</strong> No Amount is Due. @Html.ActionLink("View Payment History", "Index", "PurchaseEntryPayments")
+                    </div>
+                }
+            }
+        }
         <br />
         <div class="form-horizontal">
             <div class="col-md-5"></div>
@@ -403,5 +535,9 @@
             </div>
         </div>
         
+        <div id="modal-container" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-content">
+            </div>
+        </div>
     </div>
 }

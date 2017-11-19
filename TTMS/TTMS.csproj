@@ -178,6 +178,7 @@
     <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\PurchaseEntriesController.cs" />
+    <Compile Include="Controllers\PurchaseEntryPaymentsController.cs" />
     <Compile Include="Controllers\PurchaseOrdersController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\UnitsController.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="Models\ExtendedModels\Product.cs" />
     <Compile Include="Models\ExtendedModels\ProductCategory.cs" />
     <Compile Include="Models\ExtendedModels\PurchaseEntry.cs" />
+    <Compile Include="Models\ExtendedModels\PurchaseEntryPayment.cs" />
     <Compile Include="Models\ExtendedModels\PurchaseOrder.cs" />
     <Compile Include="Models\ExtendedModels\Suppliers.cs" />
     <Compile Include="Models\ExtendedModels\Unit.cs" />
@@ -247,9 +249,6 @@
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PurchaseEntryPayment.cs">
-      <DependentUpon>TTMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PurchaseOrder.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Supplier.cs">
@@ -448,6 +447,11 @@
     <Content Include="Views\PurchaseEntries\Details.cshtml" />
     <Content Include="Views\PurchaseEntries\Edit.cshtml" />
     <Content Include="Views\PurchaseEntries\Index.cshtml" />
+    <Content Include="Views\PurchaseEntryPayments\Create.cshtml" />
+    <Content Include="Views\PurchaseEntryPayments\Delete.cshtml" />
+    <Content Include="Views\PurchaseEntryPayments\Details.cshtml" />
+    <Content Include="Views\PurchaseEntryPayments\Edit.cshtml" />
+    <Content Include="Views\PurchaseEntryPayments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

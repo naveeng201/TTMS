@@ -14,6 +14,7 @@ namespace TTMS.Models
     {
        
         [RegularExpression("([0-9]+)")]
+        [Display(Name = "Purchase Order No")]
         public string PurchaseOrderNo { get; set; }
      
         public int SupplierID { get; set; }

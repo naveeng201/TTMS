@@ -41,7 +41,6 @@ namespace TTMS.Models
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<PurchaseEntry> PurchaseEntries { get; set; }
-        public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
         public virtual DbSet<PurchaseEntryPayment> PurchaseEntryPayments { get; set; }
     }
 }

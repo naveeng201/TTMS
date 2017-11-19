@@ -232,15 +232,12 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPayment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="PurchaseEntryPayment">
     <Key>
       <PropertyRef Name="ID" />
-      <PropertyRef Name="PaymentDate" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="PurchaseEntryID" Type="int" />
+    <Property Name="PurchaseEntryID" Type="int" Nullable="false" />
     <Property Name="PaymentDate" Type="datetime" Nullable="false" />
     <Property Name="PaymentMode" Type="nvarchar" MaxLength="200" />
     <Property Name="PaymentRefNo" Type="nvarchar" MaxLength="200" />
@@ -258,6 +255,7 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
     <Property Name="PurchaseOrderNo" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="SupplierID" Type="int" Nullable="false" />
     <Property Name="IsPurcheseEntry" Type="bit" Nullable="false" />
+    <Property Name="Status" Type="bit" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
@@ -367,18 +365,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_OrderDetails_PurchaseOrder">
-    <End Role="PurchaseOrder" Type="Self.PurchaseOrder" Multiplicity="1" />
-    <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PurchaseOrder">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="OrderDetails">
-        <PropertyRef Name="PurchaseOrderID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_OrderDetails_Units">
     <End Role="Units" Type="Self.Units" Multiplicity="0..1" />
     <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
@@ -415,20 +401,8 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_PurchaseEntry_PurchaseOrder">
-    <End Role="PurchaseOrder" Type="Self.PurchaseOrder" Multiplicity="0..1" />
-    <End Role="PurchaseEntry" Type="Self.PurchaseEntry" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PurchaseOrder">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="PurchaseEntry">
-        <PropertyRef Name="PurchaseOrderID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_PurchaseEntryPayment_PurchaseEntry">
-    <End Role="PurchaseEntry" Type="Self.PurchaseEntry" Multiplicity="0..1" />
+    <End Role="PurchaseEntry" Type="Self.PurchaseEntry" Multiplicity="1" />
     <End Role="PurchaseEntryPayment" Type="Self.PurchaseEntryPayment" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="PurchaseEntry">
@@ -466,23 +440,10 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
     <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PurchaseEntry" EntityType="Self.PurchaseEntry" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PurchaseEntryPayment" EntityType="Self.PurchaseEntryPayment" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PurchaseOrder" EntityType="Self.PurchaseOrder" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Units" EntityType="Self.Units" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="PurchaseEntryPayment" EntityType="Self.PurchaseEntryPayment" store:Type="Tables" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [PurchaseEntryPayment].[ID] AS [ID], 
-    [PurchaseEntryPayment].[PurchaseEntryID] AS [PurchaseEntryID], 
-    [PurchaseEntryPayment].[PaymentDate] AS [PaymentDate], 
-    [PurchaseEntryPayment].[PaymentMode] AS [PaymentMode], 
-    [PurchaseEntryPayment].[PaymentRefNo] AS [PaymentRefNo], 
-    [PurchaseEntryPayment].[PaidAmount] AS [PaidAmount], 
-    [PurchaseEntryPayment].[CreatedDate] AS [CreatedDate], 
-    [PurchaseEntryPayment].[CreatedBy] AS [CreatedBy], 
-    [PurchaseEntryPayment].[ModifiedDate] AS [ModifiedDate], 
-    [PurchaseEntryPayment].[ModifiedBy] AS [ModifiedBy]
-    FROM [dbo].[PurchaseEntryPayment] AS [PurchaseEntryPayment]</DefiningQuery>
-    </EntitySet>
     <AssociationSet Name="FK_Delivery_Orders" Association="Self.FK_Delivery_Orders">
       <End Role="Orders" EntitySet="Orders" />
       <End Role="Delivery" EntitySet="Delivery" />
@@ -507,10 +468,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
       <End Role="Products" EntitySet="Products" />
       <End Role="OrderDetails" EntitySet="OrderDetails" />
     </AssociationSet>
-    <AssociationSet Name="FK_OrderDetails_PurchaseOrder" Association="Self.FK_OrderDetails_PurchaseOrder">
-      <End Role="PurchaseOrder" EntitySet="PurchaseOrder" />
-      <End Role="OrderDetails" EntitySet="OrderDetails" />
-    </AssociationSet>
     <AssociationSet Name="FK_OrderDetails_Units" Association="Self.FK_OrderDetails_Units">
       <End Role="Units" EntitySet="Units" />
       <End Role="OrderDetails" EntitySet="OrderDetails" />
@@ -522,10 +479,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
     <AssociationSet Name="FK_Products_ProductCategory" Association="Self.FK_Products_ProductCategory">
       <End Role="ProductCategory" EntitySet="ProductCategory" />
       <End Role="Products" EntitySet="Products" />
-    </AssociationSet>
-    <AssociationSet Name="FK_PurchaseEntry_PurchaseOrder" Association="Self.FK_PurchaseEntry_PurchaseOrder">
-      <End Role="PurchaseOrder" EntitySet="PurchaseOrder" />
-      <End Role="PurchaseEntry" EntitySet="PurchaseEntry" />
     </AssociationSet>
     <AssociationSet Name="FK_PurchaseEntryPayment_PurchaseEntry" Association="Self.FK_PurchaseEntryPayment_PurchaseEntry">
       <End Role="PurchaseEntry" EntitySet="PurchaseEntry" />

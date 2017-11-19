@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d7889b6099454410a2f5b6e76b56aefb" Name="Diagram1" ZoomLevel="75">
+      <Diagram DiagramId="d7889b6099454410a2f5b6e76b56aefb" Name="Diagram1" ZoomLevel="23">
         <EntityTypeShape EntityType="TTMSModel.BrandsMaster" Width="1.5" PointX="6.5" PointY="0.75" />
         <EntityTypeShape EntityType="TTMSModel.ProductCategory" Width="1.5" PointX="4.375" PointY="0.75" />
         <EntityTypeShape EntityType="TTMSModel.EmployeeAttendance" Width="1.5" PointX="4.375" PointY="12.125" />
@@ -28,14 +28,10 @@
         <AssociationConnector Association="TTMSModel.FK_Products_ProductCategory" />
         <EntityTypeShape EntityType="TTMSModel.OrderDetail" Width="1.5" PointX="18.375" PointY="6" />
         <EntityTypeShape EntityType="TTMSModel.PurchaseEntry" Width="1.5" PointX="15.25" PointY="1.5" />
-        <EntityTypeShape EntityType="TTMSModel.PurchaseOrder" Width="1.5" PointX="13" PointY="2.125" />
-        <EntityTypeShape EntityType="TTMSModel.PurchaseEntryPayment" Width="1.5" PointX="17.5" PointY="2.125" />
         <AssociationConnector Association="TTMSModel.FK_OrderDetails_Products" />
-        <AssociationConnector Association="TTMSModel.FK_OrderDetails_PurchaseOrder" />
         <AssociationConnector Association="TTMSModel.FK_OrderDetails_Units" />
-        <AssociationConnector Association="TTMSModel.FK_PurchaseEntry_PurchaseOrder" />
+        <EntityTypeShape EntityType="TTMSModel.PurchaseEntryPayment" Width="1.5" PointX="17.5" PointY="2.125" />
         <AssociationConnector Association="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry" />
-        <AssociationConnector Association="TTMSModel.FK_PurchaseOrder_Suppliers" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -237,15 +237,12 @@
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPayment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PurchaseEntryPayment">
           <Key>
             <PropertyRef Name="ID" />
-            <PropertyRef Name="PaymentDate" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PurchaseEntryID" Type="int" />
+          <Property Name="PurchaseEntryID" Type="int" Nullable="false" />
           <Property Name="PaymentDate" Type="datetime" Nullable="false" />
           <Property Name="PaymentMode" Type="nvarchar" MaxLength="200" />
           <Property Name="PaymentRefNo" Type="nvarchar" MaxLength="200" />
@@ -263,6 +260,7 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
           <Property Name="PurchaseOrderNo" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SupplierID" Type="int" Nullable="false" />
           <Property Name="IsPurcheseEntry" Type="bit" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
@@ -372,18 +370,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OrderDetails_PurchaseOrder">
-          <End Role="PurchaseOrder" Type="Self.PurchaseOrder" Multiplicity="1" />
-          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PurchaseOrder">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="OrderDetails">
-              <PropertyRef Name="PurchaseOrderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_OrderDetails_Units">
           <End Role="Units" Type="Self.Units" Multiplicity="0..1" />
           <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
@@ -420,20 +406,8 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PurchaseEntry_PurchaseOrder">
-          <End Role="PurchaseOrder" Type="Self.PurchaseOrder" Multiplicity="0..1" />
-          <End Role="PurchaseEntry" Type="Self.PurchaseEntry" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PurchaseOrder">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="PurchaseEntry">
-              <PropertyRef Name="PurchaseOrderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PurchaseEntryPayment_PurchaseEntry">
-          <End Role="PurchaseEntry" Type="Self.PurchaseEntry" Multiplicity="0..1" />
+          <End Role="PurchaseEntry" Type="Self.PurchaseEntry" Multiplicity="1" />
           <End Role="PurchaseEntryPayment" Type="Self.PurchaseEntryPayment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PurchaseEntry">
@@ -471,23 +445,10 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
           <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseEntry" EntityType="Self.PurchaseEntry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseEntryPayment" EntityType="Self.PurchaseEntryPayment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseOrder" EntityType="Self.PurchaseOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Units" EntityType="Self.Units" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PurchaseEntryPayment" EntityType="Self.PurchaseEntryPayment" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [PurchaseEntryPayment].[ID] AS [ID], 
-    [PurchaseEntryPayment].[PurchaseEntryID] AS [PurchaseEntryID], 
-    [PurchaseEntryPayment].[PaymentDate] AS [PaymentDate], 
-    [PurchaseEntryPayment].[PaymentMode] AS [PaymentMode], 
-    [PurchaseEntryPayment].[PaymentRefNo] AS [PaymentRefNo], 
-    [PurchaseEntryPayment].[PaidAmount] AS [PaidAmount], 
-    [PurchaseEntryPayment].[CreatedDate] AS [CreatedDate], 
-    [PurchaseEntryPayment].[CreatedBy] AS [CreatedBy], 
-    [PurchaseEntryPayment].[ModifiedDate] AS [ModifiedDate], 
-    [PurchaseEntryPayment].[ModifiedBy] AS [ModifiedBy]
-    FROM [dbo].[PurchaseEntryPayment] AS [PurchaseEntryPayment]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Delivery_Orders" Association="Self.FK_Delivery_Orders">
             <End Role="Orders" EntitySet="Orders" />
             <End Role="Delivery" EntitySet="Delivery" />
@@ -512,10 +473,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
             <End Role="Products" EntitySet="Products" />
             <End Role="OrderDetails" EntitySet="OrderDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK_OrderDetails_PurchaseOrder" Association="Self.FK_OrderDetails_PurchaseOrder">
-            <End Role="PurchaseOrder" EntitySet="PurchaseOrder" />
-            <End Role="OrderDetails" EntitySet="OrderDetails" />
-          </AssociationSet>
           <AssociationSet Name="FK_OrderDetails_Units" Association="Self.FK_OrderDetails_Units">
             <End Role="Units" EntitySet="Units" />
             <End Role="OrderDetails" EntitySet="OrderDetails" />
@@ -527,10 +484,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
           <AssociationSet Name="FK_Products_ProductCategory" Association="Self.FK_Products_ProductCategory">
             <End Role="ProductCategory" EntitySet="ProductCategory" />
             <End Role="Products" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PurchaseEntry_PurchaseOrder" Association="Self.FK_PurchaseEntry_PurchaseOrder">
-            <End Role="PurchaseOrder" EntitySet="PurchaseOrder" />
-            <End Role="PurchaseEntry" EntitySet="PurchaseEntry" />
           </AssociationSet>
           <AssociationSet Name="FK_PurchaseEntryPayment_PurchaseEntry" Association="Self.FK_PurchaseEntryPayment_PurchaseEntry">
             <End Role="PurchaseEntry" EntitySet="PurchaseEntry" />
@@ -590,31 +543,18 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
           </AssociationSet>
           <EntitySet Name="OrderDetails" EntityType="TTMSModel.OrderDetail" />
           <EntitySet Name="PurchaseEntries" EntityType="TTMSModel.PurchaseEntry" />
-          <EntitySet Name="PurchaseOrders" EntityType="TTMSModel.PurchaseOrder" />
-          <EntitySet Name="PurchaseEntryPayments" EntityType="TTMSModel.PurchaseEntryPayment" />
           <AssociationSet Name="FK_OrderDetails_Products" Association="TTMSModel.FK_OrderDetails_Products">
             <End Role="Product" EntitySet="Products" />
-            <End Role="OrderDetail" EntitySet="OrderDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OrderDetails_PurchaseOrder" Association="TTMSModel.FK_OrderDetails_PurchaseOrder">
-            <End Role="PurchaseOrder" EntitySet="PurchaseOrders" />
             <End Role="OrderDetail" EntitySet="OrderDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_OrderDetails_Units" Association="TTMSModel.FK_OrderDetails_Units">
             <End Role="Unit" EntitySet="Units" />
             <End Role="OrderDetail" EntitySet="OrderDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK_PurchaseEntry_PurchaseOrder" Association="TTMSModel.FK_PurchaseEntry_PurchaseOrder">
-            <End Role="PurchaseOrder" EntitySet="PurchaseOrders" />
-            <End Role="PurchaseEntry" EntitySet="PurchaseEntries" />
-          </AssociationSet>
+          <EntitySet Name="PurchaseEntryPayments" EntityType="TTMSModel.PurchaseEntryPayment" />
           <AssociationSet Name="FK_PurchaseEntryPayment_PurchaseEntry" Association="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry">
             <End Role="PurchaseEntry" EntitySet="PurchaseEntries" />
             <End Role="PurchaseEntryPayment" EntitySet="PurchaseEntryPayments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PurchaseOrder_Suppliers" Association="TTMSModel.FK_PurchaseOrder_Suppliers">
-            <End Role="Supplier" EntitySet="Suppliers" />
-            <End Role="PurchaseOrder" EntitySet="PurchaseOrders" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="BrandsMaster">
@@ -894,7 +834,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
-          <NavigationProperty Name="PurchaseOrders" Relationship="TTMSModel.FK_PurchaseOrder_Suppliers" FromRole="Supplier" ToRole="PurchaseOrder" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -962,7 +901,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <NavigationProperty Name="Product" Relationship="TTMSModel.FK_OrderDetails_Products" FromRole="OrderDetail" ToRole="Product" />
-          <NavigationProperty Name="PurchaseOrder" Relationship="TTMSModel.FK_OrderDetails_PurchaseOrder" FromRole="OrderDetail" ToRole="PurchaseOrder" />
           <NavigationProperty Name="Unit" Relationship="TTMSModel.FK_OrderDetails_Units" FromRole="OrderDetail" ToRole="Unit" />
         </EntityType>
         <EntityType Name="PurchaseEntry">
@@ -984,41 +922,7 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
-          <NavigationProperty Name="PurchaseOrder" Relationship="TTMSModel.FK_PurchaseEntry_PurchaseOrder" FromRole="PurchaseEntry" ToRole="PurchaseOrder" />
           <NavigationProperty Name="PurchaseEntryPayments" Relationship="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry" FromRole="PurchaseEntry" ToRole="PurchaseEntryPayment" />
-        </EntityType>
-        <EntityType Name="PurchaseOrder">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PurchaseOrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SupplierID" Type="Int32" Nullable="false" />
-          <Property Name="IsPurcheseEntry" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <NavigationProperty Name="OrderDetails" Relationship="TTMSModel.FK_OrderDetails_PurchaseOrder" FromRole="PurchaseOrder" ToRole="OrderDetail" />
-          <NavigationProperty Name="PurchaseEntries" Relationship="TTMSModel.FK_PurchaseEntry_PurchaseOrder" FromRole="PurchaseOrder" ToRole="PurchaseEntry" />
-          <NavigationProperty Name="Supplier" Relationship="TTMSModel.FK_PurchaseOrder_Suppliers" FromRole="PurchaseOrder" ToRole="Supplier" />
-        </EntityType>
-        <EntityType Name="PurchaseEntryPayment">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="PaymentDate" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PurchaseEntryID" Type="Int32" />
-          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PaymentMode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PaymentRefNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PaidAmount" Type="Double" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <NavigationProperty Name="PurchaseEntry" Relationship="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry" FromRole="PurchaseEntryPayment" ToRole="PurchaseEntry" />
         </EntityType>
         <Association Name="FK_OrderDetails_Products">
           <End Type="TTMSModel.Product" Role="Product" Multiplicity="1" />
@@ -1029,18 +933,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
             </Principal>
             <Dependent Role="OrderDetail">
               <PropertyRef Name="ProductID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_OrderDetails_PurchaseOrder">
-          <End Type="TTMSModel.PurchaseOrder" Role="PurchaseOrder" Multiplicity="1" />
-          <End Type="TTMSModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PurchaseOrder">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="OrderDetail">
-              <PropertyRef Name="PurchaseOrderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1056,20 +948,24 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PurchaseEntry_PurchaseOrder">
-          <End Type="TTMSModel.PurchaseOrder" Role="PurchaseOrder" Multiplicity="0..1" />
-          <End Type="TTMSModel.PurchaseEntry" Role="PurchaseEntry" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PurchaseOrder">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="PurchaseEntry">
-              <PropertyRef Name="PurchaseOrderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <EntityType Name="PurchaseEntryPayment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseEntryID" Type="Int32" Nullable="false" />
+          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PaymentMode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentRefNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PaidAmount" Type="Double" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="PurchaseEntry" Relationship="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry" FromRole="PurchaseEntryPayment" ToRole="PurchaseEntry" />
+        </EntityType>
         <Association Name="FK_PurchaseEntryPayment_PurchaseEntry">
-          <End Type="TTMSModel.PurchaseEntry" Role="PurchaseEntry" Multiplicity="0..1" />
+          <End Type="TTMSModel.PurchaseEntry" Role="PurchaseEntry" Multiplicity="1" />
           <End Type="TTMSModel.PurchaseEntryPayment" Role="PurchaseEntryPayment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PurchaseEntry">
@@ -1077,18 +973,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
             </Principal>
             <Dependent Role="PurchaseEntryPayment">
               <PropertyRef Name="PurchaseEntryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PurchaseOrder_Suppliers">
-          <End Type="TTMSModel.Supplier" Role="Supplier" Multiplicity="1" />
-          <End Type="TTMSModel.PurchaseOrder" Role="PurchaseOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Supplier">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="PurchaseOrder">
-              <PropertyRef Name="SupplierID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1374,20 +1258,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.PurchaseEntryPaymen
                 <ScalarProperty Name="InvoiceChallanNo" ColumnName="InvoiceChallanNo" />
                 <ScalarProperty Name="InvoiceChallan" ColumnName="InvoiceChallan" />
                 <ScalarProperty Name="PurchaseOrderID" ColumnName="PurchaseOrderID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PurchaseOrders">
-            <EntityTypeMapping TypeName="TTMSModel.PurchaseOrder">
-              <MappingFragment StoreEntitySet="PurchaseOrder">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="IsPurcheseEntry" ColumnName="IsPurcheseEntry" />
-                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
-                <ScalarProperty Name="PurchaseOrderNo" ColumnName="PurchaseOrderNo" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

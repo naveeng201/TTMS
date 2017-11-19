@@ -15,7 +15,7 @@ namespace TTMS.Models
     public partial class PurchaseEntryPayment
     {
         public int ID { get; set; }
-        public Nullable<int> PurchaseEntryID { get; set; }
+        public int PurchaseEntryID { get; set; }
         public System.DateTime PaymentDate { get; set; }
         public string PaymentMode { get; set; }
         public string PaymentRefNo { get; set; }

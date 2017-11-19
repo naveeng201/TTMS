@@ -13,7 +13,7 @@ namespace TTMS.Controllers
     public class PurchaseEntriesController : Controller
     {
         private TTMSEntities db = new TTMSEntities();
-
+         
         // GET: PurchaseEntries
         public ActionResult Index()
         {
@@ -48,6 +48,7 @@ namespace TTMS.Controllers
         // GET: PurchaseEntries/Create
         public ActionResult Create()
         {
+            ViewBag.Edit = false;
             ViewBag.Suppliers = db.Suppliers.ToList();
             ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
             List<SelectListItem> items = new List<SelectListItem>();
@@ -57,11 +58,33 @@ namespace TTMS.Controllers
 
             PurchaseEntryVM purchaseEntryVM = new PurchaseEntryVM();
             purchaseEntryVM._orderDetail = new List<OrderDetail> { new OrderDetail() };
-            purchaseEntryVM.purchaseEntry = new PurchaseEntry();
+            purchaseEntryVM.purchaseEntry = new PurchaseEntry {
+                CGST = 5,
+                SGST = 5,
+                DiscountAmount =0
+            };
             purchaseEntryVM.purchaseOrder = new PurchaseOrder();
             return View(purchaseEntryVM);
         }
 
+        private float calculateTotal(List<OrderDetail> orderDetails)
+        {
+            float total = 0;
+            foreach(var od in orderDetails)
+            {
+                total = total + (Convert.ToInt32(od.Quantity) * Convert.ToInt32(od.CostPrice));
+            }
+            return total;
+        }
+        private double calculateGrandTotal(double? cgst, double? sgst, double? discount, float total)
+        {
+            double gtotal = 0;
+            double gst = (double)cgst + (double)sgst;
+            gtotal = total + ((total / 100) * gst);
+            if(discount != 0)
+             gtotal = total - ((total / 100) * (double)discount);
+            return gtotal;
+        }
 
         // POST: PurchaseEntries/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -73,6 +96,10 @@ namespace TTMS.Controllers
             purchaseEntryVM._orderDetail.RemoveAt(0); // remove first template record from list
 
             PurchaseEntry purchaseEntry = purchaseEntryVM.purchaseEntry;
+            float totalAmt = calculateTotal(purchaseEntryVM._orderDetail);
+            purchaseEntry.TotalAmount = calculateGrandTotal(purchaseEntry.CGST, purchaseEntry.SGST, purchaseEntry.DiscountAmount, totalAmt);
+            if (purchaseEntry.DueAmount == 0)
+                purchaseEntry.Status = true;
             if (ModelState.IsValid)
             {
                 PurchaseOrder po = new PurchaseOrder();
@@ -86,11 +113,33 @@ namespace TTMS.Controllers
                     if (od.ProductID == 0)
                         continue;
                     if (db.OrderDetails.Where(x => x.PurchaseOrderID == purchaseEntryVM.purchaseOrder.ID && x.ProductID == od.ProductID).ToList().Count > 0)
-                        continue;
-                    po.OrderDetails.Add(od);
+                    {
+                        var orderDetail = db.OrderDetails.Find(od.ID);
+                        if (orderDetail != null)
+                        {
+                            orderDetail.CostPrice = od.CostPrice;
+                            orderDetail.PurchaseOrderID = purchaseEntryVM.purchaseOrder.ID;
+                            orderDetail.Quantity = od.Quantity;
+                            db.OrderDetails.Attach(orderDetail);
+                           // db.Entry(orderDetail).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        po.OrderDetails.Add(od);
+                    }
                 }
-                po.PurchaseEntries.Add(purchaseEntry);
-                db.PurchaseOrders.Add(po);
+                if (po.ID == 0)
+                {
+                    po.PurchaseEntries.Add(purchaseEntry);
+                    db.PurchaseOrders.Add(po);
+                }
+                else
+                {
+                    purchaseEntry.PurchaseOrderID = po.ID;
+                    db.PurchaseEntries.Add(purchaseEntry);
+                }
                 db.SaveChanges();
             }
             var purchaseEntries = db.PurchaseEntries.Include(p => p.PurchaseOrder);
@@ -98,19 +147,43 @@ namespace TTMS.Controllers
         }
 
         // GET: PurchaseEntries/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, bool IsPurchaseOrder = false )
         {
-            if (id == null)
+            ViewBag.Edit = true;
+            ViewBag.Suppliers = db.Suppliers.ToList();
+            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
+           
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem() { Text = "Invoice", Value = "Invoice" });
+            items.Add(new SelectListItem() { Text = "Challan", Value = "Challan" });
+            ViewBag.InvoiceChallan = items;
+           
+
+            PurchaseEntryVM purchaseEntryVM = new PurchaseEntryVM();
+            if (IsPurchaseOrder)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                ViewBag.PurchaseEntryID = 0;
+                purchaseEntryVM.purchaseEntry = new PurchaseEntry{ CGST = 5,
+                    SGST = 5,
+                    DiscountAmount = 0 };
+                purchaseEntryVM.purchaseOrder = db.PurchaseOrders.Where(x => x.ID == id).SingleOrDefault();
+                purchaseEntryVM._orderDetail = db.OrderDetails.Where(x => x.PurchaseOrderID == id).ToList();
             }
-            PurchaseEntry purchaseEntry = db.PurchaseEntries.Find(id);
-            if (purchaseEntry == null)
+            else
             {
-                return HttpNotFound();
+                ViewBag.PurchaseEntryID = id;
+                purchaseEntryVM.purchaseEntry = db.PurchaseEntries.Where(x => x.ID == id).SingleOrDefault();
+                purchaseEntryVM.purchaseOrder = db.PurchaseOrders.Where(x => x.ID == purchaseEntryVM.purchaseEntry.PurchaseOrderID).SingleOrDefault();
+                purchaseEntryVM._orderDetail = db.OrderDetails.Where(x => x.PurchaseOrderID == purchaseEntryVM.purchaseEntry.PurchaseOrderID).ToList();
+
+                // calculatet Due Amt
+                double paidamt = (double)db.PurchaseEntryPayments.Where(x => x.PurchaseEntryID == id).Select(x => (int?)x.PaidAmount ?? 0)
+                                                                                                      .DefaultIfEmpty(0).Sum();
+                purchaseEntryVM.purchaseEntry.DueAmount = purchaseEntryVM.purchaseEntry.TotalAmount - paidamt;
             }
-            ViewBag.PurchaseOrderID = new SelectList(db.PurchaseOrders, "ID", "PurchaseOrderNo", purchaseEntry.PurchaseOrderID);
-            return View(purchaseEntry);
+            ViewBag.NoDue = (purchaseEntryVM.purchaseEntry.DueAmount <= 0) ? true :  false;
+            purchaseEntryVM._orderDetail.Insert(0,new OrderDetail { });
+            return View("Create",purchaseEntryVM);
         }
 
         // POST: PurchaseEntries/Edit/5

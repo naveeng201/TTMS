@@ -13,9 +13,9 @@ namespace TTMS.Models
     public class PurchaseEntryMetadata
     {
         public Nullable<int> PurchaseOrderID { get; set; }
-        [Required(ErrorMessage = "Select Invoice or Challen.")]
+        [Required]
         public string InvoiceChallan { get; set; }
-        [Required(ErrorMessage ="Invoice or Challen Number is required.")]
+        [Required]
         public string InvoiceChallanNo { get; set; }
         public Nullable<System.DateTime> InvoiceDate { get; set; }
         public Nullable<double> CGST { get; set; }
