@@ -3,14 +3,20 @@
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
-    @Html.AntiForgeryToken()
-
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
+        @Html.AntiForgeryToken()
+        <span>&nbsp;</span>
+        @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+       
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <span class="name">
+                </span>
+            </a>
+            <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
+                <a class="dropdown-item" href="#"> <i class="fa fa-bell icon"></i> Notifications </a>
+                <a class="dropdown-item" href="#"> <i class="fa fa-gear icon"></i> Change Password </a>
+                <div class="dropdown-divider"></div>
+                <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+            </div>
     }
 }
 else
@@ -20,3 +26,5 @@ else
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
 }
+
+

@@ -15,8 +15,8 @@
     <link href="~/Content/app.css" rel="stylesheet" />
     <link href="~/Content/demo_table.css" rel="stylesheet" />
     @*<link href="~/Content/demo_table_jui.css" rel="stylesheet" />
-        <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
-        <link href="~/Content/themes/smoothness/jquery-ui-1.7.2.custom.css" rel="stylesheet" />*@
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />*@
+        <link href="~/Content/themes/smoothness/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
@@ -107,33 +107,19 @@
                                 </footer>
                             </div>
                         </li>
-                        @Html.Partial("_LoginPartial")
-                        @*<li class="profile dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                <!--
-                                <div class="img" style="background-image: url('https://avatars3.githubusercontent.com/u/3959008?v=3&s=40')"> </div>-->
-                                <span class="name">
-                                    Admin
-                                </span>
-                            </a>
-                            <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <!--<a class="dropdown-item" href="#"> <i class="fa fa-user icon"></i> Profile </a>
-
-                                <a class="dropdown-item" href="#"> <i class="fa fa-bell icon"></i> Notifications </a>-->
-                                <a class="dropdown-item" href="#"> <i class="fa fa-gear icon"></i> Change Password </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="login.html"> <i class="fa fa-power-off icon"></i> Logout </a>
-                            </div>
-                        </li>*@
+                       
+                        <li class="profile dropdown">le
+                            @Html.Partial("_LoginPartial")
+                        </li>
                     </ul>
                 </div>
             </header>
 
-            <aside class="sidebar side" style="width:20px">
-                <div class="sidebar">
+            <aside class="sidebar side" >
+                <div class="sidebar" >
                     <header class="logo" style="height:none !important;">
                         <!--<a href="#" class="sidebar-icon" > <span class="fa fa-bars"></span> </a> <a href="#"> <span id="logo" class="fa fa-html fa-5x"></span>-->
-                        <img id="logo" src="images/8.jpg" height="50PX" alt="Logo" />
+                        <img id="logo" src="assets/faces/8.jpg" height="50PX" alt="Logo" />
                         </a>
                     </header>
                     <div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
@@ -288,7 +274,7 @@
     </div>
     <script src="Scripts/vendor.js"></script>
     <script src="Scripts/app.js"></script>
-    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+   
     <script src="@Url.Content("~/Scripts/jquery.dataTables.min.js")"></script>
     <script src="@Url.Content("~/Scripts/WaterMark.min.js")"></script>
     @Scripts.Render("~/bundles/bootstrap")
