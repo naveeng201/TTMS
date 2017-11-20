@@ -33,7 +33,6 @@
       <End Role="Employee" EntitySet="Employees" />
       <End Role="EmployeePerformance" EntitySet="EmployeePerformances" />
     </AssociationSet>
-    <EntitySet Name="Suppliers" EntityType="TTMSModel.Supplier" />
     <EntitySet Name="Products" EntityType="TTMSModel.Product" />
     <AssociationSet Name="FK_Products_BrandsMaster" Association="TTMSModel.FK_Products_BrandsMaster">
       <End Role="BrandsMaster" EntitySet="BrandsMasters" />
@@ -43,20 +42,34 @@
       <End Role="ProductCategory" EntitySet="ProductCategories" />
       <End Role="Product" EntitySet="Products" />
     </AssociationSet>
+    <EntitySet Name="Suppliers" EntityType="TTMSModel.Supplier" />
     <EntitySet Name="OrderDetails" EntityType="TTMSModel.OrderDetail" />
     <EntitySet Name="PurchaseEntries" EntityType="TTMSModel.PurchaseEntry" />
+    <EntitySet Name="PurchaseEntryPayments" EntityType="TTMSModel.PurchaseEntryPayment" />
+    <EntitySet Name="PurchaseOrders" EntityType="TTMSModel.PurchaseOrder" />
     <AssociationSet Name="FK_OrderDetails_Products" Association="TTMSModel.FK_OrderDetails_Products">
       <End Role="Product" EntitySet="Products" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetails_PurchaseOrder" Association="TTMSModel.FK_OrderDetails_PurchaseOrder">
+      <End Role="PurchaseOrder" EntitySet="PurchaseOrders" />
       <End Role="OrderDetail" EntitySet="OrderDetails" />
     </AssociationSet>
     <AssociationSet Name="FK_OrderDetails_Units" Association="TTMSModel.FK_OrderDetails_Units">
       <End Role="Unit" EntitySet="Units" />
       <End Role="OrderDetail" EntitySet="OrderDetails" />
     </AssociationSet>
-    <EntitySet Name="PurchaseEntryPayments" EntityType="TTMSModel.PurchaseEntryPayment" />
+    <AssociationSet Name="FK_PurchaseEntry_PurchaseOrder" Association="TTMSModel.FK_PurchaseEntry_PurchaseOrder">
+      <End Role="PurchaseOrder" EntitySet="PurchaseOrders" />
+      <End Role="PurchaseEntry" EntitySet="PurchaseEntries" />
+    </AssociationSet>
     <AssociationSet Name="FK_PurchaseEntryPayment_PurchaseEntry" Association="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry">
       <End Role="PurchaseEntry" EntitySet="PurchaseEntries" />
       <End Role="PurchaseEntryPayment" EntitySet="PurchaseEntryPayments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PurchaseOrder_Suppliers" Association="TTMSModel.FK_PurchaseOrder_Suppliers">
+      <End Role="Supplier" EntitySet="Suppliers" />
+      <End Role="PurchaseOrder" EntitySet="PurchaseOrders" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="BrandsMaster">
@@ -316,27 +329,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="Supplier">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="OrganizationName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="Address" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Pin" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
-    <Property Name="ContactPersonName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="ContactNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="AlternateContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="EmailId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="GSTNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-    <Property Name="CreatedBy" Type="Int32" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="ModifiedBy" Type="Int32" />
-  </EntityType>
   <EntityType Name="Product">
     <Key>
       <PropertyRef Name="ID" />
@@ -382,6 +374,28 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="Supplier">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrganizationName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Pin" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+    <Property Name="ContactPersonName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ContactNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="AlternateContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="EmailId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="GSTNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="PurchaseOrders" Relationship="TTMSModel.FK_PurchaseOrder_Suppliers" FromRole="Supplier" ToRole="PurchaseOrder" />
+  </EntityType>
   <EntityType Name="OrderDetail">
     <Key>
       <PropertyRef Name="ID" />
@@ -403,6 +417,7 @@
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedBy" Type="Int32" />
     <NavigationProperty Name="Product" Relationship="TTMSModel.FK_OrderDetails_Products" FromRole="OrderDetail" ToRole="Product" />
+    <NavigationProperty Name="PurchaseOrder" Relationship="TTMSModel.FK_OrderDetails_PurchaseOrder" FromRole="OrderDetail" ToRole="PurchaseOrder" />
     <NavigationProperty Name="Unit" Relationship="TTMSModel.FK_OrderDetails_Units" FromRole="OrderDetail" ToRole="Unit" />
   </EntityType>
   <EntityType Name="PurchaseEntry">
@@ -424,32 +439,9 @@
     <Property Name="CreatedBy" Type="Int32" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="PurchaseOrder" Relationship="TTMSModel.FK_PurchaseEntry_PurchaseOrder" FromRole="PurchaseEntry" ToRole="PurchaseOrder" />
     <NavigationProperty Name="PurchaseEntryPayments" Relationship="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry" FromRole="PurchaseEntry" ToRole="PurchaseEntryPayment" />
   </EntityType>
-  <Association Name="FK_OrderDetails_Products">
-    <End Type="TTMSModel.Product" Role="Product" Multiplicity="1" />
-    <End Type="TTMSModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Product">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="OrderDetail">
-        <PropertyRef Name="ProductID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_OrderDetails_Units">
-    <End Type="TTMSModel.Unit" Role="Unit" Multiplicity="0..1" />
-    <End Type="TTMSModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Unit">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="OrderDetail">
-        <PropertyRef Name="UnitID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityType Name="PurchaseEntryPayment">
     <Key>
       <PropertyRef Name="ID" />
@@ -466,6 +458,71 @@
     <Property Name="ModifiedBy" Type="Int32" />
     <NavigationProperty Name="PurchaseEntry" Relationship="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry" FromRole="PurchaseEntryPayment" ToRole="PurchaseEntry" />
   </EntityType>
+  <EntityType Name="PurchaseOrder">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PurchaseOrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SupplierID" Type="Int32" Nullable="false" />
+    <Property Name="IsPurcheseEntry" Type="Boolean" Nullable="false" />
+    <Property Name="Status" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="OrderDetails" Relationship="TTMSModel.FK_OrderDetails_PurchaseOrder" FromRole="PurchaseOrder" ToRole="OrderDetail" />
+    <NavigationProperty Name="PurchaseEntries" Relationship="TTMSModel.FK_PurchaseEntry_PurchaseOrder" FromRole="PurchaseOrder" ToRole="PurchaseEntry" />
+    <NavigationProperty Name="Supplier" Relationship="TTMSModel.FK_PurchaseOrder_Suppliers" FromRole="PurchaseOrder" ToRole="Supplier" />
+  </EntityType>
+  <Association Name="FK_OrderDetails_Products">
+    <End Type="TTMSModel.Product" Role="Product" Multiplicity="1" />
+    <End Type="TTMSModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetails_PurchaseOrder">
+    <End Type="TTMSModel.PurchaseOrder" Role="PurchaseOrder" Multiplicity="1" />
+    <End Type="TTMSModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PurchaseOrder">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="PurchaseOrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetails_Units">
+    <End Type="TTMSModel.Unit" Role="Unit" Multiplicity="0..1" />
+    <End Type="TTMSModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Unit">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="UnitID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PurchaseEntry_PurchaseOrder">
+    <End Type="TTMSModel.PurchaseOrder" Role="PurchaseOrder" Multiplicity="0..1" />
+    <End Type="TTMSModel.PurchaseEntry" Role="PurchaseEntry" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PurchaseOrder">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PurchaseEntry">
+        <PropertyRef Name="PurchaseOrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_PurchaseEntryPayment_PurchaseEntry">
     <End Type="TTMSModel.PurchaseEntry" Role="PurchaseEntry" Multiplicity="1" />
     <End Type="TTMSModel.PurchaseEntryPayment" Role="PurchaseEntryPayment" Multiplicity="*" />
@@ -475,6 +532,18 @@
       </Principal>
       <Dependent Role="PurchaseEntryPayment">
         <PropertyRef Name="PurchaseEntryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PurchaseOrder_Suppliers">
+    <End Type="TTMSModel.Supplier" Role="Supplier" Multiplicity="1" />
+    <End Type="TTMSModel.PurchaseOrder" Role="PurchaseOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Supplier">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PurchaseOrder">
+        <PropertyRef Name="SupplierID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

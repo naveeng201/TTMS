@@ -4,34 +4,38 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d7889b6099454410a2f5b6e76b56aefb" Name="Diagram1" ZoomLevel="23">
+      <Diagram DiagramId="d7889b6099454410a2f5b6e76b56aefb" Name="Diagram1" ZoomLevel="48">
         <EntityTypeShape EntityType="TTMSModel.BrandsMaster" Width="1.5" PointX="6.5" PointY="0.75" />
         <EntityTypeShape EntityType="TTMSModel.ProductCategory" Width="1.5" PointX="4.375" PointY="0.75" />
-        <EntityTypeShape EntityType="TTMSModel.EmployeeAttendance" Width="1.5" PointX="4.375" PointY="12.125" />
+        <EntityTypeShape EntityType="TTMSModel.EmployeeAttendance" Width="1.5" PointX="5" PointY="12" />
         <EntityTypeShape EntityType="TTMSModel.Order_Employee" Width="1.5" PointX="12" PointY="7.375" />
         <EntityTypeShape EntityType="TTMSModel.Order_Master" Width="1.5" PointX="10.125" PointY="7.375" />
         <EntityTypeShape EntityType="TTMSModel.Order" Width="1.5" PointX="8.125" PointY="7.375" />
-        <EntityTypeShape EntityType="TTMSModel.Unit" Width="1.5" PointX="14.125" PointY="7.5" />
+        <EntityTypeShape EntityType="TTMSModel.Unit" Width="1.5" PointX="22.25" PointY="1.375" />
         <AssociationConnector Association="TTMSModel.FK_Order_Master_Orders" />
-        <EntityTypeShape EntityType="TTMSModel.EmployeePerformance" Width="1.5" PointX="0.5" PointY="11.625" />
+        <EntityTypeShape EntityType="TTMSModel.EmployeePerformance" Width="1.5" PointX="0.5" PointY="11.5" />
         <EntityTypeShape EntityType="TTMSModel.Delivery" Width="1.5" PointX="8" PointY="14.25" />
         <AssociationConnector Association="TTMSModel.FK_Delivery_Orders" />
         <EntityTypeShape EntityType="TTMSModel.Account" Width="1.5" PointX="4.375" PointY="4.75" />
         <EntityTypeShape EntityType="TTMSModel.EmployeePayment" Width="1.5" PointX="4.75" PointY="15.5" />
-        <EntityTypeShape EntityType="TTMSModel.Employee" Width="1.5" PointX="0.75" PointY="12.375" />
+        <EntityTypeShape EntityType="TTMSModel.Employee" Width="1.5" PointX="2.75" PointY="9.25" />
         <AssociationConnector Association="TTMSModel.FK_EmployeeAttendance_Employee" />
         <AssociationConnector Association="TTMSModel.FK_EmployeePayment_Employee" />
         <AssociationConnector Association="TTMSModel.FK_EmployeePerformance_Employee" />
-        <EntityTypeShape EntityType="TTMSModel.Supplier" Width="1.5" PointX="10.75" PointY="1.5" />
         <EntityTypeShape EntityType="TTMSModel.Product" Width="1.5" PointX="8.75" PointY="0.75" />
         <AssociationConnector Association="TTMSModel.FK_Products_BrandsMaster" />
         <AssociationConnector Association="TTMSModel.FK_Products_ProductCategory" />
-        <EntityTypeShape EntityType="TTMSModel.OrderDetail" Width="1.5" PointX="18.375" PointY="6" />
-        <EntityTypeShape EntityType="TTMSModel.PurchaseEntry" Width="1.5" PointX="15.25" PointY="1.5" />
+        <EntityTypeShape EntityType="TTMSModel.Supplier" Width="1.5" PointX="17.375" PointY="7" />
+        <EntityTypeShape EntityType="TTMSModel.OrderDetail" Width="1.5" PointX="24.5" PointY="4.125" />
+        <EntityTypeShape EntityType="TTMSModel.PurchaseEntry" Width="1.5" PointX="24.25" PointY="13.625" />
+        <EntityTypeShape EntityType="TTMSModel.PurchaseEntryPayment" Width="1.5" PointX="26.5" PointY="14.25" />
+        <EntityTypeShape EntityType="TTMSModel.PurchaseOrder" Width="1.5" PointX="22" PointY="8.75" />
         <AssociationConnector Association="TTMSModel.FK_OrderDetails_Products" />
+        <AssociationConnector Association="TTMSModel.FK_OrderDetails_PurchaseOrder" />
         <AssociationConnector Association="TTMSModel.FK_OrderDetails_Units" />
-        <EntityTypeShape EntityType="TTMSModel.PurchaseEntryPayment" Width="1.5" PointX="17.5" PointY="2.125" />
+        <AssociationConnector Association="TTMSModel.FK_PurchaseEntry_PurchaseOrder" />
         <AssociationConnector Association="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry" />
+        <AssociationConnector Association="TTMSModel.FK_PurchaseOrder_Suppliers" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

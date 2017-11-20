@@ -32,6 +32,7 @@ namespace TTMS.Models
         public Nullable<int> ModifiedBy { get; set; }
     
         public virtual Product Product { get; set; }
+        public virtual PurchaseOrder PurchaseOrder { get; set; }
         public virtual Unit Unit { get; set; }
     }
 }

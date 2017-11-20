@@ -10,6 +10,7 @@ using TTMS.Models;
 
 namespace TTMS.Controllers
 {
+    [Authorize]
     public class PurchaseOrdersController : Controller
     {
         private TTMSEntities db = new TTMSEntities();
@@ -21,7 +22,7 @@ namespace TTMS.Controllers
             //return View(purchaseOrder.ToList());
             ViewBag.SupplierID = new SelectList(db.Suppliers, "ID", "OrganizationName");
             ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
-
+            
             var poList = db.PurchaseOrders.Where(x=>x.IsPurcheseEntry == false).ToList();
             //PO._orderDetail = new List<OrderDetail>();
             //PO.purchaseOrder = new PurchaseOrder();

@@ -37,10 +37,11 @@ namespace TTMS.Models
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<EmployeePayment> EmployeePayments { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<PurchaseEntry> PurchaseEntries { get; set; }
         public virtual DbSet<PurchaseEntryPayment> PurchaseEntryPayments { get; set; }
+        public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
     }
 }

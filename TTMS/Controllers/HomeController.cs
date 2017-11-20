@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace TTMS.Controllers
 {
-    
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()

@@ -10,6 +10,7 @@ using TTMS.Models;
 
 namespace TTMS.Controllers
 {
+    [Authorize]
     public class PurchaseEntriesController : Controller
     {
         private TTMSEntities db = new TTMSEntities();
@@ -121,12 +122,12 @@ namespace TTMS.Controllers
                             orderDetail.PurchaseOrderID = purchaseEntryVM.purchaseOrder.ID;
                             orderDetail.Quantity = od.Quantity;
                             db.OrderDetails.Attach(orderDetail);
-                           // db.Entry(orderDetail).State = EntityState.Modified;
+                            db.Entry(orderDetail).State = EntityState.Modified;
                             db.SaveChanges();
                         }
                     }
                     else
-                    {
+                    { 
                         po.OrderDetails.Add(od);
                     }
                 }
@@ -155,7 +156,7 @@ namespace TTMS.Controllers
            
             List<SelectListItem> items = new List<SelectListItem>();
             items.Add(new SelectListItem() { Text = "Invoice", Value = "Invoice" });
-            items.Add(new SelectListItem() { Text = "Challan", Value = "Challan" });
+            items.Add(new SelectListItem() { Text = "Delivery Challan", Value = "Delivery Challan" });
             ViewBag.InvoiceChallan = items;
            
 

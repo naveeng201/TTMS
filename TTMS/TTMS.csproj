@@ -251,6 +251,9 @@
     <Compile Include="Models\PurchaseEntryPayment.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PurchaseOrder.cs">
+      <DependentUpon>TTMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Supplier.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
@@ -278,14 +281,21 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\arvind.jpg" />
     <Content Include="assets\demo.png" />
     <Content Include="assets\features.png" />
     <Content Include="assets\fontawesome-webfont.svg" />
+    <Content Include="assets\lenin cotton.jpg" />
+    <Content Include="assets\raymonds.jpg" />
     <Content Include="Content\app.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\custom.css" />
+    <Content Include="Content\dataTables.responsive.css" />
     <Content Include="Content\demo_table.css" />
     <Content Include="Content\demo_table_jui.css" />
+    <Content Include="Content\DT_bootstrap.css" />
+    <Content Include="Content\navigation.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
