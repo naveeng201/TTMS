@@ -181,7 +181,8 @@
     }
     $(document).ready(function () {
         calculateTotal();
-    })   
+    })
+   
    function calculateTotal() {
         //$('.pnm, .price, .subtot, .grdtot').prop('readonly', true);
         var $tblrows = $("#myDataTable tbody tr");
@@ -215,7 +216,8 @@
                 $tblfootrow.find('.grdtot').val(grandtotal.toFixed(2));
         });
         calculateGrandTotal(0);
-    };
+    };
+
    function calculateGrandTotal(total)
    {
        var $tblfootrows = $("#myDataTable tfoot tr");

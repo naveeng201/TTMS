@@ -68,7 +68,7 @@ namespace TTMS.Controllers
             {
                 db.PurchaseEntryPayments.Add(purchaseEntryPayment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "PurchaseEntries");
             }
 
             ViewBag.PurchaseEntryID = new SelectList(db.PurchaseEntries, "ID", "InvoiceChallan", purchaseEntryPayment.PurchaseEntryID);
