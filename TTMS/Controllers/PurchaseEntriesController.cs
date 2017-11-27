@@ -73,7 +73,7 @@ namespace TTMS.Controllers
             float total = 0;
             foreach(var od in orderDetails)
             {
-                total = total + (Convert.ToInt32(od.Quantity) * Convert.ToInt32(od.CostPrice));
+                total = total + (Convert.ToInt32(od.ReceivedQuantity) * Convert.ToInt32(od.CostPrice));
             }
             return total;
         }

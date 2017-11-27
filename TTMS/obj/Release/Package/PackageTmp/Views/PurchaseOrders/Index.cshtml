@@ -1,11 +1,5 @@
 ﻿@model IEnumerable<TTMS.Models.PurchaseOrder>
-@section Scripts
-{
-    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/jquery.dataTables.min.js")"></script>
-}
-<link href="~/Content/demo_table.css" rel="stylesheet" />
-<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
 <script>
         $(document).ready(function () {
             var oTable = $('#tblPurchaseOrder').dataTable({
@@ -14,11 +8,8 @@
         });
 </script>
 
-
-
-<h4>PurchaseOrder</h4>
-
 <div class="panel-heading">
+    <h4>Purchase Order</h4> 
     <span class="tools pull-right">
         @Html.ActionLink("Add Purchase Order", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
     </span>
@@ -38,14 +29,15 @@
             <th>Actions</th>
         </tr>
     </thead>
-    @{ int rowNo = 0; }
-    @foreach (var item in Model)
-    {
-        int i = 1;
-        <tbody>
+    <tbody>
+        @{ int rowNo = 0; }
+        @foreach (var item in Model)
+        {
+            int i = 1;
+
             <tr>
                 <td>
-                   @(rowNo += 1)
+                    @(rowNo += 1)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PurchaseOrderNo)
@@ -60,7 +52,6 @@
                     @Html.ActionLink("Delete", "Delete", new { id = item.ID }) |
                 </td>
             </tr>
-        </tbody>
-    }
-
+        }
+    </tbody>
 </table>

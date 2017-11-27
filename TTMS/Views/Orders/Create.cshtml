@@ -1,0 +1,507 @@
+﻿@model TTMS.Models.OrdersVM
+ <style>
+     .top-buffer { margin-top:10px; }
+ </style>
+<script>
+    $(document).ready(function () {
+        $('#myDataTable').dataTable({
+        });
+
+        $("#ProductShorName, #ProductType,#Quantity,#CostPrice").WaterMark();
+
+        if ($('#order_OrderNo').val() == "") {
+            var ServiceUrl = "/Orders/GetOrderNo";
+            var content = '';
+            $.support.cors = true;
+            $.ajax({
+                type: 'GET',
+                url: ServiceUrl,
+                async: true,
+                cache: false,
+                crossDomain: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                error: function (xhr, err) {
+                    alert("Error");
+                },
+                success: function (result, status) {
+                    $('#order_OrderNo').val(result);
+                }
+            });
+        }
+
+        $("#ProductID").change(function () {
+            var id = $('#ProductID').val();
+            var ServiceUrl = "/PurchaseOrders/GetProdectDetails?id=" + id;
+            var content = '';
+            $.support.cors = true;
+            $.ajax({
+                type: 'GET',
+                url: ServiceUrl,
+                async: true,
+                cache: false,
+                crossDomain: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                error: function (xhr, err) {
+                    alert("Error");
+                },
+                success: function (result, status) {
+                    $('#ProductShorName').val(result[0].ShorName);
+                    $('#ProductType').val(result[0].Price)
+                }
+            });
+        });
+
+        $('.add-button').click(function (e) {
+            // validate
+            var department = $("#msg_id");
+            var msg = "Please select Product";
+            if ($('#ProductID').val() == "") {
+                department.text(msg);
+                e.preventDefault();
+                return false;
+            }
+            else {
+                department.text("");
+            }
+            var productID = $('#ProductID').val();
+            //validate if product is already exist in table
+
+            var count = $("tr.contacts-record").length + 1;
+            var template = $('.contacts-record-template').clone();
+            var productName = $('#ProductID').find('option:selected').text();
+            var ProductType = $("#ProductType").val();
+            var Quantity = $("#Quantity").val();
+            var CostPrice = $("#CostPrice").val();
+            template.find('input[type=text]').val(null);
+            //template.find('input[type=checkbox]').prop('checked', false);
+            $.each(template.find('#ProductID1'), function () {
+                var name = $(this).attr('name');
+                name = name.replace('0', count);
+                $(this).attr('name', name);
+                $(this).val(productID);
+            });
+            $.each(template.find('#ProductName1'), function () {
+                var name = $(this).attr('name');
+                name = name.replace('0', count);
+                $(this).attr('name', name);
+                $(this).val(productName);
+            });
+            $.each(template.find('#ProductType1'), function () {
+                var name = $(this).attr('name');
+                name = name.replace('0', count);
+                $(this).attr('name', name);
+                $(this).val(ProductType);
+            });
+            $.each(template.find('#Quantity1'), function () {
+                var name = $(this).attr('name');
+                name = name.replace('0', count);
+                $(this).attr('name', name);
+                $(this).val(Quantity);
+            });
+            $.each(template.find('#CostPrice1'), function () {
+                var name = $(this).attr('name');
+                name = name.replace('0', count);
+                $(this).attr('name', name);
+                $(this).val(CostPrice);
+            });
+            var total = parseFloat(Quantity) * parseFloat(CostPrice);
+            $.each(template.find('#Total1'), function () {
+                $(this).val(total.toFixed(2));
+            });
+
+            //caliculate total
+            var $tblfootrows = $("#myDataTable tfoot tr");
+            $tblfootrows.each(function () {
+                var $tblfootrow = $(this);
+                var gt = $tblfootrow.find('.grdtot').val();
+                if (gt != undefined && gt != NaN && gt !== "") {
+                    var grandtotal = parseFloat(gt) + parseFloat(total)
+                    $tblfootrow.find('.grdtot').val(grandtotal.toFixed(2));
+                }
+                else
+                    $tblfootrow.find('.grdtot').val(total.toFixed(2));
+            });
+            calculateGrandTotal(total);
+            template.removeClass('contacts-record-template').addClass('contacts-record').show();
+
+            // clear controls
+            $('#ProductID').val(null);
+            $("#ProductType").val(null);
+            $("#ProductShorName").val(null);
+            $("#Quantity").val(null);
+            $('.display').append(template);
+        });
+    });
+    function calculateTotal() {
+        //$('.pnm, .price, .subtot, .grdtot').prop('readonly', true);
+        var $tblrows = $("#myDataTable tbody tr");
+        var grandtotal = 0;
+        $tblrows.each(function () {
+            var $tblrow = $(this);
+
+            var qty = $tblrow.find(".qty").val();
+            var price = $tblrow.find(".price").val();
+            var subTotal = parseInt(qty, 10) * parseFloat(price);
+
+            if (!isNaN(subTotal)) {
+
+                $tblrow.find('.subtot').val(subTotal.toFixed(2));
+
+                grandtotal = grandtotal + subTotal;
+                //$(".subtot").each(function () {
+                //    var stval = parseFloat($(this).val());
+                //    grandTotal += isNaN(stval) ? 0 : stval;
+                //});
+
+                //$('.grdtot').val(grandTotal.toFixed(2));
+            }
+        });
+
+        var $tblfootrows = $("#myDataTable tfoot tr");
+        $tblfootrows.each(function () {
+            var $tblfootrow = $(this);
+            var gt = $tblfootrow.find('.grdtot').val();
+            if (gt != undefined)
+                $tblfootrow.find('.grdtot').val(grandtotal.toFixed(2));
+        });
+        calculateGrandTotal(0);
+    };
+
+    function calculateGrandTotal(total) {
+        var $tblfootrows = $("#myDataTable tfoot tr");
+        var cgst = 0; var gst = 0; var sgst = 0;
+        var discount = 0;
+        var gtotal = 0;
+        var ggTotal = 0;
+        var i = 0;
+        $tblfootrows.each(function () {
+            var $tblfootrow = $(this);
+            if (i == 0) gtotal = $tblfootrow.find('.grdtot').val();
+            if (i == 1) discount = $tblfootrow.find('.discount').val();
+            if (i == 2) {
+                if (sgst != undefined && sgst != NaN && sgst != "" && sgst != 0) gst = parseInt(sgst);
+                if (cgst != undefined && cgst != NaN && cgst != "" && cgst != 0) gst = gst + parseInt(cgst);
+                if (total != undefined && total != 0)
+                    gtotal = parseFloat(total);
+                ggTotal = parseFloat(gtotal);
+                if (gst != 0) ggTotal = parseFloat(gtotal) + parseFloat((gtotal / 100) * gst)
+                else
+                {
+                    ggTotal = parseFloat(gtotal);
+                }
+                if (discount != undefined && discount != NaN && discount != "" && discount != 0)
+                    ggTotal = ggTotal - parseFloat((gtotal / 100) * parseInt(discount))
+
+                if (ggTotal != undefined && ggTotal != NaN)
+                    $tblfootrow.find('.grandgrdtot').val(ggTotal.toFixed(2));
+            }
+            i++;
+        });
+    }
+</script>
+    @using (Html.BeginForm()) 
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Order</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.order.OrderNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.order.OrderNo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.order.OrderNo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.order.CustomerOrganizationName, htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.order.CustomerOrganizationName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.order.CustomerOrganizationName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @{
+                if (ViewBag.Edit == false)
+                {        
+                    <h4>ADD PRODUCTS</h4>
+                    <hr class="style3" />
+                    <div></div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            @Html.DropDownList("ProductID", null, "Select Product", htmlAttributes: new { @class = "form-control input-sm" })
+                            <div style="color:red;" id="msg_id"></div>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBox("ProductShorName", null, htmlAttributes: new { @class = "form-control  input-sm", @readonly = true, title = "Short Name" })
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBox("ProductType", null, htmlAttributes: new { @class = "form-control  input-sm", @readonly = true, title = " Product Type" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            @Html.TextBox("Quantity", null, htmlAttributes: new { @class = "form-control  input-sm", title = "Quantity" })
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBox("CostPrice", null, htmlAttributes: new { @class = "form-control  input-sm", title = "Price" })
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="button" id="addRow" value="Add" class="add-button btn-success-outline" />
+                        </div>
+                    </div>
+                }
+            }
+            <br />
+            <table id="myDataTable" class="display table-striped">
+                <thead>
+                    <tr>
+                        <th style="display:none">ID</th>
+                        <th style="display:none">OrderID</th>
+                        <th style="display:none">ProductID</th>
+                        <th>Product Name</th>
+                        <th>Product Type</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        //To make unique Id
+                        int i = 0;
+                        foreach (var item in Model.orderItems)
+                        {
+                            if (i == 0)
+                            {
+                                <tr class="contacts-record-template" style="display:none">
+                                    <td style="display:none">
+                                        @Html.TextBoxFor(model => model.orderItems[i].ID, new { @id = "ID1", @class = "form-control input-sm" })
+                                    </td>
+                                    <td style="display:none">
+                                        @Html.TextBoxFor(model => model.orderItems[i].OrderID, new { @id = "OrderID1", @class = "form-control input-sm" })
+                                    </td>
+                                    <td style="display:none">
+                                        @Html.TextBoxFor(model => model.orderItems[i].ProductID, new { @id = "ProductID1", @class = "form-control input-sm" })
+                                    </td>
+                                    <td class="col-xs-2">
+                                        @Html.TextBox("ProductName1", new { @id = "ProductName1", @class = "form-control input-sm" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("ProductType1", new { @id = "ProductType1", @class = "form-control input-sm" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.orderItems[i].Quantity, new { @id = "Quantity1", @class = "form-control input-sm qty", onchange = "calculateTotal()" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.orderItems[i].Price, new { @id = "CostPrice1", @class = "form-control input-sm price", onchange = "calculateTotal()" })
+                                    </td>
+
+                                    <td class="col-xs-2">
+                                        <input type="text" id="Total1" class="form-control input-sm subtot" />
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr class="contacts-record">
+                                    <td style="display:none">
+                                        @Html.TextBoxFor(model => model.orderItems[i].ID, new { @id = "ID_" + i, @class = "form-control input-sm" })
+                                    </td>
+                                    <td style="display:none">
+                                        @Html.TextBoxFor(model => model.orderItems[i].OrderID, new { @id = "OrderID_" + i, @class = "form-control input-sm" })
+                                    </td>
+                                    <td style="display:none">
+                                        @Html.TextBoxFor(model => model.orderItems[i].ProductID, new { @id = "ProductID_" + i, @class = "form-control input-sm" })
+                                    </td>
+                                    <td class="col-xs-2">
+                                        @Html.TextBox("ProductName", new { @id = "ItemCode_" + i, @class = "form-control input-sm" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("ProductType", new { @id = "ProductName_" + i, @class = "form-control input-sm" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.orderItems[i].Quantity, new { @id = "Qty_" + i, @class = "form-control input-sm" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.orderItems[i].Price, new { @id = "CostPrice_" + i, @class = "form-control input-sm price", onchange = "calculateTotal()" })
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input type="text" id="Total_" class="form-control input-sm subtot" />
+                                    </td>
+                                </tr>
+                            }
+                            i++;
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>Total :</th>
+                        <th>
+                            <input type="text" id="GrandTotal_" class="form-control input-sm grdtot" readonly />
+                        </th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>Discount :</th>
+                        <th class="col-xs-2">
+                            @Html.Editor("Discount", new { htmlAttributes = new { @class = "discount", onchange = "calculateGrandTotal(0)" } })
+                        </th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>Grand Total :</th>
+                        <th class="col-xs-2">
+                            <input type="text" id="GrandGrandTotal_" value="0.00" class="form-control input-sm grandgrdtot" readonly />
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.order.Advance, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.order.Advance, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.order.Advance, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.order.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.order.Remarks, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.order.Remarks, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <input type="button" value="Proceed"  class="btn btn-primary" />
+            </div>
+            <br />
+            <br />
+        </div>
+        <div style="display:block">
+            <div class="panel panel-primary" >
+                <div class="panel-heading">Address</div>
+                <div class="panel-body">
+                    <div class="row  top-buffer">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.order.Address, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-pull-6">
+                                    @Html.EditorFor(model => model.order.Address, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.order.Address, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.order.City, htmlAttributes: new { @class = "control-label col-md-5" })
+                                <div class="col-md-pull-6">
+                                    @Html.EditorFor(model => model.order.City, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.order.City, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row top-buffer">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.order.State, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-pull-6">
+                                    @Html.EditorFor(model => model.order.State, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.order.State, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.order.Country, htmlAttributes: new { @class = "control-label col-md-5" })
+                                <div class="col-md-pull-6">
+                                    @Html.EditorFor(model => model.order.Country, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.order.Country, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row top-buffer">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.order.Zip, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-pull-6">
+                                    @Html.EditorFor(model => model.order.Zip, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.order.Zip, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.order.ContactPersonName, htmlAttributes: new { @class = "control-label col-md-5" })
+                                <div class="col-md-pull-6">
+                                    @Html.EditorFor(model => model.order.ContactPersonName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.order.ContactPersonName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row top-buffer">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.order.ContactNo, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-pull-6">
+                                    @Html.EditorFor(model => model.order.ContactNo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.order.ContactNo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.order.DeliveryDate, htmlAttributes: new { @class = "control-label col-md-5" })
+                                <div class="col-md-pull-6">
+                                    @Html.EditorFor(model => model.order.DeliveryDate, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.order.DeliveryDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br /><br />
+
+            <div class="col-md-4 center-block">
+                <div>
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
+            </div>
+            <div class="col-md-4 center-block">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-2">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </div>
+                        }
+
+

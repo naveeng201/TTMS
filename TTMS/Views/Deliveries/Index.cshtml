@@ -1,0 +1,72 @@
+﻿@model IEnumerable<TTMS.Models.Delivery>
+
+<script>
+        $(document).ready(function () {
+            var oTable = $('#tblDelivery').dataTable({
+
+            });
+        });
+</script>
+<div class="panel-heading">
+    <h4>Orders</h4>
+    <span class="tools pull-right">
+        @Html.ActionLink("New Delivery", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
+    </span>
+</div>
+<br /><br />
+    <table id="tblDelivery" class="display">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmployeeID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DeliveryDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ChallanNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DeliveredProducts)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BalanceOrder)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Order.OrderNo)
+                </th>
+                <th></th>
+            </tr>
+        <thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeliveryDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ChallanNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeliveredProducts)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BalanceOrder)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Order.OrderNo)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    </td>
+                </tr>
+            }
+        <tbody>
+</table>
+ 

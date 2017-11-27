@@ -36,6 +36,9 @@
         <AssociationConnector Association="TTMSModel.FK_PurchaseEntry_PurchaseOrder" />
         <AssociationConnector Association="TTMSModel.FK_PurchaseEntryPayment_PurchaseEntry" />
         <AssociationConnector Association="TTMSModel.FK_PurchaseOrder_Suppliers" />
+        <EntityTypeShape EntityType="TTMSModel.OrderItem" Width="1.5" PointX="11" PointY="3.5" />
+        <AssociationConnector Association="TTMSModel.FK_OrderItems_Orders" />
+        <AssociationConnector Association="TTMSModel.FK_OrderItems_Products" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -18,6 +18,7 @@ namespace TTMS.Models
         public Product()
         {
             this.OrderDetails = new HashSet<OrderDetail>();
+            this.OrderItems = new HashSet<OrderItem>();
         }
     
         public int ID { get; set; }
@@ -38,5 +39,7 @@ namespace TTMS.Models
         public virtual ProductCategory ProductCategory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
 }

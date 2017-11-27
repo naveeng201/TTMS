@@ -1,0 +1,61 @@
+﻿@model TTMS.Models.Delivery
+
+    <div>
+        <h4>Delivery</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.EmployeeID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.EmployeeID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.DeliveryDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.DeliveryDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ChallanNo)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ChallanNo)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.DeliveredProducts)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.DeliveredProducts)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.BalanceOrder)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.BalanceOrder)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Order.OrderNo)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Order.OrderNo)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+ 

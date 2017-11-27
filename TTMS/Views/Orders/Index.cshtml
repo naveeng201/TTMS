@@ -1,0 +1,84 @@
+﻿@model IEnumerable<TTMS.Models.Order>
+
+<script>
+        $(document).ready(function () {
+            var oTable = $('#tblOrders').dataTable({
+
+            });
+        });
+</script>
+<div class="panel-heading">
+    <h4>Orders</h4>
+    <span class="tools pull-right">
+        @Html.ActionLink("New Order", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
+    </span>
+</div>
+<br /><br />
+    <table id="tblOrders" class="display">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerOrganizationName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ContactPersonName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ContactNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GrandTotalWithTax)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Advance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Remarks)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CustomerOrganizationName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactPersonName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GrandTotalWithTax)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Advance)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remarks)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    </td>
+                </tr>
+            }
+        <tbody>
+</table>
+ 
