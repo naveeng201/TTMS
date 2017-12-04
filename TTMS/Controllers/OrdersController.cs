@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using TTMS.Models;
+using Microsoft.AspNet.Identity;
 
 namespace TTMS.Controllers
 {
@@ -28,12 +29,14 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
-            if (order == null)
+            OrdersVM objOrder = new OrdersVM();
+            objOrder.order = db.Orders.Find(id);
+            objOrder.orderItems = db.OrderItems.Where(x => x.OrderID == id).ToList();
+            if (objOrder == null)
             {
                 return HttpNotFound();
             }
-            return View(order);
+            return View(objOrder);
         }
 
         // GET: Orders/Create
@@ -58,14 +61,28 @@ namespace TTMS.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Orders.Add(order);
+                Order objOrder = orderVM.order;
+                objOrder.TotalPrice = calculateTotal(orderVM.orderItems);
+                objOrder.GrandTotalWithTax = objOrder.TotalPrice;
+                foreach (var orderItem in orderVM.orderItems)
+                {
+                    objOrder.OrderItems.Add(orderItem);
+                }
+                db.Orders.Add(objOrder);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            return View(order);
+            return View(orderVM);
         }
-
+        private float calculateTotal(IEnumerable<OrderItem> orderItems)
+        {
+            float total = 0;
+            foreach (var od in orderItems)
+            {
+                total = total + (Convert.ToInt32(od.Quantity) * Convert.ToInt32(od.Price));
+            }
+            return total;
+        }
         // GET: Orders/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -132,14 +149,25 @@ namespace TTMS.Controllers
             base.Dispose(disposing);
         }
 
+        private string GenerateOrderNo()
+        {
+            var userId = User.Identity.GetUserId().ToString();
+            var datepart = DateTime.Now.Day.ToString();
+            var monthpart = DateTime.Now.Month.ToString();
+            Random rand = new Random();
+            int randNo = rand.Next(00000, 99999);
+            string OrderNo = string.Format("{0}{1}{2}{3}{4}", "A",userId.Substring(userId.Length - 4),  monthpart, datepart, randNo);
+            if (db.Orders.Any(x => x.OrderNo == OrderNo))
+            {
+                GenerateOrderNo();
+            }
+            return OrderNo;
+        }
         [HttpGet]
         public ActionResult GetOrderNo()
         {
-            var result = db.Orders.Select(x => x.OrderNo).DefaultIfEmpty().Max();
-            int iNumber = 0;
-            int.TryParse(result == null ? "0" : result.ToString(), out iNumber);
-            iNumber = iNumber + 1;
-            return Json(iNumber, JsonRequestBehavior.AllowGet);
+            string strOrderNo = GenerateOrderNo();
+            return Json(strOrderNo.ToUpper(), JsonRequestBehavior.AllowGet);
         }
     }
 }

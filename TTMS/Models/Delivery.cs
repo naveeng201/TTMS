@@ -27,5 +27,6 @@ namespace TTMS.Models
         public Nullable<int> ModifiedBy { get; set; }
     
         public virtual Order Order { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

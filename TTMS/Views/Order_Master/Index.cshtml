@@ -1,60 +1,48 @@
 ﻿@model IEnumerable<TTMS.Models.Order_Master>
 
- <script>
-        $(document).ready(function () {
-            var oTable = $('#tblOrdersMasters').dataTable({
-
-            });
-        });
-</script>
-<div class="panel-heading">
-    <h4>Cutting Masters</h4>
-    <span class="tools pull-right">
-        @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
-    </span>
-</div>
-<br /><br />
-    <table id="tblOrdersMasters" class="display">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.EmployeeID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Material)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Quantity)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Order.OrderNo)
-                </th>
-                <th></th>
-            </tr>
-        <thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EmployeeID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Material)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Order.OrderNo)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                    </td>
-                </tr>
-            }
-        <tbody>
-</table>
+ 
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Material)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+ 
+            <th>
+                @Html.DisplayNameFor(model => model.Order.OrderNo)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Material)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+ 
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.OrderNo)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            </td>
+        </tr>
+    }
+    
+    </table>
  

@@ -60,6 +60,10 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -177,6 +181,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrderDetailsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\Order_EmployeeController.cs" />
     <Compile Include="Controllers\Order_MasterController.cs" />
     <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
@@ -185,6 +190,7 @@
     <Compile Include="Controllers\PurchaseOrdersController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\UnitsController.cs" />
+    <Compile Include="Filters\CustomExceptionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -278,6 +284,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TTMS.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\TTMSEntities.cs" />
     <Compile Include="Models\Unit.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
@@ -372,6 +379,11 @@
     <Content Include="Scripts\jquery.dataTables.editable.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.jeditable.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -471,16 +483,21 @@
     <Content Include="Views\Orders\Details.cshtml" />
     <Content Include="Views\Orders\Edit.cshtml" />
     <Content Include="Views\Orders\Index.cshtml" />
-    <Content Include="Views\Order_Master\Create.cshtml" />
-    <Content Include="Views\Order_Master\Delete.cshtml" />
-    <Content Include="Views\Order_Master\Details.cshtml" />
-    <Content Include="Views\Order_Master\Edit.cshtml" />
-    <Content Include="Views\Order_Master\Index.cshtml" />
     <Content Include="Views\Deliveries\Create.cshtml" />
     <Content Include="Views\Deliveries\Delete.cshtml" />
     <Content Include="Views\Deliveries\Details.cshtml" />
     <Content Include="Views\Deliveries\Edit.cshtml" />
     <Content Include="Views\Deliveries\Index.cshtml" />
+    <Content Include="Views\Order_Master\Create.cshtml" />
+    <Content Include="Views\Order_Master\Delete.cshtml" />
+    <Content Include="Views\Order_Master\Details.cshtml" />
+    <Content Include="Views\Order_Master\Edit.cshtml" />
+    <Content Include="Views\Order_Master\Index.cshtml" />
+    <Content Include="Views\Order_Employee\Create.cshtml" />
+    <Content Include="Views\Order_Employee\Delete.cshtml" />
+    <Content Include="Views\Order_Employee\Details.cshtml" />
+    <Content Include="Views\Order_Employee\Edit.cshtml" />
+    <Content Include="Views\Order_Employee\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

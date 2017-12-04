@@ -1,13 +1,15 @@
 ﻿@model TTMS.Models.OrdersVM
- <style>
-     .top-buffer { margin-top:10px; }
- </style>
+<style>
+    .top-buffer {
+        margin-top: 10px;
+    }
+</style>
 <script>
     $(document).ready(function () {
         $('#myDataTable').dataTable({
+            bFilter: false, bInfo: false, "bLengthChange": false,
+            "pagingType": "full_numbers"
         });
-
-        $("#ProductShorName, #ProductType,#Quantity,#CostPrice").WaterMark();
 
         if ($('#order_OrderNo').val() == "") {
             var ServiceUrl = "/Orders/GetOrderNo";
@@ -187,8 +189,7 @@
                     gtotal = parseFloat(total);
                 ggTotal = parseFloat(gtotal);
                 if (gst != 0) ggTotal = parseFloat(gtotal) + parseFloat((gtotal / 100) * gst)
-                else
-                {
+                else {
                     ggTotal = parseFloat(gtotal);
                 }
                 if (discount != undefined && discount != NaN && discount != "" && discount != 0)
@@ -201,307 +202,301 @@
         });
     }
 </script>
-    @using (Html.BeginForm()) 
-    {
-        @Html.AntiForgeryToken()
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
-            <h4>Order</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <h4>Order</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.order.OrderNo, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-6">
-                            @Html.EditorFor(model => model.order.OrderNo, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.order.OrderNo, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.order.CustomerOrganizationName, htmlAttributes: new { @class = "control-label col-md-5" })
-                        <div class="col-md-6">
-                            @Html.EditorFor(model => model.order.CustomerOrganizationName, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.order.CustomerOrganizationName, "", new { @class = "text-danger" })
-                        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.order.OrderNo, htmlAttributes: new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-6">
+                        @Html.EditorFor(model => model.order.OrderNo, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                        @Html.ValidationMessageFor(model => model.order.OrderNo, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
-            @{
-                if (ViewBag.Edit == false)
-                {        
-                    <h4>ADD PRODUCTS</h4>
-                    <hr class="style3" />
-                    <div></div>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            @Html.DropDownList("ProductID", null, "Select Product", htmlAttributes: new { @class = "form-control input-sm" })
-                            <div style="color:red;" id="msg_id"></div>
-                        </div>
-                        <div class="col-sm-3">
-                            @Html.TextBox("ProductShorName", null, htmlAttributes: new { @class = "form-control  input-sm", @readonly = true, title = "Short Name" })
-                        </div>
-                        <div class="col-sm-3">
-                            @Html.TextBox("ProductType", null, htmlAttributes: new { @class = "form-control  input-sm", @readonly = true, title = " Product Type" })
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-3">
-                            @Html.TextBox("Quantity", null, htmlAttributes: new { @class = "form-control  input-sm", title = "Quantity" })
-                        </div>
-                        <div class="col-sm-3">
-                            @Html.TextBox("CostPrice", null, htmlAttributes: new { @class = "form-control  input-sm", title = "Price" })
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="button" id="addRow" value="Add" class="add-button btn-success-outline" />
-                        </div>
-                    </div>
-                }
-            }
-            <br />
-            <table id="myDataTable" class="display table-striped">
-                <thead>
-                    <tr>
-                        <th style="display:none">ID</th>
-                        <th style="display:none">OrderID</th>
-                        <th style="display:none">ProductID</th>
-                        <th>Product Name</th>
-                        <th>Product Type</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        //To make unique Id
-                        int i = 0;
-                        foreach (var item in Model.orderItems)
-                        {
-                            if (i == 0)
-                            {
-                                <tr class="contacts-record-template" style="display:none">
-                                    <td style="display:none">
-                                        @Html.TextBoxFor(model => model.orderItems[i].ID, new { @id = "ID1", @class = "form-control input-sm" })
-                                    </td>
-                                    <td style="display:none">
-                                        @Html.TextBoxFor(model => model.orderItems[i].OrderID, new { @id = "OrderID1", @class = "form-control input-sm" })
-                                    </td>
-                                    <td style="display:none">
-                                        @Html.TextBoxFor(model => model.orderItems[i].ProductID, new { @id = "ProductID1", @class = "form-control input-sm" })
-                                    </td>
-                                    <td class="col-xs-2">
-                                        @Html.TextBox("ProductName1", new { @id = "ProductName1", @class = "form-control input-sm" })
-                                    </td>
-                                    <td>
-                                        @Html.TextBox("ProductType1", new { @id = "ProductType1", @class = "form-control input-sm" })
-                                    </td>
-                                    <td>
-                                        @Html.TextBoxFor(model => model.orderItems[i].Quantity, new { @id = "Quantity1", @class = "form-control input-sm qty", onchange = "calculateTotal()" })
-                                    </td>
-                                    <td>
-                                        @Html.TextBoxFor(model => model.orderItems[i].Price, new { @id = "CostPrice1", @class = "form-control input-sm price", onchange = "calculateTotal()" })
-                                    </td>
-
-                                    <td class="col-xs-2">
-                                        <input type="text" id="Total1" class="form-control input-sm subtot" />
-                                    </td>
-                                </tr>
-                            }
-                            else
-                            {
-                                <tr class="contacts-record">
-                                    <td style="display:none">
-                                        @Html.TextBoxFor(model => model.orderItems[i].ID, new { @id = "ID_" + i, @class = "form-control input-sm" })
-                                    </td>
-                                    <td style="display:none">
-                                        @Html.TextBoxFor(model => model.orderItems[i].OrderID, new { @id = "OrderID_" + i, @class = "form-control input-sm" })
-                                    </td>
-                                    <td style="display:none">
-                                        @Html.TextBoxFor(model => model.orderItems[i].ProductID, new { @id = "ProductID_" + i, @class = "form-control input-sm" })
-                                    </td>
-                                    <td class="col-xs-2">
-                                        @Html.TextBox("ProductName", new { @id = "ItemCode_" + i, @class = "form-control input-sm" })
-                                    </td>
-                                    <td>
-                                        @Html.TextBox("ProductType", new { @id = "ProductName_" + i, @class = "form-control input-sm" })
-                                    </td>
-                                    <td>
-                                        @Html.TextBoxFor(model => model.orderItems[i].Quantity, new { @id = "Qty_" + i, @class = "form-control input-sm" })
-                                    </td>
-                                    <td>
-                                        @Html.TextBoxFor(model => model.orderItems[i].Price, new { @id = "CostPrice_" + i, @class = "form-control input-sm price", onchange = "calculateTotal()" })
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input type="text" id="Total_" class="form-control input-sm subtot" />
-                                    </td>
-                                </tr>
-                            }
-                            i++;
-                        }
-                    }
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th>Total :</th>
-                        <th>
-                            <input type="text" id="GrandTotal_" class="form-control input-sm grdtot" readonly />
-                        </th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th>Discount :</th>
-                        <th class="col-xs-2">
-                            @Html.Editor("Discount", new { htmlAttributes = new { @class = "discount", onchange = "calculateGrandTotal(0)" } })
-                        </th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th>Grand Total :</th>
-                        <th class="col-xs-2">
-                            <input type="text" id="GrandGrandTotal_" value="0.00" class="form-control input-sm grandgrdtot" readonly />
-                        </th>
-                    </tr>
-                </tfoot>
-            </table>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.order.Advance, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.order.Advance, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.order.Advance, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.order.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.order.Remarks, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.order.Remarks, "", new { @class = "text-danger" })
-                        </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.order.CustomerOrganizationName, htmlAttributes: new { @class = "control-label col-sm-5" })
+                    <div class="col-sm-6">
+                        @Html.EditorFor(model => model.order.CustomerOrganizationName, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                        @Html.ValidationMessageFor(model => model.order.CustomerOrganizationName, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
-                <input type="button" value="Proceed"  class="btn btn-primary" />
-            </div>
-            <br />
-            <br />
         </div>
-        <div style="display:block">
-            <div class="panel panel-primary" >
-                <div class="panel-heading">Address</div>
-                <div class="panel-body">
-                    <div class="row  top-buffer">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.order.Address, htmlAttributes: new { @class = "control-label col-md-4" })
-                                <div class="col-md-pull-6">
-                                    @Html.EditorFor(model => model.order.Address, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.order.Address, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.order.City, htmlAttributes: new { @class = "control-label col-md-5" })
-                                <div class="col-md-pull-6">
-                                    @Html.EditorFor(model => model.order.City, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.order.City, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row top-buffer">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.order.State, htmlAttributes: new { @class = "control-label col-md-4" })
-                                <div class="col-md-pull-6">
-                                    @Html.EditorFor(model => model.order.State, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.order.State, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.order.Country, htmlAttributes: new { @class = "control-label col-md-5" })
-                                <div class="col-md-pull-6">
-                                    @Html.EditorFor(model => model.order.Country, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.order.Country, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row top-buffer">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.order.Zip, htmlAttributes: new { @class = "control-label col-md-4" })
-                                <div class="col-md-pull-6">
-                                    @Html.EditorFor(model => model.order.Zip, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.order.Zip, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.order.ContactPersonName, htmlAttributes: new { @class = "control-label col-md-5" })
-                                <div class="col-md-pull-6">
-                                    @Html.EditorFor(model => model.order.ContactPersonName, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.order.ContactPersonName, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row top-buffer">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.order.ContactNo, htmlAttributes: new { @class = "control-label col-md-4" })
-                                <div class="col-md-pull-6">
-                                    @Html.EditorFor(model => model.order.ContactNo, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.order.ContactNo, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.order.DeliveryDate, htmlAttributes: new { @class = "control-label col-md-5" })
-                                <div class="col-md-pull-6">
-                                    @Html.EditorFor(model => model.order.DeliveryDate, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.order.DeliveryDate, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br /><br />
+        <h4>ADD PRODUCTS</h4>
+        @{
+            if (ViewBag.Edit == false)
+            {
 
-            <div class="col-md-4 center-block">
-                <div>
-                    @Html.ActionLink("Back to List", "Index")
+                <hr class="style3" />
+                <div></div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        @Html.DropDownList("ProductID", null, "Select Product", htmlAttributes: new { @class = "form-control input-sm" })
+                        <div style="color:red;" id="msg_id"></div>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBox("ProductShorName", null, htmlAttributes: new { @class = "form-control  input-sm", @readonly = true, placeholder = "Short Name" })
+                    </div>
+                    <div class="col-sm-2">
+                        @Html.TextBox("ProductType", null, htmlAttributes: new { @class = "form-control  input-sm", @readonly = true, placeholder = " Product Type" })
+                    </div>
+                    <div class="col-sm-1">
+                        @Html.TextBox("Quantity", null, htmlAttributes: new { @class = "form-control  input-sm", placeholder = "Quantity" })
+                    </div>
+                    <div class="col-sm-1">
+                        @Html.TextBox("CostPrice", null, htmlAttributes: new { @class = "form-control  input-sm", placeholder = "Price" })
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="button" id="addRow" value="Add" class="add-button btn-success-outline" />
+                    </div>
+                </div>
+            }
+        }
+        <br />
+        <table id="myDataTable" class="display table-striped">
+            <thead>
+                <tr>
+                    <th style="display:none">ID</th>
+                    <th style="display:none">OrderID</th>
+                    <th style="display:none">ProductID</th>
+                    <th>Product Name</th>
+                    <th>Product Type</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    //To make unique Id
+                    int i = 0;
+                    foreach (var item in Model.orderItems)
+                    {
+                        if (i == 0)
+                        {
+                            <tr class="contacts-record-template" style="display:none">
+                                <td style="display:none">
+                                    @Html.TextBoxFor(model => model.orderItems[i].ID, new { @id = "ID1", @class = "form-control input-sm" })
+                                </td>
+                                <td style="display:none">
+                                    @Html.TextBoxFor(model => model.orderItems[i].OrderID, new { @id = "OrderID1", @class = "form-control input-sm" })
+                                </td>
+                                <td style="display:none">
+                                    @Html.TextBoxFor(model => model.orderItems[i].ProductID, new { @id = "ProductID1", @class = "form-control input-sm" })
+                                </td>
+                                <td class="col-xs-2">
+                                    @Html.TextBox("ProductName1", null, new { @id = "ProductName1", @class = "form-control input-sm", @readonly = true })
+                                </td>
+                                <td class="col-xs-2">
+                                    @Html.TextBox("ProductType1", null, new { @id = "ProductType1", @class = "form-control input-sm", @readonly = true })
+                                </td>
+                                <td class="col-xs-1">
+                                    @Html.TextBoxFor(model => model.orderItems[i].Quantity, new { @id = "Quantity1", @class = "form-control input-sm qty", onchange = "calculateTotal()" })
+                                </td>
+                                <td class="col-xs-1">
+                                    @Html.TextBoxFor(model => model.orderItems[i].Price, new { @id = "CostPrice1", @class = "form-control input-sm price", onchange = "calculateTotal()" })
+                                </td>
+
+                                <td class="col-xs-1">
+                                    <input type="text" id="Total1" class="form-control input-sm subtot"  />
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr class="contacts-record">
+                                <td style="display:none">
+                                    @Html.TextBoxFor(model => model.orderItems[i].ID, new { @id = "ID_" + i, @class = "form-control input-sm" })
+                                </td>
+                                <td style="display:none">
+                                    @Html.TextBoxFor(model => model.orderItems[i].OrderID, new { @id = "OrderID_" + i, @class = "form-control input-sm" })
+                                </td>
+                                <td style="display:none">
+                                    @Html.TextBoxFor(model => model.orderItems[i].ProductID, new { @id = "ProductID_" + i, @class = "form-control input-sm" })
+                                </td>
+                                <td class="col-xs-2">
+                                    @Html.TextBox("ProductName",null, new { @id = "ItemCode_" + i, @class = "form-control input-sm", @readonly = true })
+                                </td>
+                                <td class="col-xs-2">
+                                    @Html.TextBox("ProductType", null, new { @id = "ProductName_" + i, @class = "form-control input-sm", @readonly = true })
+                                </td>
+                                <td class="col-xs-1">
+                                    @Html.TextBoxFor(model => model.orderItems[i].Quantity, new { @id = "Qty_" + i, @class = "form-control input-sm" })
+                                </td>
+                                <td class="col-xs-1">
+                                    @Html.TextBoxFor(model => model.orderItems[i].Price, new { @id = "CostPrice_" + i, @class = "form-control input-sm price", onchange = "calculateTotal()" })
+                                </td>
+                                <td class="col-xs-1">
+                                    <input type="text" id="Total_" class="form-control input-sm subtot" />
+                                </td>
+                            </tr>
+                        }
+                        i++;
+                    }
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Total :</td>
+                    <td>
+                        <input type="text" id="GrandTotal_" class="form-control input-sm grdtot" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Discount :</td>
+                    <td class="col-xs-2">
+                        @Html.Editor("Discount", new { htmlAttributes = new { @class = "discount", onchange = "calculateGrandTotal(0)" } })
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <th>Grand Total :</th>
+                    <th class="col-xs-2">
+                        <input type="text" id="GrandGrandTotal_" value="0.00" class="form-control input-sm grandgrdtot" readonly />
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+
+        <h4>CUSTOMER ADDRESS</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.order.Address, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-pull-6">
+                        @Html.EditorFor(model => model.order.Address, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.order.Address, "", new { @class = "text-danger" })
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4 center-block">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.order.City, htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-pull-6">
+                        @Html.EditorFor(model => model.order.City, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.order.City, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.order.State, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-pull-6">
+                        @Html.EditorFor(model => model.order.State, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.order.State, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.order.Country, htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-pull-6">
+                        @Html.EditorFor(model => model.order.Country, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.order.Country, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.order.Zip, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-pull-6">
+                        @Html.EditorFor(model => model.order.Zip, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.order.Zip, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.order.ContactPersonName, htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-pull-6">
+                        @Html.EditorFor(model => model.order.ContactPersonName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.order.ContactPersonName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.order.ContactNo, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-pull-6">
+                        @Html.EditorFor(model => model.order.ContactNo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.order.ContactNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.order.DeliveryDate, htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-pull-6">
+                        @Html.EditorFor(model => model.order.DeliveryDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.order.DeliveryDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4>PAYMENT</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.order.Advance, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-pull-6">
+                        @Html.EditorFor(model => model.order.Advance, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.order.Advance, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.order.Remarks, htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-pull-6">
+                        @Html.EditorFor(model => model.order.Remarks, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.order.Remarks, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col-md-1">
+                <div>
+                    @Html.ActionLink("Cancel", "Index",null, new { @class = "btn btn-default" })
+                </div>
+            </div>
+            <div class="col-md-2">
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-2">
-                        <input type="submit" value="Create" class="btn btn-default" />
+                        <input type="submit" value="Submit" class="btn btn-success" />
                     </div>
                 </div>
             </div>
         </div>
-                        }
+    </div>
+  }
 
 

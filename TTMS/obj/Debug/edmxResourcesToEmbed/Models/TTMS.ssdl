@@ -119,6 +119,7 @@
     <Property Name="CreatedBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
+    <Property Name="OrderID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Order_Master">
     <Key>
@@ -184,8 +185,8 @@
     <Property Name="ContactPersonName" Type="nvarchar" MaxLength="200" Nullable="false" />
     <Property Name="ContactNo" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="ProductType" Type="int" />
-    <Property Name="Size" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="Quantity" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Size" Type="nvarchar" MaxLength="50" />
+    <Property Name="Quantity" Type="nvarchar" MaxLength="50" />
     <Property Name="DeliveryDate" Type="date" />
     <Property Name="PricePerUnit" Type="float" />
     <Property Name="TotalPrice" Type="float" />
@@ -307,6 +308,18 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
   </EntityType>
+  <Association Name="FK_Delivery_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Delivery" Type="Self.Delivery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Delivery">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Delivery_Orders">
     <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
     <End Role="Delivery" Type="Self.Delivery" Multiplicity="*" />
@@ -355,6 +368,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Order_Employee_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Order_Employee" Type="Self.Order_Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order_Employee">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Master_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Order_Master" Type="Self.Order_Master" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order_Master">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Order_Master_Orders">
     <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
     <End Role="Order_Master" Type="Self.Order_Master" Multiplicity="*" />
@@ -363,6 +400,18 @@
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="Order_Master">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Order_Employee">
+    <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+    <End Role="Order_Employee" Type="Self.Order_Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Orders">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order_Employee">
         <PropertyRef Name="OrderID" />
       </Dependent>
     </ReferentialConstraint>
@@ -507,6 +556,10 @@
     <EntitySet Name="PurchaseOrder" EntityType="Self.PurchaseOrder" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Units" EntityType="Self.Units" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Delivery_Employee" Association="Self.FK_Delivery_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Delivery" EntitySet="Delivery" />
+    </AssociationSet>
     <AssociationSet Name="FK_Delivery_Orders" Association="Self.FK_Delivery_Orders">
       <End Role="Orders" EntitySet="Orders" />
       <End Role="Delivery" EntitySet="Delivery" />
@@ -523,9 +576,21 @@
       <End Role="Employee" EntitySet="Employee" />
       <End Role="EmployeePerformance" EntitySet="EmployeePerformance" />
     </AssociationSet>
+    <AssociationSet Name="FK_Order_Employee_Employee" Association="Self.FK_Order_Employee_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Order_Employee" EntitySet="Order_Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Master_Employee" Association="Self.FK_Order_Master_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Order_Master" EntitySet="Order_Master" />
+    </AssociationSet>
     <AssociationSet Name="FK_Order_Master_Orders" Association="Self.FK_Order_Master_Orders">
       <End Role="Orders" EntitySet="Orders" />
       <End Role="Order_Master" EntitySet="Order_Master" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Order_Employee" Association="Self.FK_Order_Order_Employee">
+      <End Role="Orders" EntitySet="Orders" />
+      <End Role="Order_Employee" EntitySet="Order_Employee" />
     </AssociationSet>
     <AssociationSet Name="FK_OrderDetails_Products" Association="Self.FK_OrderDetails_Products">
       <End Role="Products" EntitySet="Products" />

@@ -13,6 +13,8 @@ namespace TTMS.Models
     public class Order_EmployeeMetadata
     {
         [Required]
+        public int OrderID { get; set; }
+        [Required]
         public int EmployeeID { get; set; }
         [Required]
         public System.DateTime Date { get; set; }

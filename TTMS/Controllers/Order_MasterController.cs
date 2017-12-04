@@ -10,7 +10,6 @@ using TTMS.Models;
 
 namespace TTMS.Controllers
 {
-    [Authorize]
     public class Order_MasterController : Controller
     {
         private TTMSEntities db = new TTMSEntities();
@@ -41,6 +40,13 @@ namespace TTMS.Controllers
         public ActionResult Create()
         {
             ViewBag.OrderID = new SelectList(db.Orders, "ID", "OrderNo");
+            var employees = from emp in db.Employees
+                            where emp.MasterEmp == true
+                            select new {
+                                ID = emp.ID,
+                                Name = emp.FirstName + ", " + emp.LastName
+                            };
+            ViewBag.EmployeeID = new SelectList(employees, "ID", "Name");
             return View();
         }
 

@@ -40,6 +40,7 @@
     <EntitySetMapping Name="Order_Employee">
       <EntityTypeMapping TypeName="TTMSModel.Order_Employee">
         <MappingFragment StoreEntitySet="Order_Employee">
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
           <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />

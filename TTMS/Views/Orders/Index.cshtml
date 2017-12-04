@@ -33,13 +33,7 @@
                     @Html.DisplayNameFor(model => model.TotalPrice)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.GrandTotalWithTax)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.Advance)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Remarks)
                 </th>
                 <th></th>
             </tr>
@@ -64,13 +58,7 @@
                         @Html.DisplayFor(modelItem => item.TotalPrice)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.GrandTotalWithTax)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.Advance)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Remarks)
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |

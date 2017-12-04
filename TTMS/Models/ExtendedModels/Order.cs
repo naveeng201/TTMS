@@ -32,9 +32,9 @@ namespace TTMS.Models
         public string ContactNo { get; set; }
         [Display(Name = "Product Type")]
         public Nullable<int> ProductType { get; set; }
-        [Required]
+        
         public string Size { get; set; }
-        [Required]
+        
         public string Quantity { get; set; }
         [Display(Name = "Delivery Date")]
         public Nullable<System.DateTime> DeliveryDate { get; set; }

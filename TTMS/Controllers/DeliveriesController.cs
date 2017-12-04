@@ -40,7 +40,18 @@ namespace TTMS.Controllers
         // GET: Deliveries/Create
         public ActionResult Create()
         {
-            ViewBag.OrderID = new SelectList(db.Orders, "ID", "OrderNo");
+            var employees = from emp in db.Employees
+                            where emp.MasterEmp != true
+                            select new
+                            {
+                                ID = emp.ID,
+                                Name = emp.FirstName + ", " + emp.LastName
+                            };
+            var orders = from order in db.Orders
+                         join orderemp in db.Order_Employee on order.ID equals orderemp.OrderID
+                         select new { ID = order.ID, OrderNo = order.OrderNo };
+            ViewBag.EmployeeID = new SelectList(employees, "ID", "Name");
+            ViewBag.OrderID = new SelectList(orders, "ID", "OrderNo");
             return View();
         }
 

@@ -20,6 +20,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
         var themeSettings = (localStorage.getItem('themeSettings')) ? JSON.parse(localStorage.getItem('themeSettings')) :
             {};
@@ -142,6 +143,7 @@
                                     <li>@Html.ActionLink("Orders", "Index", "Orders")</li>
                                     <li>@Html.ActionLink("Delivery", "Index", "Deliveries")</li>
                                     <li>@Html.ActionLink("Cutting Master", "Index", "Order_Master")</li>
+                                    <li>@Html.ActionLink("Assign To Employee", "Index", "Order_Employee")</li>
                                     <li><a href="#"> Day End</a></li>
                                 </ul>
                             </li>

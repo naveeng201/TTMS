@@ -1,5 +1,13 @@
 ﻿@model TTMS.Models.Delivery
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(function () {
+        $('#DeliveryDate').datepicker();
+    });
+</script>
  
     @using (Html.BeginForm()) 
     {
@@ -20,7 +28,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.EmployeeID, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.EmployeeID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DropDownList("EmployeeID",null,  htmlAttributes : new { @class = "form-control" } )
                     @Html.ValidationMessageFor(model => model.EmployeeID, "", new { @class = "text-danger" })
                 </div>
             </div>

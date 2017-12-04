@@ -80,6 +80,22 @@
       <End Role="Product" EntitySet="Products" />
       <End Role="OrderItem" EntitySet="OrderItems" />
     </AssociationSet>
+    <AssociationSet Name="FK_Delivery_Employee" Association="TTMSModel.FK_Delivery_Employee">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="Delivery" EntitySet="Deliveries" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Employee_Employee" Association="TTMSModel.FK_Order_Employee_Employee">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="Order_Employee" EntitySet="Order_Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Master_Employee" Association="TTMSModel.FK_Order_Master_Employee">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="Order_Master" EntitySet="Order_Master" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Order_Employee" Association="TTMSModel.FK_Order_Order_Employee">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="Order_Employee" EntitySet="Order_Employee" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="BrandsMaster">
     <Key>
@@ -130,6 +146,9 @@
     <Property Name="CreatedBy" Type="Int32" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="Employee" Relationship="TTMSModel.FK_Order_Employee_Employee" FromRole="Order_Employee" ToRole="Employee" />
+    <Property Name="OrderID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Order" Relationship="TTMSModel.FK_Order_Order_Employee" FromRole="Order_Employee" ToRole="Order" />
   </EntityType>
   <EntityType Name="Order_Master">
     <Key>
@@ -145,6 +164,7 @@
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedBy" Type="Int32" />
     <NavigationProperty Name="Order" Relationship="TTMSModel.FK_Order_Master_Orders" FromRole="Order_Master" ToRole="Order" />
+    <NavigationProperty Name="Employee" Relationship="TTMSModel.FK_Order_Master_Employee" FromRole="Order_Master" ToRole="Employee" />
   </EntityType>
   <EntityType Name="Order">
     <Key>
@@ -161,8 +181,8 @@
     <Property Name="ContactPersonName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="ContactNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ProductType" Type="Int32" />
-    <Property Name="Size" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Quantity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Size" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="DeliveryDate" Type="DateTime" Precision="0" />
     <Property Name="PricePerUnit" Type="Double" />
     <Property Name="TotalPrice" Type="Double" />
@@ -176,6 +196,7 @@
     <NavigationProperty Name="Order_Master" Relationship="TTMSModel.FK_Order_Master_Orders" FromRole="Order" ToRole="Order_Master" />
     <NavigationProperty Name="Deliveries" Relationship="TTMSModel.FK_Delivery_Orders" FromRole="Order" ToRole="Delivery" />
     <NavigationProperty Name="OrderItems" Relationship="TTMSModel.FK_OrderItems_Orders" FromRole="Order" ToRole="OrderItem" />
+    <NavigationProperty Name="Order_Employee" Relationship="TTMSModel.FK_Order_Order_Employee" FromRole="Order" ToRole="Order_Employee" />
   </EntityType>
   <EntityType Name="Unit">
     <Key>
@@ -232,6 +253,7 @@
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedBy" Type="Int32" />
     <NavigationProperty Name="Order" Relationship="TTMSModel.FK_Delivery_Orders" FromRole="Delivery" ToRole="Order" />
+    <NavigationProperty Name="Employee" Relationship="TTMSModel.FK_Delivery_Employee" FromRole="Delivery" ToRole="Employee" />
   </EntityType>
   <Association Name="FK_Delivery_Orders">
     <End Type="TTMSModel.Order" Role="Order" Multiplicity="0..1" />
@@ -302,6 +324,9 @@
     <NavigationProperty Name="EmployeeAttendances" Relationship="TTMSModel.FK_EmployeeAttendance_Employee" FromRole="Employee" ToRole="EmployeeAttendance" />
     <NavigationProperty Name="EmployeePayments" Relationship="TTMSModel.FK_EmployeePayment_Employee" FromRole="Employee" ToRole="EmployeePayment" />
     <NavigationProperty Name="EmployeePerformances" Relationship="TTMSModel.FK_EmployeePerformance_Employee" FromRole="Employee" ToRole="EmployeePerformance" />
+    <NavigationProperty Name="Deliveries" Relationship="TTMSModel.FK_Delivery_Employee" FromRole="Employee" ToRole="Delivery" />
+    <NavigationProperty Name="Order_Employee" Relationship="TTMSModel.FK_Order_Employee_Employee" FromRole="Employee" ToRole="Order_Employee" />
+    <NavigationProperty Name="Order_Master" Relationship="TTMSModel.FK_Order_Master_Employee" FromRole="Employee" ToRole="Order_Master" />
   </EntityType>
   <Association Name="FK_EmployeeAttendance_Employee">
     <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
@@ -595,6 +620,54 @@
       </Principal>
       <Dependent Role="OrderItem">
         <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Delivery_Employee">
+    <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TTMSModel.Delivery" Role="Delivery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Delivery">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Employee_Employee">
+    <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TTMSModel.Order_Employee" Role="Order_Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order_Employee">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Master_Employee">
+    <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TTMSModel.Order_Master" Role="Order_Master" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order_Master">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Order_Employee">
+    <End Type="TTMSModel.Order" Role="Order" Multiplicity="1" />
+    <End Type="TTMSModel.Order_Employee" Role="Order_Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order_Employee">
+        <PropertyRef Name="OrderID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
