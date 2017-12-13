@@ -22,6 +22,71 @@ namespace TTMS.Controllers
             return View(db.Orders.ToList());
         }
 
+        public ActionResult Add(SaleProduct sp)
+        {
+            if (Session["cart"] == null)
+            {
+                List<SaleProduct> li = new List<SaleProduct>();
+                li.Add(sp);
+                Session["cart"] = li;
+                ViewBag.cart = li.Count();
+                Session["count"] = 1;
+            }
+            else
+            {
+                List<SaleProduct> li = (List<SaleProduct>)Session["cart"];
+                li.Add(sp);
+                Session["cart"] = li;
+                ViewBag.cart = li.Count();
+                Session["count"] = Convert.ToInt32(Session["count"]) + 1;
+            }
+            return RedirectToAction("NewOrder", "Orders");
+        }
+
+        public ActionResult AddToCart()
+        {
+            List<SaleProduct> spList = (List <SaleProduct>) Session["cart"];
+            return View(spList);
+        }
+
+        public ActionResult Cart()
+        {
+            return View((List<SaleProduct>)Session["cart"]);
+        }
+        public ActionResult Remove(SaleProduct sp)
+        {
+            List<SaleProduct> li = (List<SaleProduct>)Session["cart"];
+            li.RemoveAll(x => x.ID == sp.ID);
+            Session["cart"] = li;
+            Session["count"] = Convert.ToInt32(Session["count"]) - 1;
+            return RedirectToAction("Cart", "Orders");
+
+        }
+        
+
+        public ActionResult PlaceOrder()
+        {
+            OrderVM orderVM = new OrderVM();
+            orderVM.customer = new Customer();
+            orderVM.customerAddress = new CustomerAddress();
+            orderVM.order = new Order();
+            var cartProducts = (List<SaleProduct>)Session["cart"];
+            if(cartProducts != null)
+            foreach(var cProd in cartProducts)
+            {
+                OrderItem oi = new OrderItem();
+                oi.ProductID = cProd.ID;
+                oi.Price = cProd.Price;
+                oi.Quantity = 1;
+            }
+            return View(orderVM);
+        }
+
+        [HttpGet]
+        public JsonResult GetCustomers(string strCust)
+        {
+
+        }
         // GET: Orders/Details/5
         public ActionResult Details(int? id)
         {
@@ -37,6 +102,11 @@ namespace TTMS.Controllers
                 return HttpNotFound();
             }
             return View(objOrder);
+        }
+        public ActionResult NewOrder()
+        {
+            IEnumerable<SaleProduct> productsList = db.SaleProducts.ToList();
+            return View(productsList);
         }
 
         // GET: Orders/Create

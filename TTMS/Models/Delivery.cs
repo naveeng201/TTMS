@@ -26,7 +26,7 @@ namespace TTMS.Models
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
     
-        public virtual Order Order { get; set; }
         public virtual Employee Employee { get; set; }
+        public virtual Order Order { get; set; }
     }
 }

@@ -17,43 +17,37 @@ namespace TTMS.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Order()
         {
-            this.Order_Master = new HashSet<Order_Master>();
-            this.Deliveries = new HashSet<Delivery>();
-            this.OrderItems = new HashSet<OrderItem>();
             this.Order_Employee = new HashSet<Order_Employee>();
+            this.Order_Master = new HashSet<Order_Master>();
+            this.OrderItems = new HashSet<OrderItem>();
+            this.Deliveries = new HashSet<Delivery>();
         }
     
         public int ID { get; set; }
         public string OrderNo { get; set; }
-        public string CustomerOrganizationName { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string Country { get; set; }
-        public string Zip { get; set; }
-        public string ContactPersonName { get; set; }
-        public string ContactNo { get; set; }
-        public Nullable<int> ProductType { get; set; }
-        public string Size { get; set; }
-        public string Quantity { get; set; }
+        public Nullable<int> CustomerID { get; set; }
+        public Nullable<int> AddressID { get; set; }
         public Nullable<System.DateTime> DeliveryDate { get; set; }
-        public Nullable<double> PricePerUnit { get; set; }
         public Nullable<double> TotalPrice { get; set; }
+        public Nullable<double> GST { get; set; }
+        public Nullable<double> Discount { get; set; }
         public Nullable<double> GrandTotalWithTax { get; set; }
         public Nullable<double> Advance { get; set; }
+        public Nullable<int> Status { get; set; }
         public string Remarks { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
     
+        public virtual Address Address { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order_Employee> Order_Employee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order_Master> Order_Master { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Delivery> Deliveries { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order_Employee> Order_Employee { get; set; }
+        public virtual ICollection<Delivery> Deliveries { get; set; }
     }
 }

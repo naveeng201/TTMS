@@ -25,16 +25,30 @@ namespace TTMS.Controllers
         // GET: PurchaseEntries/Details/5
         public ActionResult Details(int? id)
         {
+           
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PurchaseEntry purchaseEntry = db.PurchaseEntries.Find(id);
-            if (purchaseEntry == null)
+            //PurchaseEntry purchaseEntry = db.PurchaseEntries.Find(id);
+            PurchaseEntryVM purchaseEntryVM = new PurchaseEntryVM();
+            ViewBag.PurchaseEntryID = id;
+            purchaseEntryVM.purchaseEntry = db.PurchaseEntries.Where(x => x.ID == id).SingleOrDefault();
+            purchaseEntryVM.purchaseOrder = db.PurchaseOrders.Where(x => x.ID == purchaseEntryVM.purchaseEntry.PurchaseOrderID).SingleOrDefault();
+            purchaseEntryVM._orderDetail = db.OrderDetails.Where(x => x.PurchaseOrderID == purchaseEntryVM.purchaseEntry.PurchaseOrderID).ToList();
+
+            // calculatet Due Amt
+            double paidamt = (double)db.PurchaseEntryPayments.Where(x => x.PurchaseEntryID == id).Select(x => (int?)x.PaidAmount ?? 0)
+                                                                                                  .DefaultIfEmpty(0).Sum();
+            purchaseEntryVM.purchaseEntry.DueAmount = purchaseEntryVM.purchaseEntry.TotalAmount - paidamt;
+
+            ViewBag.PaymentHistory = db.PurchaseEntryPayments.Where(x => x.PurchaseEntryID == id).ToList();
+             
+            if (purchaseEntryVM == null)
             {
                 return HttpNotFound();
             }
-            return View(purchaseEntry);
+            return View(purchaseEntryVM);
         }
 
         [HttpGet]

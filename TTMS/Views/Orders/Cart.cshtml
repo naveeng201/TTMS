@@ -1,0 +1,50 @@
+﻿@model IEnumerable<TTMS.Models.SaleProduct>
+
+@{
+    ViewBag.Title = "Cart";
+}
+
+@{
+    int sum = 0;
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"> </script>
+<div id="dvContents">
+    <table class="table table-hover" width="100%">
+        <thead>
+            <tr> <th> SlNO </th>   <th> Mobile Name </th>   <th> Image </th>   <th> Price </th>   <th> Remove </th>   </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in Model)
+            {
+                <tr>
+                    <td> @x.ID </td>
+                    <td> @x.Name </td>
+                    <td>
+                        <img id="img1" src="..\@Url.Content(@x.ImagePath)" height="100" width="75" />
+                    </td>
+                    <td> ₹@x.Price </td>
+                    <td>
+                        <button id="btn_delete" class="label label-primary"  data - slno="@x.ID"
+                                onclick="location.href='@Url.Action("Remove","Orders",x)'"> <i>
+                            @*<img src="~/Icons/delete.png" height="30" width="30" />*@ X
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        @foreach (var x in Model)
+        {
+            sum = Convert.ToInt32(x.Price) + sum;
+        }
+        <tfoot> <tr> <td> </td>   <td> </td>   <td> <b> Total </b></td> <td> ₹@sum </td>   </tr>   </tfoot>
+    </table>   
+    <div id="footer">
+         
+    </div>   
+    <button type="button" id="btnPrint" class="btn btn-primary">Print</button>   
+    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("NewOrder","Orders")'">Continue Shopping</button>   
+    <button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("PlaceOrder","Orders")'">Place Order</button>
+</div> 

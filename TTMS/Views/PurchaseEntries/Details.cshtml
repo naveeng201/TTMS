@@ -1,93 +1,147 @@
-﻿@model TTMS.Models.PurchaseEntry
+﻿@model TTMS.Models.PurchaseEntryVM
 
 
-    <div>
-        <h4>PurchaseEntry</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.InvoiceChallan)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.InvoiceChallan)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.InvoiceChallanNo)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.InvoiceChallanNo)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.InvoiceDate)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.InvoiceDate)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.CGST)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.CGST)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.SGST)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.SGST)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.DiscountAmount)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.DiscountAmount)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.TotalAmount)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.TotalAmount)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.DueAmount)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.DueAmount)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Status)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Status)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.PurchaseOrder.PurchaseOrderNo)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.PurchaseOrder.PurchaseOrderNo)
-            </dd>
-    
-        </dl>
+<script>
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
+<div class="container" id="printableArea">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="invoice-title">
+                <h2>Invoice</h2><h3 class="pull-right">Purchase Order # @Html.DisplayFor(model => model.purchaseOrder.PurchaseOrderNo)</h3>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-xs-6">
+                    <address>
+                        <strong>Billed To:</strong><br>
+                    </address>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <address>
+                        <strong>Invoice/Challen Details</strong><br>
+                        @Html.DisplayFor(model => model.purchaseEntry.InvoiceChallan)<br>
+                        @Html.DisplayFor(model => model.purchaseEntry.InvoiceChallanNo)<br>
+                        @Html.DisplayFor(model => model.purchaseEntry.InvoiceDate)<br>
+                    </address>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <address>
+                        <strong>Payment Details:</strong><br>
+                        @{
+                            List<TTMS.Models.PurchaseEntryPayment> pelist = (List<TTMS.Models.PurchaseEntryPayment>)ViewBag.PaymentHistory;
+                            int x = 0;
+                            foreach(var ph in pelist)
+                            {
+                            <div><b> @pelist[x].PaymentDate - @pelist[x].PaymentMode </b> </div>
+                            <div> Ref. No. @pelist[x].PaymentRefNo - Rs. @pelist[x].PaidAmount</div>
+                            <br />
+                            x++;
+                            }
+                         }
+</address>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <address>
+                        <strong>Due Amount:</strong><br>
+                        @Html.DisplayFor(model => model.purchaseEntry.DueAmount)<br><br>
+                    </address>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Order summary</strong></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <td><strong>Product</strong></td>
+                                    <td class="text-center"><strong>Category</strong></td>
+                                    <td class="text-center"><strong>Quantity</strong></td>
+                                    <td class="text-right"><strong>Price</strong></td>
+                                    <td class="text-right"><strong>Total</strong></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int i = 0;
+                                    foreach (var item in Model._orderDetail)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(model => model._orderDetail[i].Product.Name)</td>
+                                            <td class="text-center">@Html.DisplayFor(model => model._orderDetail[i].Product.ProductCategory.Name)</td>
+                                            <td class="text-center">@Html.DisplayFor(model => model._orderDetail[i].Quantity)</td>
+                                            <td class="text-right">Rs. @Html.DisplayFor(model => model._orderDetail[i].CostPrice)</td>
+                                            <td class="text-right">Rs. 0</td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line text-center"><strong>Subtotal</strong></td>
+                                    <td class="thick-line text-right">Rs. @Html.DisplayFor(model => model.purchaseEntry.TotalAmount)</td>
+                                </tr>
+                                <tr>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line text-center"><strong>CGST</strong></td>
+                                    <td class="no-line text-right">@Html.DisplayFor(model => model.purchaseEntry.CGST) %</td>
+                                </tr>
+                                <tr>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line text-center"><strong>SGST</strong></td>
+                                    <td class="no-line text-right">@Html.DisplayFor(model => model.purchaseEntry.SGST) %</td>
+                                </tr>
+                                <tr>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line text-center"><strong>Discount</strong></td>
+                                    <td class="no-line text-right">@Html.DisplayFor(model => model.purchaseEntry.DiscountAmount) %</td>
+                                </tr>
+                                <tr>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line text-center"><strong>Total</strong></td>
+                                    <td class="no-line text-right">Rs. @Html.DisplayFor(model => model.purchaseEntry.TotalAmount)</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Edit", "Edit", new { id = Model.purchaseEntry.ID }) |
         @Html.ActionLink("Back to List", "Index")
+        <input type="button" value="Print" onclick="printDiv('printableArea')" class="ui-icon-print" />
     </p>

@@ -14,6 +14,12 @@ namespace TTMS.Models
     
     public partial class Order_Master
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Order_Master()
+        {
+            this.Order_Master_Items = new HashSet<Order_Master_Items>();
+        }
+    
         public int ID { get; set; }
         public int OrderID { get; set; }
         public int EmployeeID { get; set; }
@@ -24,7 +30,9 @@ namespace TTMS.Models
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
     
-        public virtual Order Order { get; set; }
         public virtual Employee Employee { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order_Master_Items> Order_Master_Items { get; set; }
+        public virtual Order Order { get; set; }
     }
 }

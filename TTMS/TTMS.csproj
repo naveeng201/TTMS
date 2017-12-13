@@ -175,6 +175,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BrandsMastersController.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\DeliveriesController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Controllers\PurchaseEntriesController.cs" />
     <Compile Include="Controllers\PurchaseEntryPaymentsController.cs" />
     <Compile Include="Controllers\PurchaseOrdersController.cs" />
+    <Compile Include="Controllers\SaleProductsController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\UnitsController.cs" />
     <Compile Include="Filters\CustomExceptionFilter.cs" />
@@ -198,7 +200,16 @@
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Address.cs">
+      <DependentUpon>TTMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BrandsMaster.cs">
+      <DependentUpon>TTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Customer.cs">
+      <DependentUpon>TTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CustomerAddress.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Delivery.cs">
@@ -225,6 +236,7 @@
     <Compile Include="Models\ExtendedModels\IBaseEntity.cs" />
     <Compile Include="Models\ExtendedModels\Order.cs" />
     <Compile Include="Models\ExtendedModels\OrderDetail.cs" />
+    <Compile Include="Models\ExtendedModels\OrderItems.cs" />
     <Compile Include="Models\ExtendedModels\Order_Employee.cs" />
     <Compile Include="Models\ExtendedModels\Order_Master.cs" />
     <Compile Include="Models\ExtendedModels\Product.cs" />
@@ -251,6 +263,9 @@
     <Compile Include="Models\Order_Master.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Order_Master_Items.cs">
+      <DependentUpon>TTMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Product.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
@@ -264,6 +279,9 @@
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PurchaseOrder.cs">
+      <DependentUpon>TTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SaleProduct.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Supplier.cs">
@@ -289,6 +307,7 @@
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\OrdersVM.cs" />
+    <Compile Include="Models\ViewModels\OrderVM.cs" />
     <Compile Include="Models\ViewModels\PurchaseEntryVM.cs" />
     <Compile Include="Models\ViewModels\PurcheseOrderVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -498,10 +517,24 @@
     <Content Include="Views\Order_Employee\Details.cshtml" />
     <Content Include="Views\Order_Employee\Edit.cshtml" />
     <Content Include="Views\Order_Employee\Index.cshtml" />
+    <Content Include="Views\SaleProducts\Create.cshtml" />
+    <Content Include="Views\SaleProducts\Delete.cshtml" />
+    <Content Include="Views\SaleProducts\Details.cshtml" />
+    <Content Include="Views\SaleProducts\Edit.cshtml" />
+    <Content Include="Views\SaleProducts\Index.cshtml" />
+    <Content Include="Views\Customers\Create.cshtml" />
+    <Content Include="Views\Customers\Delete.cshtml" />
+    <Content Include="Views\Customers\Details.cshtml" />
+    <Content Include="Views\Customers\Edit.cshtml" />
+    <Content Include="Views\Customers\Index.cshtml" />
+    <Content Include="Views\Orders\NewOrder.cshtml" />
+    <Content Include="Views\Orders\Cart.cshtml" />
+    <Content Include="Views\Orders\PlaceOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="assets\faces\" />
+    <Folder Include="assets\ProductImages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

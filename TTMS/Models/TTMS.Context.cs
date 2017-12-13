@@ -30,7 +30,6 @@ namespace TTMS.Models
         public virtual DbSet<EmployeeAttendance> EmployeeAttendances { get; set; }
         public virtual DbSet<Order_Employee> Order_Employee { get; set; }
         public virtual DbSet<Order_Master> Order_Master { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Unit> Units { get; set; }
         public virtual DbSet<EmployeePerformance> EmployeePerformances { get; set; }
         public virtual DbSet<Delivery> Deliveries { get; set; }
@@ -43,6 +42,12 @@ namespace TTMS.Models
         public virtual DbSet<PurchaseEntry> PurchaseEntries { get; set; }
         public virtual DbSet<PurchaseEntryPayment> PurchaseEntryPayments { get; set; }
         public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+        public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<CustomerAddress> CustomerAddresses { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<SaleProduct> SaleProducts { get; set; }
+        public virtual DbSet<Order_Master_Items> Order_Master_Items { get; set; }
     }
 }
