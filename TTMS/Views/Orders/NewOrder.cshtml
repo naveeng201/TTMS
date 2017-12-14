@@ -7,12 +7,15 @@
         });
     });
 </script>
-<h3> Product Specification </h3>
-<div>
-    <a href="@Url.Action("Cart", "Orders")" class="btn btn-info btn-lg">
+<br />
+<div class="pull-right">
+    <a href="@Url.Action("Cart", "Orders")" class="btn btn-info btn-sm">
         <span class="glyphicon glyphicon-shopping-cart" style="color:green"></span>Cart <span class="badge">@Session["count"]</span>
     </a>
 </div>
+<br />
+<br />
+
 <table id="tblProducts" class="display">
     <thead>
         <tr>
@@ -20,14 +23,13 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var x in Model)
-{
-        <tr>
-            <td>
-                <div ng - controller="MainCtrl">
-
+        @foreach (var x in Model)
+        {
+            <tr>
+                <td>
+                    <div ng - controller="MainCtrl">
                         <div class="panel panel-default">
-                            <div class="panel-heading"> @x.Name </div>
+                            <div class="panel-heading"><b> @x.Name </b> </div>
                             <div class="panel-body">
                                 <div class="col-sm-3 col-md-6" style="color:blue">
                                     <a href="http://localhost:57146/@x.ImagePath" class="cloud-zoom" rel="adjustX: 10, adjustY:-4">
@@ -35,67 +37,34 @@
                                     </a>
                                 </div>
                                 <div class="col-sm-9 col-md-6">
-                                    <h3><span id="mobilename" style="color:black"><b> Product Name: </b></span> </h3>
-                                    <h6>
+                                    <h3>
                                         <span id="mobilename"
-                                              style="color:black">@x.Name</span>
-                                        </h6>
-                                        <h3>
-                                            <span id="mobilename"
-                                                  style="color:black"><b> Type: </b></span>
-                                        </h3>                <h6>
-                                            <span id="mobilename"
-                                                  style="color:black">
-                                                @x.Type
-                                            </span>
-                                        </h6>
-                                        <h3>
-                                            <span id="mobilename"
-                                                  style="color:black"><b> Color: </b></span>
+                                              style="color:darkblue">@x.Name</span>
                                         </h3>
-                                        <h4>
-                                            <span id="mobilename"
-                                                  style="color:black">
-                                                @x.Color
-                                            </span>
-                                        </h4>
-                                        <h3>
-                                            <span id="mobilename"
-                                                  style="color:black"><b> Size </b></span>
-                                        </h3>   <h4>
-                                            <span id="mobilename"
-                                                  style="color:black">
-                                                @x.Size
-                                            </span>
-                                        </h4> <h3>
-                                            <span id="mobilename"
-                                                  style="color:black"><b> Description : </b></span>
-                                        </h3>
-                                        <h6>
-                                            <span id="mobilename"
-                                                  style="color:black">@x.Description</span>
-                                            </h6>
-                                            <h3>
-                                                <span id="mobilename"
-                                                      style="color:black"><b> Price: </b></span>
-                                            </h3>   <h6>
-                                                <span id="mobilename"
-                                                      style="color:black">
-                                                    @x.Price
+                                            <span style="color:darkslategray"><b> Type : </b></span>
+                                            <span style="color:darkslategray">@x.Type </span><br />
+                                            <span style="color:darkslategray"><b> Color : </b></span>
+                                            <span style="color:black"> @x.Color</span><br />
+                                            <span style="color:darkslategray"><b> Size : </b></span>
+                                            <span style="color:black">@x.Size </span><br />
+                                            <span style="color:darkslategray"><b> Description : </b></span><br />
+                                            <span style="color:black">@x.Description</span>
+                                            <h4>
+                                                <span  style="color:black">
+                                                    <b> Rs. @x.Price </b>
                                                 </span>
-                                            </h6>
+                                            </h4>
                                         </div>
                                     </div>   <div>
-                                        <a id="btn_add" href="@Url.Action("Add", "Orders",x)" class="btn btn-info btn-lg" style="margin-left:60px"> <span class="glyphicon glyphicon-shopping-cart"> </span> Add To Cart   </a>
-                                        <a id="btn_add" href="@Url.Action("Index", "Orders")" class="btn btn-info btn-lg" style="margin-left:60px"> <span class="glyphicon glyphicon-eye-open"> </span> Continue shopping   </a>   <br />
+                                        <a id="btn_add" href="@Url.Action("Add", "Orders",x)" class="btn btn-info btn-sm" style="margin-left:60px"> <span class="glyphicon glyphicon-shopping-cart"> </span> Add To Cart   </a>
+                                        <a id="btn_add" href="@Url.Action("Index", "Orders")" class="btn btn-info btn-sm" style="margin-left:60px"> <span class="glyphicon glyphicon-eye-open"> </span> Continue shopping   </a>   <br />
                                     </div>
                                     <br />
                                 </div>
-                    
-                </div>  
-            </td>
-        </tr>
-}
+
+                            </div>
+                        </td>
+                    </tr>
+        }
     </tbody>
-    <tfoot></tfoot>
 </table>

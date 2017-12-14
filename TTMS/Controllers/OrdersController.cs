@@ -51,7 +51,24 @@ namespace TTMS.Controllers
 
         public ActionResult Cart()
         {
-            return View((List<SaleProduct>)Session["cart"]);
+            List<CartProduct> cpList = new List<CartProduct>();
+
+            if (Session["cart"] != null)
+            {
+                var prodList = (List<SaleProduct>)Session["cart"];
+                var groupedProds = prodList.GroupBy(info => info.ID).Select(g => new {
+                    ID = g.Key,
+                    Count = g.Count()
+                });
+                foreach (var line in groupedProds)
+                {
+                    CartProduct cp = new CartProduct();
+                    cp.prodduct = prodList.Where(x => x.ID == line.ID).FirstOrDefault();
+                    cp.quantity = line.Count;
+                    cpList.Add(cp);
+                }
+            }
+            return View(cpList);
         }
         public ActionResult Remove(SaleProduct sp)
         {
@@ -62,9 +79,9 @@ namespace TTMS.Controllers
             return RedirectToAction("Cart", "Orders");
 
         }
-        
 
-        public ActionResult PlaceOrder()
+        [HttpPost]
+        public ActionResult PlaceOrder(List<CartProduct> cpList)
         {
             OrderVM orderVM = new OrderVM();
             orderVM.orderItems = new List<OrderItem>();
@@ -78,7 +95,7 @@ namespace TTMS.Controllers
                 oi.Price = cProd.Price;
                 oi.Quantity = 1;
                 orderVM.orderItems.Add(oi);
-
+               if(cProd.Price != null && cProd.Price != 0)
                 total = total + (double)cProd.Price;
             }
             orderVM.order = new Order();
@@ -89,25 +106,6 @@ namespace TTMS.Controllers
             orderVM.order.Discount = 0;
             orderVM.order.Advance = 0;
             return View(orderVM);
-        }
-
-       
-
-        // GET: Orders/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrdersVM objOrder = new OrdersVM();
-            objOrder.order = db.Orders.Find(id);
-            objOrder.orderItems = db.OrderItems.Where(x => x.OrderID == id).ToList();
-            if (objOrder == null)
-            {
-                return HttpNotFound();
-            }
-            return View(objOrder);
         }
 
         public ActionResult NewOrder()
@@ -146,17 +144,35 @@ namespace TTMS.Controllers
                 }
 
                 Order objOrder = orderVM.order;
+                objOrder.OrderItems = orderVM.orderItems;
                 objOrder.OrderNo = GenerateOrderNo();
                 objOrder.AddressID = CustAddress.Address.ID;
                 objOrder.CustomerID = CustAddress.Customer.ID;
                 db.Orders.Add(objOrder);
                 db.SaveChanges();
-               // return RedirectToAction("OrderSuccess", orderVM);
+                // return RedirectToAction("OrderSuccess", orderVM);
+                Session["cart"] = null;
+                ViewBag.NewOrder = true;
             }
-            return View("OrderSuccess", orderVM);
+            return View("OrderSummary", orderVM);
         }
-       
- 
+
+        // GET: Orders/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            OrderVM objOrder = new OrderVM();
+            objOrder.order = db.Orders.Find(id);
+            objOrder.orderItems = db.OrderItems.Where(x => x.OrderID == id).ToList();
+            objOrder.address = db.Addresses.Find(objOrder.order.AddressID);
+            objOrder.customer = db.Customers.Find(objOrder.order.CustomerID);
+             
+            return View("OrderSummary", objOrder);
+        }
+
         // GET: Orders/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -208,6 +224,11 @@ namespace TTMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var orderItems = db.OrderItems.Where(x => x.OrderID == id).ToList();
+            foreach(OrderItem oi in orderItems)
+            {
+                db.OrderItems.Remove(oi);
+            }
             Order order = db.Orders.Find(id);
             db.Orders.Remove(order);
             db.SaveChanges();

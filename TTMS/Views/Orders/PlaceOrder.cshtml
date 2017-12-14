@@ -214,6 +214,25 @@
                 @Html.ValidationMessageFor(model => model.address.AddressType, "", new { @class = "text-danger" })
             </div>
         </div>
+        <div style="display:none">
+            <table>
+                <tbody>
+                    @{
+                        int i = 0;
+                        foreach(var x in Model.orderItems)
+                        {
+                            <tr>
+                                <td>@Html.TextBoxFor(p => p.orderItems[i].ProductID)</td>
+                                <td>@Html.TextBoxFor(p => p.orderItems[i].Quantity)</td>
+                                <td>@Html.TextBoxFor(p => p.orderItems[i].Price)</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+
+            </table>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

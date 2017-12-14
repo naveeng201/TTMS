@@ -10,7 +10,7 @@
 <div class="panel-heading">
     <h4>Orders</h4>
     <span class="tools pull-right">
-        @Html.ActionLink("New Order", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
+        @Html.ActionLink("New Order", "NewOrder", null, htmlAttributes: new { @class = "btn btn-primary" })
     </span>
 </div>
 <br /><br />
@@ -21,19 +21,13 @@
                     @Html.DisplayNameFor(model => model.OrderNo)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.CustomerOrganizationName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ContactPersonName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ContactNo)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.TotalPrice)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Advance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
                 </th>
                 <th></th>
             </tr>
@@ -46,24 +40,18 @@
                         @Html.DisplayFor(modelItem => item.OrderNo)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CustomerOrganizationName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ContactPersonName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ContactNo)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.TotalPrice)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Advance)
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit",null, new { id = item.ID }) |
                         @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                        @Html.ActionLink("Cancel", "Delete", new { id = item.ID })
                     </td>
                 </tr>
             }
