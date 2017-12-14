@@ -8,8 +8,8 @@ namespace TTMS.Models
     public class OrderVM
     {
         public Order order { get; set; }
-        public IEnumerable<OrderItems> orderItems { get; set; }
+        public List<OrderItem> orderItems { get; set; }
         public Customer customer { get; set; }
-        public CustomerAddress customerAddress { get; set; }
+        public Address address { get; set; }
     }
 }

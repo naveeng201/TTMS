@@ -67,10 +67,9 @@ namespace TTMS.Controllers
         public ActionResult PlaceOrder()
         {
             OrderVM orderVM = new OrderVM();
-            orderVM.customer = new Customer();
-            orderVM.customerAddress = new CustomerAddress();
-            orderVM.order = new Order();
+            orderVM.orderItems = new List<OrderItem>();
             var cartProducts = (List<SaleProduct>)Session["cart"];
+            double total = 0;
             if(cartProducts != null)
             foreach(var cProd in cartProducts)
             {
@@ -78,15 +77,22 @@ namespace TTMS.Controllers
                 oi.ProductID = cProd.ID;
                 oi.Price = cProd.Price;
                 oi.Quantity = 1;
+                orderVM.orderItems.Add(oi);
+
+                total = total + (double)cProd.Price;
             }
+            orderVM.order = new Order();
+            orderVM.order.TotalPrice = total;
+            orderVM.order.GST = 5;
+            orderVM.order.GrandTotalWithTax = total;
+            orderVM.order.DeliveryDate = DateTime.Now.AddDays(30);
+            orderVM.order.Discount = 0;
+            orderVM.order.Advance = 0;
             return View(orderVM);
         }
 
-        [HttpGet]
-        public JsonResult GetCustomers(string strCust)
-        {
+       
 
-        }
         // GET: Orders/Details/5
         public ActionResult Details(int? id)
         {
@@ -103,6 +109,7 @@ namespace TTMS.Controllers
             }
             return View(objOrder);
         }
+
         public ActionResult NewOrder()
         {
             IEnumerable<SaleProduct> productsList = db.SaleProducts.ToList();
@@ -125,34 +132,31 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(/*[Bind(Include = "ID,OrderNo,CustomerOrganizationName,Address,City,State,Country,Zip,ContactPersonName,ContactNo,ProductType,Size,Quantity,DeliveryDate,PricePerUnit,TotalPrice,GrandTotalWithTax,Advance,Remarks,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")]*/ OrdersVM orderVM)
+        public ActionResult Create(/*[Bind(Include = "ID,OrderNo,CustomerOrganizationName,Address,City,State,Country,Zip,ContactPersonName,ContactNo,ProductType,Size,Quantity,DeliveryDate,PricePerUnit,TotalPrice,GrandTotalWithTax,Advance,Remarks,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")]*/ OrderVM orderVM)
         {
-            orderVM.orderItems.RemoveAt(0);
-
             if (ModelState.IsValid)
             {
-                Order objOrder = orderVM.order;
-                objOrder.TotalPrice = calculateTotal(orderVM.orderItems);
-                objOrder.GrandTotalWithTax = objOrder.TotalPrice;
-                foreach (var orderItem in orderVM.orderItems)
+                var CustAddress = new CustomerAddress();
+                CustAddress.Customer = orderVM.customer;
+                CustAddress.Address = orderVM.address;
+                if (orderVM.customer.ID == 0)
                 {
-                    objOrder.OrderItems.Add(orderItem);
+                    db.CustomerAddresses.Add(CustAddress);
+                    db.SaveChanges();
                 }
+
+                Order objOrder = orderVM.order;
+                objOrder.OrderNo = GenerateOrderNo();
+                objOrder.AddressID = CustAddress.Address.ID;
+                objOrder.CustomerID = CustAddress.Customer.ID;
                 db.Orders.Add(objOrder);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+               // return RedirectToAction("OrderSuccess", orderVM);
             }
-            return View(orderVM);
+            return View("OrderSuccess", orderVM);
         }
-        private float calculateTotal(IEnumerable<OrderItem> orderItems)
-        {
-            float total = 0;
-            foreach (var od in orderItems)
-            {
-                total = total + (Convert.ToInt32(od.Quantity) * Convert.ToInt32(od.Price));
-            }
-            return total;
-        }
+       
+ 
         // GET: Orders/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -217,6 +221,45 @@ namespace TTMS.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        [HttpGet]
+        public JsonResult GetCustomers(string strCust)
+        {
+            var result = from c in db.Customers
+                         where c.CustomerOrganizationName.Contains(strCust)
+                         select new
+                         {
+                             Name = c.CustomerOrganizationName,
+                             Value = c.ID
+                         };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetCustomersAddress(int id)
+        {
+            var result = from c in db.Customers
+                         join ca in db.CustomerAddresses on c.ID equals ca.CustomerID
+                         join a in db.Addresses on ca.AddressID equals a.ID
+                         where c.ID == id
+                         select new
+                         {
+                             cpName = c.ContactPersonName,
+                             cNo = c.ContactNo,
+                             acNo = c.AlternateContactNo,
+                             ID = a.ID,
+                             Name = a.Name,
+                             Address1 = a.Address1,
+                             Address2 = a.Address2,
+                             City = a.City,
+                             State = a.State,
+                             Country = a.Country,
+                             Zip = a.Zip,
+                             AddressType = a.AddressType
+                         };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         private string GenerateOrderNo()

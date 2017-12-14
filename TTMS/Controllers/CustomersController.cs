@@ -38,6 +38,7 @@ namespace TTMS.Controllers
         // GET: Customers/Create
         public ActionResult Create()
         {
+           
             return View();
         }
 
@@ -46,16 +47,24 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,CustomerOrganizationName,ContactPersonName,ContactNo,AlternateContactNo,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Customer customer)
+        public ActionResult Create(/*[Bind(Include = "ID,CustomerOrganizationName,ContactPersonName,ContactNo,AlternateContactNo,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")]*/ CustomerVM customerVM)
         {
             if (ModelState.IsValid)
             {
-                db.Customers.Add(customer);
+
+               // db.Customers.Add(customerVM.customer);
+                //db.Addresses.Add(customerVM.address);
+                var CustAddress = new CustomerAddress
+                {
+                    Customer = customerVM.customer,
+                    Address = customerVM.address
+                };
+                //db.Customers.Add(customer);
+                db.CustomerAddresses.Add(CustAddress);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            return View(customer);
+            return View(customerVM);
         }
 
         // GET: Customers/Edit/5
