@@ -63,7 +63,11 @@ namespace TTMS.Controllers
                 foreach (var line in groupedProds)
                 {
                     CartProduct cp = new CartProduct();
-                    cp.prodduct = prodList.Where(x => x.ID == line.ID).FirstOrDefault();
+                    var prodduct = prodList.Where(x => x.ID == line.ID).FirstOrDefault();
+                    cp.productID = prodduct.ID;
+                    cp.name = prodduct.Name;
+                    cp.imagePath = prodduct.ImagePath;
+                    cp.price = (double)prodduct.Price;
                     cp.quantity = line.Count;
                     cpList.Add(cp);
                 }
@@ -84,27 +88,30 @@ namespace TTMS.Controllers
         public ActionResult PlaceOrder(List<CartProduct> cpList)
         {
             OrderVM orderVM = new OrderVM();
+            orderVM.address = new Address();
+            orderVM.customer = new Customer();
             orderVM.orderItems = new List<OrderItem>();
-            var cartProducts = (List<SaleProduct>)Session["cart"];
             double total = 0;
-            if(cartProducts != null)
-            foreach(var cProd in cartProducts)
+            if (cpList != null)
             {
-                OrderItem oi = new OrderItem();
-                oi.ProductID = cProd.ID;
-                oi.Price = cProd.Price;
-                oi.Quantity = 1;
-                orderVM.orderItems.Add(oi);
-               if(cProd.Price != null && cProd.Price != 0)
-                total = total + (double)cProd.Price;
+                foreach (var cProd in cpList)
+                {
+                    OrderItem oi = new OrderItem();
+                    oi.ProductID = cProd.productID;
+                    oi.Price = cProd.price;
+                    oi.Quantity = cProd.quantity;
+                    orderVM.orderItems.Add(oi);
+                    if (cProd.price != 0 && cProd.quantity != 0)
+                        total = ((double)cProd.price * cProd.quantity) + total;
+                }
+                orderVM.order = new Order();
+                orderVM.order.TotalPrice = total;
+                orderVM.order.GST = 5;
+                orderVM.order.GrandTotalWithTax = total;
+                orderVM.order.DeliveryDate = DateTime.Now.AddDays(30);
+                orderVM.order.Discount = 0;
+                orderVM.order.Advance = 0;
             }
-            orderVM.order = new Order();
-            orderVM.order.TotalPrice = total;
-            orderVM.order.GST = 5;
-            orderVM.order.GrandTotalWithTax = total;
-            orderVM.order.DeliveryDate = DateTime.Now.AddDays(30);
-            orderVM.order.Discount = 0;
-            orderVM.order.Advance = 0;
             return View(orderVM);
         }
 
@@ -152,6 +159,7 @@ namespace TTMS.Controllers
                 db.SaveChanges();
                 // return RedirectToAction("OrderSuccess", orderVM);
                 Session["cart"] = null;
+                Session["count"] = null;
                 ViewBag.NewOrder = true;
             }
             return View("OrderSummary", orderVM);

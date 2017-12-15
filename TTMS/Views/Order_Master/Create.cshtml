@@ -1,6 +1,91 @@
-﻿@model TTMS.Models.Order_Master
+﻿@model TTMS.Models.Order_MasterVM
 
- 
+ <script>
+     $(document).ready(function () {
+         $('.add-button').click(function (e) {
+             // validate
+             var department = $("#msg_id");
+             var msg = "Please select Product";
+             if ($('#ProductID').val() == "") {
+                 department.text(msg);
+                 e.preventDefault();
+                 return false;
+             }
+             else {
+                 department.text("");
+             }
+             var productID = $('#ProductID').val();
+             //validate if product is already exist in table
+
+             var count = $("tr.contacts-record").length + 1;
+             var template = $('.contacts-record-template').clone();
+             var productName = $('#ProductID').find('option:selected').text();
+             var ProductType = $("#ProductType").val();
+             var Quantity = $("#Quantity").val();
+             template.find('input[type=text]').val(null);
+             template.find('input[type=checkbox]').prop('checked', false);
+             $.each(template.find('#ProductID1'), function () {
+                 var name = $(this).attr('name');
+                 name = name.replace('0', count);
+                 $(this).attr('name', name);
+                 $(this).val(productID);
+             });
+             $.each(template.find('#ProductName1'), function () {
+                 var name = $(this).attr('name');
+                 name = name.replace('0', count);
+                 $(this).attr('name', name);
+                 $(this).val(productName);
+             });
+             $.each(template.find('#Quantity1'), function () {
+                 var name = $(this).attr('name');
+                 name = name.replace('0', count);
+                 $(this).attr('name', name);
+                 $(this).val(Quantity);
+             });
+             $.each(template.find('#RemainingQuantity1'), function () {
+                 var name = $(this).attr('name');
+                 name = name.replace('0', count);
+                 $(this).attr('name', name);
+                 $(this).val(0);
+             });
+             
+
+             template.removeClass('contacts-record-template')
+                                                .addClass('contacts-record').show();
+
+             // clear controls
+             $('#ProductID').val(null);
+             $("#ProductType").val(null);
+             $("#ProductShorName").val(null);
+             $("#Quantity").val(null);
+             $('.display').append(template);
+         });
+     });
+     jQuery(document).ready(function () {
+         $("#ProductID").change(function () {
+             var id = $('#ProductID').val();
+             var ServiceUrl = "/PurchaseOrders/GetProdectDetails?id=" + id;
+             var content = '';
+             $.support.cors = true;
+             $.ajax({
+                 type: 'GET',
+                 url: ServiceUrl,
+                 async: true,
+                 cache: false,
+                 crossDomain: true,
+                 contentType: "application/json; charset=utf-8",
+                 dataType: 'json',
+                 error: function (xhr, err) {
+                     alert("Error");
+                 },
+                 success: function (result, status) {
+                     $('#ProductShorName').val(result[0].ShorName);
+                     $('#ProductType').val(result[0].Price)
+                 }
+             });
+         });
+     });
+ </script>
     @using (Html.BeginForm()) 
     {
         @Html.AntiForgeryToken()
@@ -10,37 +95,94 @@
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                @Html.LabelFor(model => model.OrderID, "OrderID", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.order_Master.OrderID, "OrderID", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownList("OrderID", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.OrderID, "", new { @class = "text-danger" })
+                    @Html.DropDownList("order_Master_OrderID", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.order_Master.OrderID, "", new { @class = "text-danger" })
                 </div>
             </div>
     
             <div class="form-group">
-                @Html.LabelFor(model => model.EmployeeID, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.order_Master.EmployeeID, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @*@Html.EditorFor(model => model.EmployeeID, new { htmlAttributes = new { @class = "form-control" } })*@
-                    @Html.DropDownList("EmployeeID", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.EmployeeID, "", new { @class = "text-danger" })
+                    @Html.DropDownList("order_Master_EmployeeID", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.order_Master.EmployeeID, "", new { @class = "text-danger" })
                 </div>
             </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.Material, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Material, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Material, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-sm-3">
+                    @Html.DropDownList("ProductID", null, "Select Product", htmlAttributes: new { @class = "form-control input-sm" })
+                    <div style="color:red;" id="msg_id"></div>
+                </div>
+                <div class="col-sm-3">
+                    @Html.TextBox("ProductShorName", null, htmlAttributes: new { @class = "form-control input-sm", @readonly = true, placeholder = "Short Name" })
+                </div>
+                <div class="col-sm-3">
+                    @Html.TextBox("ProductType", null, htmlAttributes: new { @class = "form-control input-sm", @readonly = true, placeholder = "Product Type" })
+                </div>
+                <div class="col-sm-1">
+                    @Html.TextBox("Quantity", null, htmlAttributes: new { @class = "form-control input-sm", placeholder = "Quantity"})
+                </div>
+                <div class="col-sm-1">
+                    <input type="button" id="addRow" value="Add" class="add-button btn-success-outline" />
                 </div>
             </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
-                </div>
-            </div>
+            <table id="myDataTable" class="display">
+                <thead>
+                    <tr>
+                        <th>ProductID</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Remaining Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        //To make unique Id
+                        int i = 0;
+                        foreach (var item in Model.order_Master_products)
+                        {
+                            if (i == 0)
+                            {
+                                <tr class="contacts-record-template" style="display:none">
+                                    <td>
+                                        @Html.TextBoxFor(model => model.order_Master_products[i].ProductID, new { @id = "ProductID1" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.order_Master_products[i].Name, new { @id = "ProductName1" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.order_Master_products[i].Quantity, new { @id = "Quantity1" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.order_Master_products[i].RemainingQuantity,null, htmlAttributes : new { @id = "RemainingQuantity1" , @readonly = true })
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr class="contacts-record">
+                                    <td>
+                                        @Html.TextBoxFor(model => model.order_Master_products[i].ProductID, new { @id = "ProductID_" + i })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.order_Master_products[i].Name, new { @id = "ProductName_" + i })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.order_Master_products[i].Quantity, new { @id = "Qty_" + i })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.order_Master_products[i].RemainingQuantity, htmlAttributes: new { @id = "RQty" + i, @readonly = true })
+                                    </td>
+                                </tr>
+
+                            }
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
     
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">

@@ -7,7 +7,10 @@ namespace TTMS.Models
 {
     public class CartProduct
     {
-        public SaleProduct prodduct { get; set; } 
+        public int productID { get; set; }
+        public double price { get; set; }
+        public string name { get; set; }
+        public string imagePath { get; set; }
         public int quantity { get; set; }
     }
 }

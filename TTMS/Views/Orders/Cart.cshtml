@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"> </script>
-@using (Html.BeginForm())
+@using (Html.BeginForm("PlaceOrder", "Orders",FormMethod.Post))
 {
 <div id="dvContents">
     <table class="table table-hover" width="100%">
@@ -24,16 +24,16 @@
                 foreach (var x in Model)
                 {
                     <tr>
-                        <td style="display:none"> @x.prodduct.ID </td>
-                        <td> @x.prodduct.Name </td>
+                        <td style="display:none">@Html.TextBoxFor(model=> model[i].productID) </td>
+                        <td> @x.name </td>
                         <td>
-                            <img id="img1" src="..\@Url.Content(@x.prodduct.ImagePath)" height="100" width="75" />
+                            <img id="img1" src="..\@Url.Content(@x.imagePath)" height="100" width="75" />
                         </td>
-                        <td> ₹@x.prodduct.Price </td>
-                        <td>@Html.TextBoxFor(model => model[i].quantity, new { htmlAttributes = new { @class = "form-control input-sm" } })</td>
+                        <td>₹ @Html.TextBoxFor(model => model[i].price, null, htmlAttributes : new { @class = "input-sm", @style = "width:100px", @readonly = true } )</td>
+                        <td>@Html.TextBoxFor(model => model[i].quantity, null, htmlAttributes : new { @class = "input-sm", @style = "width:100px" } )</td>
                         <td>Rs. </td>
                         <td>
-                            <button id="btn_delete" class="label label-primary" data - slno="@x.prodduct.ID"
+                            <button id="btn_delete" class="label label-primary" data - slno="@x.productID"
                                     onclick="location.href='@Url.Action("Remove", "Orders", x)'">
                                 <i>
                                     @*<img src="~/Icons/delete.png" height="30" width="30" />*@ X
@@ -48,7 +48,7 @@
             int k = 0;
             foreach (var x in Model)
             {
-                    sum = Convert.ToInt32(x.prodduct.Price * Model[k].quantity) + sum;
+                    sum = Convert.ToInt32(x.price * Model[k].quantity) + sum;
             }
         }
         <tfoot> <tr> <td> </td>   <td> </td> <td></td>  <td> <b> Total </b></td> <td> ₹@sum </td>   </tr>   </tfoot>
@@ -58,6 +58,6 @@
     </div>
     <button type="button" id="btnPrint" class="btn btn-primary">Print</button>
     <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("NewOrder", "Orders")'">Continue Shopping</button>
-    <button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("PlaceOrder", "Orders",Model)'">Place Order</button>
+    <button type="submit" class="btn btn-warning">Place Order</button>
 </div> 
 }
