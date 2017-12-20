@@ -14,7 +14,5 @@ namespace TTMS.Models
     {
         public int OrderID { get; set; }
         public int EmployeeID { get; set; }
-        public string Material { get; set; }
-        public string Quantity { get; set; }
     }
 }

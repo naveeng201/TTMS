@@ -18,9 +18,9 @@ namespace TTMS.Models
         public Order()
         {
             this.Order_Employee = new HashSet<Order_Employee>();
-            this.Order_Master = new HashSet<Order_Master>();
             this.OrderItems = new HashSet<OrderItem>();
             this.Deliveries = new HashSet<Delivery>();
+            this.Order_Master = new HashSet<Order_Master>();
         }
     
         public int ID { get; set; }
@@ -44,10 +44,10 @@ namespace TTMS.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order_Employee> Order_Employee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order_Master> Order_Master { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Delivery> Deliveries { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order_Master> Order_Master { get; set; }
     }
 }

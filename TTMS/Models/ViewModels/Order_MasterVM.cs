@@ -7,8 +7,8 @@ namespace TTMS.Models
 {
     public class Order_MasterVM
     {
-        public Order_Master order_Master { get; set; }
-        public OrderItems orderItems { get; set; }
+        public int OrderID { get; set; }
+        public int EmployeeID { get; set; }
         public List<OrderMasterProducts> order_Master_products { get; set; }
     }
     public class OrderMasterProducts

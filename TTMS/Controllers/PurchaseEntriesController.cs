@@ -135,6 +135,7 @@ namespace TTMS.Controllers
                             orderDetail.CostPrice = od.CostPrice;
                             orderDetail.PurchaseOrderID = purchaseEntryVM.purchaseOrder.ID;
                             orderDetail.Quantity = od.Quantity;
+                            orderDetail.ReceivedQuantity = od.ReceivedQuantity;
                             db.OrderDetails.Attach(orderDetail);
                             db.Entry(orderDetail).State = EntityState.Modified;
                             db.SaveChanges();
@@ -156,6 +157,9 @@ namespace TTMS.Controllers
                     db.PurchaseEntries.Add(purchaseEntry);
                 }
                 db.SaveChanges();
+
+                // Once save is success update Products Inventory table
+
             }
             var purchaseEntries = db.PurchaseEntries.Include(p => p.PurchaseOrder);
             return View("Index", purchaseEntries.ToList());

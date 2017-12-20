@@ -39,14 +39,17 @@ namespace TTMS.Controllers
         // GET: Order_Master/Create
         public ActionResult Create()
         {
-            ViewBag.order_Master_OrderID = new SelectList(db.Orders, "ID", "OrderNo");
+            var orders = from order in db.Orders
+                         where !(from om in db.Order_Master select om.OrderID).Contains(order.ID)
+                         select order;
+            ViewBag.OrderID = new SelectList(orders, "ID", "OrderNo");
             var employees = from emp in db.Employees
                             where emp.MasterEmp == true
                             select new {
                                 ID = emp.ID,
                                 Name = emp.FirstName + ", " + emp.LastName
                             };
-            ViewBag.order_Master_EmployeeID = new SelectList(employees, "ID", "Name");
+            ViewBag.EmployeeID = new SelectList(employees, "ID", "Name");
             ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
 
             Order_MasterVM orderMasterVM = new Order_MasterVM();
@@ -54,7 +57,6 @@ namespace TTMS.Controllers
             {
                 new OrderMasterProducts()
             };
-            orderMasterVM.order_Master = new Order_Master();
             return View(orderMasterVM);
         }
 
@@ -66,6 +68,9 @@ namespace TTMS.Controllers
         public ActionResult Create(Order_MasterVM order_MasterVM)
         {
             order_MasterVM.order_Master_products.RemoveAt(0);
+            Order_Master OM = new Order_Master();
+            OM.EmployeeID = order_MasterVM.EmployeeID;
+            OM.OrderID = order_MasterVM.OrderID;
             if (ModelState.IsValid)
             {
                 foreach(var x in order_MasterVM.order_Master_products)
@@ -74,14 +79,14 @@ namespace TTMS.Controllers
                     obj.ProductID = x.ProductID;
                     obj.Quantity = x.Quantity;
                     obj.RemainingQuantity = x.RemainingQuantity;
-                    order_MasterVM.order_Master.Order_Master_Items.Add(obj);
+                    OM.Order_Master_Items.Add(obj);
                 }
-                db.Order_Master.Add(order_MasterVM.order_Master);
+                db.Order_Master.Add(OM);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.OrderID = new SelectList(db.Orders, "ID", "OrderNo", order_MasterVM.order_Master.OrderID);
+            ViewBag.OrderID = new SelectList(db.Orders, "ID", "OrderNo", order_MasterVM.OrderID);
             return View(order_MasterVM);
         }
 

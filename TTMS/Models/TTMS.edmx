@@ -177,24 +177,17 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderID" Type="int" Nullable="false" />
           <Property Name="EmployeeID" Type="int" Nullable="false" />
-          <Property Name="Material" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="Quantity" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
+          <Property Name="Status" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Order_Master_Items">
           <Key>
             <PropertyRef Name="ID" />
-            <PropertyRef Name="OrderMasterID" />
-            <PropertyRef Name="ProductID" />
-            <PropertyRef Name="Quantity" />
-            <PropertyRef Name="RemainingQuantity" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderMasterID" Type="int" Nullable="false" />
           <Property Name="ProductID" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
@@ -288,6 +281,22 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.ProductsInventory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ProductsInventory">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="Quantity" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="PurchaseEntry">
           <Key>
@@ -524,6 +533,18 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Order_Master_Items_Products1">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="Order_Master_Items" Type="Self.Order_Master_Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Order_Master_Items">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Order_Master_Orders">
           <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
           <End Role="Order_Master" Type="Self.Order_Master" Multiplicity="*" />
@@ -644,6 +665,18 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProductsInventory_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductsInventory" Type="Self.ProductsInventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProductsInventory">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PurchaseEntry_PurchaseOrder">
           <End Role="PurchaseOrder" Type="Self.PurchaseOrder" Multiplicity="0..1" />
           <End Role="PurchaseEntry" Type="Self.PurchaseEntry" Multiplicity="*" />
@@ -729,6 +762,7 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
           <EntitySet Name="EmployeePerformance" EntityType="Self.EmployeePerformance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order_Employee" EntityType="Self.Order_Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order_Master" EntityType="Self.Order_Master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order_Master_Items" EntityType="Self.Order_Master_Items" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderItems" EntityType="Self.OrderItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
@@ -740,18 +774,16 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
           <EntitySet Name="SaleProducts" EntityType="Self.SaleProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Units" EntityType="Self.Units" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Order_Master_Items" EntityType="Self.Order_Master_Items" store:Type="Tables" store:Schema="dbo">
+          <EntitySet Name="ProductsInventory" EntityType="Self.ProductsInventory" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [Order_Master_Items].[ID] AS [ID], 
-    [Order_Master_Items].[OrderMasterID] AS [OrderMasterID], 
-    [Order_Master_Items].[ProductID] AS [ProductID], 
-    [Order_Master_Items].[Quantity] AS [Quantity], 
-    [Order_Master_Items].[RemainingQuantity] AS [RemainingQuantity], 
-    [Order_Master_Items].[CreatedDate] AS [CreatedDate], 
-    [Order_Master_Items].[CreatedBy] AS [CreatedBy], 
-    [Order_Master_Items].[ModifiedDate] AS [ModifiedDate], 
-    [Order_Master_Items].[ModifiedBy] AS [ModifiedBy]
-    FROM [dbo].[Order_Master_Items] AS [Order_Master_Items]</DefiningQuery>
+    [ProductsInventory].[ID] AS [ID], 
+    [ProductsInventory].[ProductID] AS [ProductID], 
+    [ProductsInventory].[Quantity] AS [Quantity], 
+    [ProductsInventory].[CreatedBy] AS [CreatedBy], 
+    [ProductsInventory].[CreatedDate] AS [CreatedDate], 
+    [ProductsInventory].[ModifiedBy] AS [ModifiedBy], 
+    [ProductsInventory].[ModifiedDate] AS [ModifiedDate]
+    FROM [dbo].[ProductsInventory] AS [ProductsInventory]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_CustomerAddress_Address" Association="Self.FK_CustomerAddress_Address">
             <End Role="Address" EntitySet="Address" />
@@ -797,6 +829,10 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
             <End Role="Products" EntitySet="Products" />
             <End Role="Order_Master_Items" EntitySet="Order_Master_Items" />
           </AssociationSet>
+          <AssociationSet Name="FK_Order_Master_Items_Products1" Association="Self.FK_Order_Master_Items_Products1">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Order_Master_Items" EntitySet="Order_Master_Items" />
+          </AssociationSet>
           <AssociationSet Name="FK_Order_Master_Orders" Association="Self.FK_Order_Master_Orders">
             <End Role="Orders" EntitySet="Orders" />
             <End Role="Order_Master" EntitySet="Order_Master" />
@@ -837,6 +873,10 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
             <End Role="ProductCategory" EntitySet="ProductCategory" />
             <End Role="Products" EntitySet="Products" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProductsInventory_Products" Association="Self.FK_ProductsInventory_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductsInventory" EntitySet="ProductsInventory" />
+          </AssociationSet>
           <AssociationSet Name="FK_PurchaseEntry_PurchaseOrder" Association="Self.FK_PurchaseEntry_PurchaseOrder">
             <End Role="PurchaseOrder" EntitySet="PurchaseOrder" />
             <End Role="PurchaseEntry" EntitySet="PurchaseEntry" />
@@ -871,7 +911,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
           <EntitySet Name="ProductCategories" EntityType="TTMSModel.ProductCategory" />
           <EntitySet Name="EmployeeAttendances" EntityType="TTMSModel.EmployeeAttendance" />
           <EntitySet Name="Order_Employee" EntityType="TTMSModel.Order_Employee" />
-          <EntitySet Name="Order_Master" EntityType="TTMSModel.Order_Master" />
           <EntitySet Name="Units" EntityType="TTMSModel.Unit" />
           <EntitySet Name="EmployeePerformances" EntityType="TTMSModel.EmployeePerformance" />
           <EntitySet Name="Deliveries" EntityType="TTMSModel.Delivery" />
@@ -936,17 +975,12 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Order_Employee" EntitySet="Order_Employee" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_Master_Employee" Association="TTMSModel.FK_Order_Master_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="Order_Master" EntitySet="Order_Master" />
-          </AssociationSet>
           <EntitySet Name="Addresses" EntityType="TTMSModel.Address" />
           <EntitySet Name="CustomerAddresses" EntityType="TTMSModel.CustomerAddress" />
           <EntitySet Name="Customers" EntityType="TTMSModel.Customer" />
           <EntitySet Name="OrderItems" EntityType="TTMSModel.OrderItem" />
           <EntitySet Name="Orders" EntityType="TTMSModel.Order" />
           <EntitySet Name="SaleProducts" EntityType="TTMSModel.SaleProduct" />
-          <EntitySet Name="Order_Master_Items" EntityType="TTMSModel.Order_Master_Items" />
           <AssociationSet Name="FK_CustomerAddress_Address" Association="TTMSModel.FK_CustomerAddress_Address">
             <End Role="Address" EntitySet="Addresses" />
             <End Role="CustomerAddress" EntitySet="CustomerAddresses" />
@@ -967,14 +1001,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
             <End Role="Order" EntitySet="Orders" />
             <End Role="Order_Employee" EntitySet="Order_Employee" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_Master_Items_Order_Master" Association="TTMSModel.FK_Order_Master_Items_Order_Master">
-            <End Role="Order_Master" EntitySet="Order_Master" />
-            <End Role="Order_Master_Items" EntitySet="Order_Master_Items" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Order_Master_Orders" Association="TTMSModel.FK_Order_Master_Orders">
-            <End Role="Order" EntitySet="Orders" />
-            <End Role="Order_Master" EntitySet="Order_Master" />
-          </AssociationSet>
           <AssociationSet Name="FK_OrderItems_Orders" Association="TTMSModel.FK_OrderItems_Orders">
             <End Role="Order" EntitySet="Orders" />
             <End Role="OrderItem" EntitySet="OrderItems" />
@@ -987,10 +1013,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
             <End Role="ProductCategory" EntitySet="ProductCategories" />
             <End Role="SaleProduct" EntitySet="SaleProducts" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_Master_Items_Products" Association="TTMSModel.FK_Order_Master_Items_Products">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="Order_Master_Items" EntitySet="Order_Master_Items" />
-          </AssociationSet>
           <AssociationSet Name="FK_SaleProducts_Units" Association="TTMSModel.FK_SaleProducts_Units">
             <End Role="Unit" EntitySet="Units" />
             <End Role="SaleProduct" EntitySet="SaleProducts" />
@@ -998,6 +1020,33 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
           <AssociationSet Name="FK_Delivery_Orders" Association="TTMSModel.FK_Delivery_Orders">
             <End Role="Order" EntitySet="Orders" />
             <End Role="Delivery" EntitySet="Deliveries" />
+          </AssociationSet>
+          <EntitySet Name="Order_Master" EntityType="TTMSModel.Order_Master" />
+          <AssociationSet Name="FK_Order_Master_Employee" Association="TTMSModel.FK_Order_Master_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Order_Master" EntitySet="Order_Master" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Master_Orders" Association="TTMSModel.FK_Order_Master_Orders">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="Order_Master" EntitySet="Order_Master" />
+          </AssociationSet>
+          <EntitySet Name="Order_Master_Items" EntityType="TTMSModel.Order_Master_Items" />
+          <AssociationSet Name="FK_Order_Master_Items_Order_Master" Association="TTMSModel.FK_Order_Master_Items_Order_Master">
+            <End Role="Order_Master" EntitySet="Order_Master" />
+            <End Role="Order_Master_Items" EntitySet="Order_Master_Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Master_Items_Products" Association="TTMSModel.FK_Order_Master_Items_Products">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Order_Master_Items" EntitySet="Order_Master_Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Master_Items_Products1" Association="TTMSModel.FK_Order_Master_Items_Products1">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Order_Master_Items" EntitySet="Order_Master_Items" />
+          </AssociationSet>
+          <EntitySet Name="ProductsInventories" EntityType="TTMSModel.ProductsInventory" />
+          <AssociationSet Name="FK_ProductsInventory_Products" Association="TTMSModel.FK_ProductsInventory_Products">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductsInventory" EntitySet="ProductsInventories" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="BrandsMaster">
@@ -1054,23 +1103,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
           <NavigationProperty Name="Employee" Relationship="TTMSModel.FK_Order_Employee_Employee" FromRole="Order_Employee" ToRole="Employee" />
           <Property Name="OrderID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Order" Relationship="TTMSModel.FK_Order_Order_Employee" FromRole="Order_Employee" ToRole="Order" />
-        </EntityType>
-        <EntityType Name="Order_Master">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrderID" Type="Int32" Nullable="false" />
-          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
-          <Property Name="Material" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Quantity" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <NavigationProperty Name="Employee" Relationship="TTMSModel.FK_Order_Master_Employee" FromRole="Order_Master" ToRole="Employee" />
-          <NavigationProperty Name="Order_Master_Items" Relationship="TTMSModel.FK_Order_Master_Items_Order_Master" FromRole="Order_Master" ToRole="Order_Master_Items" />
-          <NavigationProperty Name="Order" Relationship="TTMSModel.FK_Order_Master_Orders" FromRole="Order_Master" ToRole="Order" />
         </EntityType>
         <EntityType Name="Unit">
           <Key>
@@ -1236,7 +1268,9 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
           <NavigationProperty Name="ProductCategory" Relationship="TTMSModel.FK_Products_ProductCategory" FromRole="Product" ToRole="ProductCategory" />
           <NavigationProperty Name="OrderDetails" Relationship="TTMSModel.FK_OrderDetails_Products" FromRole="Product" ToRole="OrderDetail" />
           <NavigationProperty Name="Order_Master_Items" Relationship="TTMSModel.FK_Order_Master_Items_Products" FromRole="Product" ToRole="Order_Master_Items" />
-        </EntityType>
+          <NavigationProperty Name="Order_Master_Items1" Relationship="TTMSModel.FK_Order_Master_Items_Products1" FromRole="Product" ToRole="Order_Master_Items" />
+          <NavigationProperty Name="ProductsInventories" Relationship="TTMSModel.FK_ProductsInventory_Products" FromRole="Product" ToRole="ProductsInventory" />
+          </EntityType>
         <Association Name="FK_Products_BrandsMaster">
           <End Type="TTMSModel.BrandsMaster" Role="BrandsMaster" Multiplicity="0..1" />
           <End Type="TTMSModel.Product" Role="Product" Multiplicity="*" />
@@ -1458,18 +1492,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_Master_Employee">
-          <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
-          <End Type="TTMSModel.Order_Master" Role="Order_Master" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Order_Master">
-              <PropertyRef Name="EmployeeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="ID" />
@@ -1557,9 +1579,9 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
           <Property Name="ModifiedBy" Type="Int32" />
           <NavigationProperty Name="Address" Relationship="TTMSModel.FK_Orders_Address" FromRole="Order" ToRole="Address" />
           <NavigationProperty Name="Order_Employee" Relationship="TTMSModel.FK_Order_Order_Employee" FromRole="Order" ToRole="Order_Employee" />
-          <NavigationProperty Name="Order_Master" Relationship="TTMSModel.FK_Order_Master_Orders" FromRole="Order" ToRole="Order_Master" />
           <NavigationProperty Name="OrderItems" Relationship="TTMSModel.FK_OrderItems_Orders" FromRole="Order" ToRole="OrderItem" />
           <NavigationProperty Name="Deliveries" Relationship="TTMSModel.FK_Delivery_Orders" FromRole="Order" ToRole="Delivery" />
+          <NavigationProperty Name="Order_Master" Relationship="TTMSModel.FK_Order_Master_Orders" FromRole="Order" ToRole="Order_Master" />
         </EntityType>
         <EntityType Name="SaleProduct">
           <Key>
@@ -1586,26 +1608,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
           <NavigationProperty Name="OrderItems" Relationship="TTMSModel.FK_OrderItems_SaleProducts" FromRole="SaleProduct" ToRole="OrderItem" />
           <NavigationProperty Name="ProductCategory" Relationship="TTMSModel.FK_SaleProducts_ProductCategory" FromRole="SaleProduct" ToRole="ProductCategory" />
           <NavigationProperty Name="Unit" Relationship="TTMSModel.FK_SaleProducts_Units" FromRole="SaleProduct" ToRole="Unit" />
-        </EntityType>
-        <EntityType Name="Order_Master_Items">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="OrderMasterID" />
-            <PropertyRef Name="ProductID" />
-            <PropertyRef Name="Quantity" />
-            <PropertyRef Name="RemainingQuantity" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="OrderMasterID" Type="Int32" Nullable="false" />
-          <Property Name="ProductID" Type="Int32" Nullable="false" />
-          <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="RemainingQuantity" Type="Int32" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <NavigationProperty Name="Order_Master" Relationship="TTMSModel.FK_Order_Master_Items_Order_Master" FromRole="Order_Master_Items" ToRole="Order_Master" />
-          <NavigationProperty Name="Product" Relationship="TTMSModel.FK_Order_Master_Items_Products" FromRole="Order_Master_Items" ToRole="Product" />
         </EntityType>
         <Association Name="FK_CustomerAddress_Address">
           <End Type="TTMSModel.Address" Role="Address" Multiplicity="1" />
@@ -1667,30 +1669,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_Master_Items_Order_Master">
-          <End Type="TTMSModel.Order_Master" Role="Order_Master" Multiplicity="1" />
-          <End Type="TTMSModel.Order_Master_Items" Role="Order_Master_Items" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order_Master">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Order_Master_Items">
-              <PropertyRef Name="OrderMasterID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Order_Master_Orders">
-          <End Type="TTMSModel.Order" Role="Order" Multiplicity="1" />
-          <End Type="TTMSModel.Order_Master" Role="Order_Master" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Order_Master">
-              <PropertyRef Name="OrderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_OrderItems_Orders">
           <End Type="TTMSModel.Order" Role="Order" Multiplicity="1" />
           <End Type="TTMSModel.OrderItem" Role="OrderItem" Multiplicity="*" />
@@ -1727,18 +1705,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_Master_Items_Products">
-          <End Type="TTMSModel.Product" Role="Product" Multiplicity="1" />
-          <End Type="TTMSModel.Order_Master_Items" Role="Order_Master_Items" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Order_Master_Items">
-              <PropertyRef Name="OrderMasterID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SaleProducts_Units">
           <End Type="TTMSModel.Unit" Role="Unit" Multiplicity="0..1" />
           <End Type="TTMSModel.SaleProduct" Role="SaleProduct" Multiplicity="*" />
@@ -1760,6 +1726,126 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
             </Principal>
             <Dependent Role="Delivery">
               <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Order_Master">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="Employee" Relationship="TTMSModel.FK_Order_Master_Employee" FromRole="Order_Master" ToRole="Employee" />
+          <NavigationProperty Name="Order" Relationship="TTMSModel.FK_Order_Master_Orders" FromRole="Order_Master" ToRole="Order" />
+          <NavigationProperty Name="Order_Master_Items" Relationship="TTMSModel.FK_Order_Master_Items_Order_Master" FromRole="Order_Master" ToRole="Order_Master_Items" />
+        </EntityType>
+        <Association Name="FK_Order_Master_Employee">
+          <End Type="TTMSModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="TTMSModel.Order_Master" Role="Order_Master" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Order_Master">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Master_Orders">
+          <End Type="TTMSModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="TTMSModel.Order_Master" Role="Order_Master" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Order_Master">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Order_Master_Items">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderMasterID" Type="Int32" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="RemainingQuantity" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="Order_Master" Relationship="TTMSModel.FK_Order_Master_Items_Order_Master" FromRole="Order_Master_Items" ToRole="Order_Master" />
+          <NavigationProperty Name="Product" Relationship="TTMSModel.FK_Order_Master_Items_Products" FromRole="Order_Master_Items" ToRole="Product" />
+          <NavigationProperty Name="Product1" Relationship="TTMSModel.FK_Order_Master_Items_Products1" FromRole="Order_Master_Items" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_Order_Master_Items_Order_Master">
+          <End Type="TTMSModel.Order_Master" Role="Order_Master" Multiplicity="1" />
+          <End Type="TTMSModel.Order_Master_Items" Role="Order_Master_Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order_Master">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Order_Master_Items">
+              <PropertyRef Name="OrderMasterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Master_Items_Products">
+          <End Type="TTMSModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="TTMSModel.Order_Master_Items" Role="Order_Master_Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Order_Master_Items">
+              <PropertyRef Name="OrderMasterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Master_Items_Products1">
+          <End Type="TTMSModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="TTMSModel.Order_Master_Items" Role="Order_Master_Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Order_Master_Items">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ProductsInventory">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="Quantity" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Product" Relationship="TTMSModel.FK_ProductsInventory_Products" FromRole="ProductsInventory" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_ProductsInventory_Products">
+          <End Type="TTMSModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="TTMSModel.ProductsInventory" Role="ProductsInventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProductsInventory">
+              <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1817,21 +1903,6 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
                 <ScalarProperty Name="Field" ColumnName="Field" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Order_Master">
-            <EntityTypeMapping TypeName="TTMSModel.Order_Master">
-              <MappingFragment StoreEntitySet="Order_Master">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="Material" ColumnName="Material" />
-                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2159,6 +2230,20 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Order_Master">
+            <EntityTypeMapping TypeName="TTMSModel.Order_Master">
+              <MappingFragment StoreEntitySet="Order_Master">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Order_Master_Items">
             <EntityTypeMapping TypeName="TTMSModel.Order_Master_Items">
               <MappingFragment StoreEntitySet="Order_Master_Items">
@@ -2170,6 +2255,19 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.Order_Master_Items'
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="OrderMasterID" ColumnName="OrderMasterID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductsInventories">
+            <EntityTypeMapping TypeName="TTMSModel.ProductsInventory">
+              <MappingFragment StoreEntitySet="ProductsInventory">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

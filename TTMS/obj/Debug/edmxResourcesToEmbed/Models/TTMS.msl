@@ -53,21 +53,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Order_Master">
-      <EntityTypeMapping TypeName="TTMSModel.Order_Master">
-        <MappingFragment StoreEntitySet="Order_Master">
-          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-          <ScalarProperty Name="Material" ColumnName="Material" />
-          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
-          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Units">
       <EntityTypeMapping TypeName="TTMSModel.Unit">
         <MappingFragment StoreEntitySet="Units">
@@ -391,6 +376,20 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Order_Master">
+      <EntityTypeMapping TypeName="TTMSModel.Order_Master">
+        <MappingFragment StoreEntitySet="Order_Master">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Order_Master_Items">
       <EntityTypeMapping TypeName="TTMSModel.Order_Master_Items">
         <MappingFragment StoreEntitySet="Order_Master_Items">
@@ -402,6 +401,19 @@
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
           <ScalarProperty Name="ProductID" ColumnName="ProductID" />
           <ScalarProperty Name="OrderMasterID" ColumnName="OrderMasterID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductsInventories">
+      <EntityTypeMapping TypeName="TTMSModel.ProductsInventory">
+        <MappingFragment StoreEntitySet="ProductsInventory">
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>

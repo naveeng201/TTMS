@@ -26,5 +26,6 @@ namespace TTMS.Models
     
         public virtual Order_Master Order_Master { get; set; }
         public virtual Product Product { get; set; }
+        public virtual Product Product1 { get; set; }
     }
 }
