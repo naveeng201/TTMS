@@ -186,6 +186,7 @@
     <Compile Include="Controllers\Order_MasterController.cs" />
     <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\ProductsInventoriesController.cs" />
     <Compile Include="Controllers\PurchaseEntriesController.cs" />
     <Compile Include="Controllers\PurchaseEntryPaymentsController.cs" />
     <Compile Include="Controllers\PurchaseOrdersController.cs" />
@@ -539,6 +540,11 @@
     <Content Include="Views\Orders\Cart.cshtml" />
     <Content Include="Views\Orders\PlaceOrder.cshtml" />
     <Content Include="Views\Orders\OrderSummary.cshtml" />
+    <Content Include="Views\ProductsInventories\Create.cshtml" />
+    <Content Include="Views\ProductsInventories\Delete.cshtml" />
+    <Content Include="Views\ProductsInventories\Details.cshtml" />
+    <Content Include="Views\ProductsInventories\Edit.cshtml" />
+    <Content Include="Views\ProductsInventories\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

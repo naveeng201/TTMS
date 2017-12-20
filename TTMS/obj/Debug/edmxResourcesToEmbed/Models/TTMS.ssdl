@@ -277,13 +277,9 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.ProductsInventory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="ProductsInventory">
     <Key>
       <PropertyRef Name="ID" />
-      <PropertyRef Name="ProductID" />
-      <PropertyRef Name="Quantity" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ProductID" Type="int" Nullable="false" />
@@ -763,23 +759,13 @@ warning 6002: The table/view 'aspnet-TTMS-20171105074757.dbo.ProductsInventory' 
     <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductsInventory" EntityType="Self.ProductsInventory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PurchaseEntry" EntityType="Self.PurchaseEntry" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PurchaseEntryPayment" EntityType="Self.PurchaseEntryPayment" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PurchaseOrder" EntityType="Self.PurchaseOrder" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SaleProducts" EntityType="Self.SaleProducts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Units" EntityType="Self.Units" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="ProductsInventory" EntityType="Self.ProductsInventory" store:Type="Tables" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [ProductsInventory].[ID] AS [ID], 
-    [ProductsInventory].[ProductID] AS [ProductID], 
-    [ProductsInventory].[Quantity] AS [Quantity], 
-    [ProductsInventory].[CreatedBy] AS [CreatedBy], 
-    [ProductsInventory].[CreatedDate] AS [CreatedDate], 
-    [ProductsInventory].[ModifiedBy] AS [ModifiedBy], 
-    [ProductsInventory].[ModifiedDate] AS [ModifiedDate]
-    FROM [dbo].[ProductsInventory] AS [ProductsInventory]</DefiningQuery>
-    </EntitySet>
     <AssociationSet Name="FK_CustomerAddress_Address" Association="Self.FK_CustomerAddress_Address">
       <End Role="Address" EntitySet="Address" />
       <End Role="CustomerAddress" EntitySet="CustomerAddress" />

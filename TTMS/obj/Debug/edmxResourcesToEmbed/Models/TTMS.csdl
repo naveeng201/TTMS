@@ -919,8 +919,6 @@
   <EntityType Name="ProductsInventory">
     <Key>
       <PropertyRef Name="ID" />
-      <PropertyRef Name="ProductID" />
-      <PropertyRef Name="Quantity" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ProductID" Type="Int32" Nullable="false" />

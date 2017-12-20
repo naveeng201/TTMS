@@ -51,7 +51,7 @@ namespace TTMS.Controllers
                             };
             ViewBag.EmployeeID = new SelectList(employees, "ID", "Name");
             ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
-
+            ViewBag.Edit = false;
             Order_MasterVM orderMasterVM = new Order_MasterVM();
             orderMasterVM.order_Master_products = new List<OrderMasterProducts>
             {
@@ -102,8 +102,35 @@ namespace TTMS.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.OrderID = new SelectList(db.Orders, "ID", "OrderNo", order_Master.OrderID);
-            return View(order_Master);
+            var listitmes = Enum.GetValues(typeof(statusEnum)).Cast<statusEnum>().Select(v => new SelectListItem
+            {
+                Text = v.ToString(),
+                Value = ((int)v).ToString()
+            }).ToList();
+
+            List<SelectListItem> items = new List<SelectListItem> {
+                new SelectListItem{Text = "NewOrder",Value=statusEnum.NewOrder.ToString() },
+                new SelectListItem{Text = "InProgress", Value=statusEnum.InProgress.ToString()},
+                new SelectListItem{Text="Completed",Value=statusEnum.Completed.ToString()}
+            };
+            ViewBag.Status = new SelectList(listitmes);
+        
+            Order_MasterVM orderMasterVM = new Order_MasterVM();
+            orderMasterVM.order_Master_products = new List<OrderMasterProducts>();
+            orderMasterVM.OrderNo = order_Master.Order.OrderNo;
+            orderMasterVM.EmployeeName = order_Master.Employee.FirstName + order_Master.Employee.LastName;
+            foreach(var omi in db.Order_Master_Items.Where(x => x.OrderMasterID == order_Master.ID).ToList())
+            {
+                OrderMasterProducts objOMP = new OrderMasterProducts();
+                objOMP.ID = omi.ID;
+                objOMP.Name = omi.Product.Name;
+                objOMP.ProductID = omi.ProductID;
+                objOMP.Quantity = omi.Quantity;
+                objOMP.RemainingQuantity = omi.RemainingQuantity;
+                orderMasterVM.order_Master_products.Add(objOMP);
+            }
+
+            return View(orderMasterVM);
         }
 
         // POST: Order_Master/Edit/5
@@ -111,16 +138,25 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,OrderID,EmployeeID,Material,Quantity,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Order_Master order_Master)
+        public ActionResult Edit(Order_MasterVM order_MasterVM)
         {
             if (ModelState.IsValid)
             {
+                foreach(var omp in order_MasterVM.order_Master_products)
+                {
+                    var orderMasterItems = db.Order_Master_Items.Where(x => x.ID == omp.ID).FirstOrDefault();
+                    orderMasterItems.RemainingQuantity = omp.RemainingQuantity;
+                    db.Entry(orderMasterItems).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                }
+                var order_Master = db.Order_Master.Where(x => x.ID == order_MasterVM.ID).FirstOrDefault();
+                order_Master.Status = order_MasterVM.Status;
                 db.Entry(order_Master).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.OrderID = new SelectList(db.Orders, "ID", "OrderNo", order_Master.OrderID);
-            return View(order_Master);
+            return View(order_MasterVM);
         }
 
         // GET: Order_Master/Delete/5

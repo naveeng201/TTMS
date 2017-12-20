@@ -145,6 +145,24 @@ namespace TTMS.Controllers
                     { 
                         po.OrderDetails.Add(od);
                     }
+
+                    // Update inventory table with quantity
+                    var objPI = db.ProductsInventories.Where(x => x.ProductID == od.ProductID).SingleOrDefault();
+                    if (objPI != null)
+                    {
+                        objPI.Quantity = objPI.Quantity + (int)od.ReceivedQuantity;
+                        db.ProductsInventories.Attach(objPI);
+                        db.Entry(objPI).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        ProductsInventory PI = new ProductsInventory();
+                        PI.ProductID = od.ProductID;
+                        PI.Quantity = (int)od.ReceivedQuantity;
+                        db.ProductsInventories.Add(PI);
+                    }
+
                 }
                 if (po.ID == 0)
                 {
