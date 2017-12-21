@@ -1,5 +1,51 @@
 ﻿@model List<TTMS.Models.CartProduct>
 
+<style>
+    .input {
+        outline: none;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        calculateTotal();
+    })
+
+    function calculateTotal() {
+        //$('.pnm, .price, .subtot, .grdtot').prop('readonly', true);
+        var $tblrows = $("#tblCart tbody tr");
+        var grandtotal = 0;
+        $tblrows.each(function () {
+            var $tblrow = $(this);
+
+            var qty = $tblrow.find(".qty").val();
+            var price = $tblrow.find(".price").val();
+            var subTotal = parseInt(qty, 10) * parseFloat(price);
+
+            if (!isNaN(subTotal)) {
+
+                $tblrow.find('.subtot').val(subTotal.toFixed(2));
+
+                grandtotal = grandtotal + subTotal;
+                //$(".subtot").each(function () {
+                //    var stval = parseFloat($(this).val());
+                //    grandTotal += isNaN(stval) ? 0 : stval;
+                //});
+
+                //$('.grdtot').val(grandTotal.toFixed(2));
+            }
+        });
+
+        var $tblfootrows = $("#tblCart tfoot tr");
+        $tblfootrows.each(function () {
+            var $tblfootrow = $(this);
+            var gt = $tblfootrow.find('.grdtot').val();
+            if (gt != undefined)
+                $tblfootrow.find('.grdtot').val(grandtotal.toFixed(2));
+        });
+        //calculateGrandTotal(0);
+    };
+</script>
+
 @{
     ViewBag.Title = "Cart";
 }
@@ -14,7 +60,7 @@
 @using (Html.BeginForm("PlaceOrder", "Orders",FormMethod.Post))
 {
 <div id="dvContents">
-    <table class="table table-hover" width="100%">
+    <table id="tblCart" class="table table-hover" width="100%">
         <thead>
             <tr>   <th>  Name </th>   <th> Image </th>   <th> Price </th><th>Quantity</th><th>Total</th>   <th> Remove </th>   </tr>
         </thead>
@@ -29,13 +75,12 @@
                         <td>
                             <img id="img1" src="..\@Url.Content(@x.imagePath)" height="100" width="75" />
                         </td>
-                        <td>₹ @Html.TextBoxFor(model => model[i].price, null, htmlAttributes : new { @class = "input-sm", @style = "width:100px", @readonly = true } )</td>
-                        <td>@Html.TextBoxFor(model => model[i].quantity, null, htmlAttributes : new { @class = "input-sm", @style = "width:100px" } )</td>
-                        <td>Rs. </td>
+                        <td>₹ @Html.TextBoxFor(model => model[i].price, null, htmlAttributes : new { @class = "input-sm qty", @style = "width:100px", @readonly = true } )</td>
+                        <td>@Html.TextBoxFor(model => model[i].quantity, null, htmlAttributes : new { @class = "input-sm price", @style = "width:100px", onchange = "calculateTotal()" } )</td>
+                        <td>₹. <input type="text" id="Total1" class="subtot" style="width:100px; outline:none; border:none; background-color:azure" readonly="readonly"/></td>
                         <td>
-                            <button id="btn_delete" class="label label-primary" data - slno="@x.productID"
-                                    onclick="location.href='@Url.Action("Remove", "Orders", x)'">
-                                <i>
+                            <button type="button" id="btn_delete" class="label label-primary" data - slno="@x.productID"
+                                    onclick="location.href='@Url.Action("Remove", "Orders",x)'">
                                     @*<img src="~/Icons/delete.png" height="30" width="30" />*@ X
                             </button>
                         </td>
@@ -48,16 +93,29 @@
             int k = 0;
             foreach (var x in Model)
             {
-                    sum = Convert.ToInt32(x.price * Model[k].quantity) + sum;
+                sum = Convert.ToInt32(x.price * Model[k].quantity) + sum;
+            }
+            bool Disabled = false;
+            if (sum == 0)
+            {
+                Disabled = true;
             }
         }
-        <tfoot> <tr> <td> </td>   <td> </td> <td></td>  <td> <b> Total </b></td> <td> ₹@sum </td>   </tr>   </tfoot>
+        <tfoot> 
+            <tr> 
+                <td></td>  
+                <td></td> 
+                <td></td>  
+                <td> <b> Total </b></td> 
+                <td>₹ <input type="text" id="gtdtot" class="grdtot" style="width:100px; outline:none; border:none; font-weight:bold; background-color:azure" readonly="readonly" /></td>   
+            </tr>   
+        </tfoot>
     </table>
     <div id="footer">
 
     </div>
     <button type="button" id="btnPrint" class="btn btn-primary">Print</button>
     <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("NewOrder", "Orders")'">Continue Shopping</button>
-    <button type="submit" class="btn btn-warning">Place Order</button>
+    <button type="submit" class="btn btn-warning" disabled=@Disabled>Place Order</button>
 </div> 
 }

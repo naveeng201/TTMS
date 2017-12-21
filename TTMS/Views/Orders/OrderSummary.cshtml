@@ -61,10 +61,10 @@
                             Discount : @Html.DisplayFor(model => model.order.Discount)<br />
                             Advance  : @Html.DisplayFor(model => model.order.Advance)<br>
                             @{
-                                var total = Model.order.TotalPrice - Model.order.Advance;
-
+                                double total = (double)Model.order.TotalPrice - (double)Model.order.Discount;
+                                total = total - (double)Model.order.Advance;
                             }
-                            Due Amount :<b> @Html.Display(total.ToString()) </b><br>
+                            Due Amount :<b> @total.ToString() </b><br>
                         </address>
                     </div>
                 </div>
@@ -94,12 +94,13 @@
                                         int i = 0;
                                         foreach (var item in Model.orderItems)
                                         {
+                                            double subtotoal = (double)@item.Price * (int)@item.Quantity;
                                             <tr>
-                                                <td>@Html.DisplayFor(model => model.orderItems[i].SaleProduct.ImagePath)</td>
-                                                <td class="text-center">@Html.DisplayFor(model => model.orderItems[i].SaleProduct.Name)</td>
-                                                <td class="text-center">@Html.DisplayFor(model => model.orderItems[i].Quantity)</td>
-                                                <td class="text-right">Rs. @Html.DisplayFor(model => model.orderItems[i].Price)</td>
-                                                <td class="text-right">Rs. 0</td>
+                                                <td><img id="img1" src="~\@Url.Content(@item.SaleProduct.ImagePath)" height="100" width="75" /></td>
+                                                <td class="text-center">@item.SaleProduct.Name</td>
+                                                <td class="text-center">@item.Quantity</td>
+                                                <td class="text-right">₹ @item.Price</td>
+                                                <td class="text-right">₹ @subtotoal.ToString()</td>
                                             </tr>
                                             i++;
                                         }

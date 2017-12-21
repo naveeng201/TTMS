@@ -74,10 +74,10 @@ namespace TTMS.Controllers
             }
             return View(cpList);
         }
-        public ActionResult Remove(SaleProduct sp)
+        public ActionResult Remove(CartProduct sp)
         {
             List<SaleProduct> li = (List<SaleProduct>)Session["cart"];
-            li.RemoveAll(x => x.ID == sp.ID);
+            li.RemoveAll(x => x.ID == sp.productID);
             Session["cart"] = li;
             Session["count"] = Convert.ToInt32(Session["count"]) - 1;
             return RedirectToAction("Cart", "Orders");
