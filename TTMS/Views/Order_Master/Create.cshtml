@@ -64,7 +64,7 @@
      jQuery(document).ready(function () {
          $("#ProductID").change(function () {
              var id = $('#ProductID').val();
-             var ServiceUrl = "/PurchaseOrders/GetProdectDetails?id=" + id;
+             var ServiceUrl = "/Order_Master/GetProdectDetails?id=" + id;
              var content = '';
              $.support.cors = true;
              $.ajax({
@@ -76,11 +76,15 @@
                  contentType: "application/json; charset=utf-8",
                  dataType: 'json',
                  error: function (xhr, err) {
-                     alert("Error");
+                     alert("This Product does not have avalialbe quantity. It does not exist in purchase entry. Please raise purchase entry request to add this.");
+                     $('#ProductShorName').val("");
+                     $('#ProductType').val("")
+                     $('#AvailableQty').val(0)
                  },
                  success: function (result, status) {
                      $('#ProductShorName').val(result[0].ShorName);
                      $('#ProductType').val(result[0].Price)
+                     $('#AvailableQty').val(result[0].Quantity)
                  }
              });
          });
@@ -113,21 +117,26 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.Status, new SelectList(ViewBag.Status, "Text", "Value"), "Select Status", new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DropDownList("Status", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-sm-3">
                     @Html.DropDownList("ProductID", null, "Select Product", htmlAttributes: new { @class = "form-control input-sm" })
                     <div style="color:red;" id="msg_id"></div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     @Html.TextBox("ProductShorName", null, htmlAttributes: new { @class = "form-control input-sm", @readonly = true, placeholder = "Short Name" })
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     @Html.TextBox("ProductType", null, htmlAttributes: new { @class = "form-control input-sm", @readonly = true, placeholder = "Product Type" })
                 </div>
-                <div class="col-sm-1">
+                <div class="col-sm-2">
+                    @Html.TextBox("AvailableQty", null, htmlAttributes: new { @class = "form-control input-sm", @readonly = true, placeholder = "Available Quantity" })
+                </div>
+                <div class="col-sm-2">
                     @Html.TextBox("Quantity", null, htmlAttributes: new { @class = "form-control input-sm", placeholder = "Quantity"})
                 </div>
                 <div class="col-sm-1">
@@ -161,11 +170,11 @@
                                     <td>
                                         @Html.TextBoxFor(model => model.order_Master_products[i].Quantity, new { @id = "Quantity1" })
                                     </td>
-                                    if(ViewBag.Edit == true){
+                                    
                                     <td>
                                         @Html.TextBoxFor(model => model.order_Master_products[i].RemainingQuantity,null, htmlAttributes : new { @id = "RemainingQuantity1" , @readonly = true })
                                     </td>
-                                    }
+                                   
                                 </tr>
                             }
                             else
@@ -180,11 +189,11 @@
                                     <td>
                                         @Html.TextBoxFor(model => model.order_Master_products[i].Quantity, new { @id = "Qty_" + i })
                                     </td>
-                                    if(ViewBag.Edit == true){
+                                   
                                     <td>
                                         @Html.TextBoxFor(model => model.order_Master_products[i].RemainingQuantity, htmlAttributes: new { @id = "RQty" + i, @readonly = true })
                                     </td>
-                                    }
+                                   
                                 </tr>
 
                             }

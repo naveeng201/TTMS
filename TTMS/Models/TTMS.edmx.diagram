@@ -53,12 +53,11 @@
         <EntityTypeShape EntityType="TTMSModel.Order_Master" Width="1.5" PointX="10" PointY="18.875" />
         <AssociationConnector Association="TTMSModel.FK_Order_Master_Employee" />
         <AssociationConnector Association="TTMSModel.FK_Order_Master_Orders" />
-        <EntityTypeShape EntityType="TTMSModel.Order_Master_Items" Width="1.5" PointX="19.375" PointY="19.5" />
-        <AssociationConnector Association="TTMSModel.FK_Order_Master_Items_Order_Master" />
-        <AssociationConnector Association="TTMSModel.FK_Order_Master_Items_Products" />
-        <AssociationConnector Association="TTMSModel.FK_Order_Master_Items_Products1" />
         <EntityTypeShape EntityType="TTMSModel.ProductsInventory" Width="1.5" PointX="15.375" PointY="20.25" />
         <AssociationConnector Association="TTMSModel.FK_ProductsInventory_Products" />
+        <EntityTypeShape EntityType="TTMSModel.Order_Master_Items" Width="1.5" PointX="19.375" PointY="19.625" />
+        <AssociationConnector Association="TTMSModel.FK_Order_Master_Items_Order_Master" />
+        <AssociationConnector Association="TTMSModel.FK_Order_Master_Items_Products" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

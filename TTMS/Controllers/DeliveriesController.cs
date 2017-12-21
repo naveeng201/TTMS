@@ -47,9 +47,10 @@ namespace TTMS.Controllers
                                 ID = emp.ID,
                                 Name = emp.FirstName + ", " + emp.LastName
                             };
-            var orders = from order in db.Orders
-                         join orderemp in db.Order_Employee on order.ID equals orderemp.OrderID
-                         select new { ID = order.ID, OrderNo = order.OrderNo };
+            var orders = from o in db.Orders
+                         join om in db.Order_Master on o.ID equals om.OrderID
+                         where om.Status == 4
+                         select new { ID = o.ID, OrderNo = o.OrderNo };
             ViewBag.EmployeeID = new SelectList(employees, "ID", "Name");
             ViewBag.OrderID = new SelectList(orders, "ID", "OrderNo");
             return View();

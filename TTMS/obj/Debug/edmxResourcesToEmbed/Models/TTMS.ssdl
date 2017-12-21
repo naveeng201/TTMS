@@ -520,18 +520,6 @@
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="Order_Master_Items">
-        <PropertyRef Name="OrderMasterID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Order_Master_Items_Products1">
-    <End Role="Products" Type="Self.Products" Multiplicity="1" />
-    <End Role="Order_Master_Items" Type="Self.Order_Master_Items" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Products">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Order_Master_Items">
         <PropertyRef Name="ProductID" />
       </Dependent>
     </ReferentialConstraint>
@@ -807,10 +795,6 @@
       <End Role="Order_Master_Items" EntitySet="Order_Master_Items" />
     </AssociationSet>
     <AssociationSet Name="FK_Order_Master_Items_Products" Association="Self.FK_Order_Master_Items_Products">
-      <End Role="Products" EntitySet="Products" />
-      <End Role="Order_Master_Items" EntitySet="Order_Master_Items" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Order_Master_Items_Products1" Association="Self.FK_Order_Master_Items_Products1">
       <End Role="Products" EntitySet="Products" />
       <End Role="Order_Master_Items" EntitySet="Order_Master_Items" />
     </AssociationSet>

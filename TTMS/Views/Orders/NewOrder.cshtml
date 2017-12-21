@@ -3,11 +3,16 @@
 <script>
     $(document).ready(function () {
         var oTable = $('#tblProducts').dataTable({
-
+            "sPaginationType": "full_numbers"
         });
     });
 </script>
 <br />
+<div class="pull-left">
+    <a href="@Url.Action("Create", "SaleProducts")" class="btn btn-info btn-sm">
+         Add New Product 
+    </a>
+</div>
 <div class="pull-right">
     <a href="@Url.Action("Cart", "Orders")" class="btn btn-info btn-sm">
         <span class="glyphicon glyphicon-shopping-cart" style="color:green"></span>Cart <span class="badge">@Session["count"]</span>

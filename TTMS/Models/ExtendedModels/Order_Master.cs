@@ -12,7 +12,9 @@ namespace TTMS.Models
     }
     public class Order_MasterMetadata
     {
+         
         public int OrderID { get; set; }
+        [Display(Name ="Employee")]
         public int EmployeeID { get; set; }
     }
 }

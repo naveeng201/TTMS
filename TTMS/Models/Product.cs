@@ -18,9 +18,8 @@ namespace TTMS.Models
         public Product()
         {
             this.OrderDetails = new HashSet<OrderDetail>();
-            this.Order_Master_Items = new HashSet<Order_Master_Items>();
-            this.Order_Master_Items1 = new HashSet<Order_Master_Items>();
             this.ProductsInventories = new HashSet<ProductsInventory>();
+            this.Order_Master_Items = new HashSet<Order_Master_Items>();
         }
     
         public int ID { get; set; }
@@ -42,10 +41,8 @@ namespace TTMS.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order_Master_Items> Order_Master_Items { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order_Master_Items> Order_Master_Items1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductsInventory> ProductsInventories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order_Master_Items> Order_Master_Items { get; set; }
     }
 }

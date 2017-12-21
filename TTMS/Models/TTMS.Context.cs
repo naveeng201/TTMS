@@ -48,7 +48,7 @@ namespace TTMS.Models
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<SaleProduct> SaleProducts { get; set; }
         public virtual DbSet<Order_Master> Order_Master { get; set; }
-        public virtual DbSet<Order_Master_Items> Order_Master_Items { get; set; }
         public virtual DbSet<ProductsInventory> ProductsInventories { get; set; }
+        public virtual DbSet<Order_Master_Items> Order_Master_Items { get; set; }
     }
 }

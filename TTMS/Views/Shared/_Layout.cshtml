@@ -128,14 +128,14 @@
 
                     <div class="menu">
                         <ul id="menu">
-                            <li id="menu-home " style="text-align:center !important;"><a href="#"><i class="fa fa-plus-circle fa-2x"></i></br><span>Dashboard</span></a></li>
+                            <li id="menu-home " style="text-align:center !important;"><a href="#"><i class="fa fa-plus-circle fa-2x"></i></br><span>@Html.ActionLink("Dashboard", "Index", "ProductsInventories")</span></a></li>
                             <li style="text-align:center !important;">
                                 <a href="#"><i class="fa fa-credit-card  fa-2x"></i></br><span>Bills</span></a>
                                 <ul style="text-align:left !important" ;>
-                                    <li><a href="#"> New Order</a></li>
-                                    <li><a href="#"> Payment</a></li>
-                                    <li><a href="#"> Bill History</a></li>
-                                    <li><a href="#"> Return</a></li>
+                                    <li><a href="#">@Html.ActionLink("New Order", "NewOrder", "Orders")</a></li>
+                                    <li><a href="#">Payment</a></li>
+                                    <li><a href="#">Bill History</a></li>
+                                    <li><a href="#">Return</a></li>
                                 </ul>
                             </li>
                             <li style="text-align:center !important;">
@@ -166,7 +166,7 @@
                                     <li id="menu-arquivos">@Html.ActionLink("Brand", "Index", "BrandsMasters")</li>
                                     <li id="menu-arquivos">@Html.ActionLink("Products", "Index", "Products")</li>
                                     <li id="menu-arquivos">@Html.ActionLink("Units", "Index", "Units")</li>
-                                    <li id="menu-arquivos"><a href="#">Distributor</a></li>
+                                    <li id="menu-arquivos"><a href="#">@Html.ActionLink("Supplier", "Index", "Suppliers")</a></li>
                                     <li id="menu-arquivos"><a href="#">Job</a></li>
                                 </ul>
                             </li>
@@ -199,8 +199,8 @@
                 <!--<div class="footer-block buttons"> <iframe class="footer-github-btn" src="https://ghbtns.com/github-btn.html?user=modularcode&repo=modular-admin-html&type=star&count=true" frameborder="0" scrolling="0" width="140px" height="20px"></iframe> </div>-->
                 <div class="footer-block author">
                     <ul>
-                        <li> created by <a href="https://github.com/modularcode">RASVEK</a> </li>
-                        <li> <a href="https://github.com/modularcode/modular-admin-html#get-in-touch">Cont. - 9703772797</a> </li>
+                        <li> created by <a href="https://github.com/modularcode">Nexgen</a> </li>
+                        <li> <a href="https://github.com/modularcode/modular-admin-html#get-in-touch"></a> </li>
                     </ul>
                 </div>
 

@@ -12,7 +12,7 @@ namespace TTMS.Models
         public int EmployeeID { get; set; }
         public string OrderNo { get; set; }
         public string EmployeeName { get; set; }
-        public int  Status { get; set; }
+        public string  Status { get; set; }
         public List<OrderMasterProducts> order_Master_products { get; set; }
     }
     public class OrderMasterProducts

@@ -1,10 +1,16 @@
 ﻿@model IEnumerable<TTMS.Models.SaleProduct>
-
+<script>
+        $(document).ready(function () {
+            var oTable = $('#tblProducts').dataTable({
+                "sPaginationType": "full_numbers"
+            });
+        });
+</script>
  
     <p>
         @Html.ActionLink("Create New", "Create")
     </p>
-    <table class="table">
+    <table id="tblProducts" class="display">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.ImagePath)

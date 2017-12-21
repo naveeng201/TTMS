@@ -7,21 +7,35 @@
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EmployeeID)
+                @Html.DisplayName("Employee Name")
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Order.OrderNo)
             </th>
-            <th></th>
+            <th>Status</th>
         </tr>
     
     @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.EmployeeID)
+                @Html.DisplayFor(modelItem => item.Employee.FirstName)    @Html.DisplayFor(modelItem => item.Employee.LastName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Order.OrderNo)
+            </td>
+            <td>
+                @if (item.Status == 4)
+                {
+                    @Html.DisplayName("Completed")
+                }
+                else if (item.Status == 5)
+                {
+                    @Html.DisplayName("NewOrder")
+                }
+                else if (item.Status == 6)
+                {
+                    @Html.DisplayName("InProgress")
+                }
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
