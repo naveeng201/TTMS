@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -17,7 +18,7 @@ namespace TTMS.Controllers
         // GET: SaleProducts
         public ActionResult Index()
         {
-            var saleProducts = db.SaleProducts.Include(s => s.BrandsMaster).Include(s => s.ProductCategory).Include(s => s.Unit);
+            var saleProducts = db.saleproducts.Include(s => s.brandsmaster).Include(s => s.productcategory).Include(s => s.unit);
             return View(saleProducts.ToList());
         }
 
@@ -28,7 +29,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SaleProduct saleProduct = db.SaleProducts.Find(id);
+            saleproduct saleProduct = db.saleproducts.Find(id);
             if (saleProduct == null)
             {
                 return HttpNotFound();
@@ -39,9 +40,9 @@ namespace TTMS.Controllers
         // GET: SaleProducts/Create
         public ActionResult Create()
         {
-            ViewBag.BrandID = new SelectList(db.BrandsMasters, "ID", "BrandName");
-            ViewBag.ProductCategoryID = new SelectList(db.ProductCategories, "ID", "Name");
-            ViewBag.UnitID = new SelectList(db.Units, "ID", "Name");
+            ViewBag.BrandID = new SelectList(db.brandsmasters, "ID", "BrandName");
+            ViewBag.ProductCategoryID = new SelectList(db.productcategories, "ID", "Name");
+            ViewBag.UnitID = new SelectList(db.units, "ID", "Name");
             return View();
         }
 
@@ -50,18 +51,28 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,ShortName,Type,Size,Color,Price,Description,ProductCategoryID,BrandID,UnitID,Status,ImagePath,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] SaleProduct saleProduct)
+        public ActionResult Create(saleproduct saleProduct)
         {
             if (ModelState.IsValid)
             {
-                db.SaleProducts.Add(saleProduct);
+                var file = Request.Files["ImageUpload"];
+                if (file != null && file.ContentLength > 0)
+                {
+                    var uploadDir = "~/assets/ProductImages";
+                    var imagePath = Path.Combine(Server.MapPath(uploadDir), file.FileName);
+                    var imageUrl = Path.Combine(uploadDir, file.FileName);
+                    file.SaveAs(imagePath);
+                    saleProduct.ImagePath = imageUrl;
+                }
+
+                db.saleproducts.Add(saleProduct);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.BrandID = new SelectList(db.BrandsMasters, "ID", "BrandName", saleProduct.BrandID);
-            ViewBag.ProductCategoryID = new SelectList(db.ProductCategories, "ID", "Name", saleProduct.ProductCategoryID);
-            ViewBag.UnitID = new SelectList(db.Units, "ID", "Name", saleProduct.UnitID);
+            ViewBag.BrandID = new SelectList(db.brandsmasters, "ID", "BrandName", saleProduct.BrandID);
+            ViewBag.ProductCategoryID = new SelectList(db.productcategories, "ID", "Name", saleProduct.ProductCategoryID);
+            ViewBag.UnitID = new SelectList(db.units, "ID", "Name", saleProduct.UnitID);
             return View(saleProduct);
         }
 
@@ -72,14 +83,14 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SaleProduct saleProduct = db.SaleProducts.Find(id);
+            saleproduct saleProduct = db.saleproducts.Find(id);
             if (saleProduct == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.BrandID = new SelectList(db.BrandsMasters, "ID", "BrandName", saleProduct.BrandID);
-            ViewBag.ProductCategoryID = new SelectList(db.ProductCategories, "ID", "Name", saleProduct.ProductCategoryID);
-            ViewBag.UnitID = new SelectList(db.Units, "ID", "Name", saleProduct.UnitID);
+            ViewBag.BrandID = new SelectList(db.brandsmasters, "ID", "BrandName", saleProduct.BrandID);
+            ViewBag.ProductCategoryID = new SelectList(db.productcategories, "ID", "Name", saleProduct.ProductCategoryID);
+            ViewBag.UnitID = new SelectList(db.units, "ID", "Name", saleProduct.UnitID);
             return View(saleProduct);
         }
 
@@ -88,7 +99,7 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,ShortName,Type,Size,Color,Price,Description,ProductCategoryID,BrandID,UnitID,Status,ImagePath,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] SaleProduct saleProduct)
+        public ActionResult Edit([Bind(Include = "ID,Name,ShortName,Type,Size,Color,Price,Description,ProductCategoryID,BrandID,UnitID,Status,ImagePath,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] saleproduct saleProduct)
         {
             if (ModelState.IsValid)
             {
@@ -96,9 +107,9 @@ namespace TTMS.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.BrandID = new SelectList(db.BrandsMasters, "ID", "BrandName", saleProduct.BrandID);
-            ViewBag.ProductCategoryID = new SelectList(db.ProductCategories, "ID", "Name", saleProduct.ProductCategoryID);
-            ViewBag.UnitID = new SelectList(db.Units, "ID", "Name", saleProduct.UnitID);
+            ViewBag.BrandID = new SelectList(db.brandsmasters, "ID", "BrandName", saleProduct.BrandID);
+            ViewBag.ProductCategoryID = new SelectList(db.productcategories, "ID", "Name", saleProduct.ProductCategoryID);
+            ViewBag.UnitID = new SelectList(db.units, "ID", "Name", saleProduct.UnitID);
             return View(saleProduct);
         }
 
@@ -109,7 +120,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SaleProduct saleProduct = db.SaleProducts.Find(id);
+            saleproduct saleProduct = db.saleproducts.Find(id);
             if (saleProduct == null)
             {
                 return HttpNotFound();
@@ -122,8 +133,8 @@ namespace TTMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            SaleProduct saleProduct = db.SaleProducts.Find(id);
-            db.SaleProducts.Remove(saleProduct);
+            saleproduct saleProduct = db.saleproducts.Find(id);
+            db.saleproducts.Remove(saleProduct);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

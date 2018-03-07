@@ -15,29 +15,29 @@ namespace TTMS.Controllers
     {
         private TTMSEntities db = new TTMSEntities();
 
-        // GET: PurchaseOrders
+        // GET: purchaseorders
         public ActionResult Index()
         {
-            //var purchaseOrder = db.PurchaseOrders.Include(p => p.Supplier);
+            //var purchaseOrder = db.purchaseorders.Include(p => p.Supplier);
             //return View(purchaseOrder.ToList());
-            ViewBag.SupplierID = new SelectList(db.Suppliers, "ID", "OrganizationName");
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
+            ViewBag.SupplierID = new SelectList(db.suppliers, "ID", "OrganizationName");
+            ViewBag.ProductID = new SelectList(db.products, "ID", "Name");
             
-            var poList = db.PurchaseOrders.Where(x=>x.IsPurcheseEntry == false).ToList();
-            //PO._orderDetail = new List<OrderDetail>();
-            //PO.purchaseOrder = new PurchaseOrder();
-            //PO.purchaseOrder.OrderDetails = db.OrderDetails.ToList();
+            var poList = db.purchaseorders.Where(x=>x.IsPurcheseEntry == false).ToList();
+            //PO._orderDetail = new List<orderdetail>();
+            //PO.purchaseOrder = new purchaseorder();
+            //PO.purchaseOrder.orderdetails = db.orderdetails.ToList();
             return View(poList);
         }
 
-        // GET: PurchaseOrders/Details/5
+        // GET: purchaseorders/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PurchaseOrder purchaseOrder = db.PurchaseOrders.Find(id);
+            purchaseorder purchaseOrder = db.purchaseorders.Find(id);
             if (purchaseOrder == null)
             {
                 return HttpNotFound();
@@ -45,15 +45,15 @@ namespace TTMS.Controllers
             return View(purchaseOrder);
         }
 
-        // GET: PurchaseOrders/Create
+        // GET: purchaseorders/Create
         public ActionResult Create()
         {
-            ViewBag.SupplierID = new SelectList(db.Suppliers, "ID", "OrganizationName");
-            ViewBag.Suppliers = db.Suppliers.ToList();
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
+            ViewBag.SupplierID = new SelectList(db.suppliers, "ID", "OrganizationName");
+            ViewBag.suppliers = db.suppliers.ToList();
+            ViewBag.ProductID = new SelectList(db.products, "ID", "Name");
             var purchaseOrder = new PurchaseOrderVM();
-            purchaseOrder.purchaseOrder = new PurchaseOrder();
-            purchaseOrder._orderDetail = new List<OrderDetail> { new OrderDetail() };
+            purchaseOrder.purchaseOrder = new purchaseorder();
+            purchaseOrder._orderDetail = new List<orderdetail> { new orderdetail() };
             return View(purchaseOrder);
         }
 
@@ -66,7 +66,7 @@ namespace TTMS.Controllers
 
             if (ModelState.IsValid)
             {
-                PurchaseOrder po = new PurchaseOrder();
+                purchaseorder po = new purchaseorder();
                 po.SupplierID = purchaseOrderVM.purchaseOrder.SupplierID;
                 po.PurchaseOrderNo = purchaseOrderVM.purchaseOrder.PurchaseOrderNo;
                 if (purchaseOrderVM.purchaseOrder.ID != 0)
@@ -76,13 +76,13 @@ namespace TTMS.Controllers
                 {
                     if (od.ProductID == 0)
                         continue;
-                    if (db.OrderDetails.Where(x => x.PurchaseOrderID == purchaseOrderVM.purchaseOrder.ID && x.ProductID == od.ProductID).ToList().Count > 0)
+                    if (db.orderdetails.Where(x => x.PurchaseOrderID == purchaseOrderVM.purchaseOrder.ID && x.ProductID == od.ProductID).ToList().Count > 0)
                         continue;
-                    po.OrderDetails.Add(od);
+                    po.orderdetails.Add(od);
                 }
-                db.PurchaseOrders.Add(po);
+                db.purchaseorders.Add(po);
                 db.SaveChanges();
-                var poList = db.PurchaseOrders.ToList();
+                var poList = db.purchaseorders.ToList();
                 return View("Index", poList);
             }
             return View("Create", purchaseOrderVM);
@@ -90,7 +90,7 @@ namespace TTMS.Controllers
         [HttpGet]
         public ActionResult GetPurchaseOrderNo()
         {
-            var result = db.PurchaseOrders.Select(x => x.PurchaseOrderNo).DefaultIfEmpty().Max();
+            var result = db.purchaseorders.Select(x => x.PurchaseOrderNo).DefaultIfEmpty().Max();
             int iNumber = 0;
             int.TryParse(result == null ? "0" : result.ToString(), out iNumber);
             iNumber = iNumber + 1;
@@ -102,25 +102,25 @@ namespace TTMS.Controllers
         {
 
             //do the logic for taking the value for textbox
-            var result = from c in db.Products
+            var result = from c in db.products
                          where c.ID == id
                          select new {c.Price,c.ShorName };
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        // POST: PurchaseOrders/Create
+        // POST: purchaseorders/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(/*[Bind(Include = "ID,PurchaseOrderNo,SupplierID,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] */PurchaseOrderVM purchaseOrderVM)
         {
-            PurchaseOrder purchaseOrder = new PurchaseOrder();
+            purchaseorder purchaseOrder = new purchaseorder();
             purchaseOrder = purchaseOrderVM.purchaseOrder;
-            purchaseOrder.OrderDetails = purchaseOrderVM._orderDetail;
+            purchaseOrder.orderdetails = purchaseOrderVM._orderDetail;
             if (ModelState.IsValid)
             {
-                db.PurchaseOrders.Add(purchaseOrder);
+                db.purchaseorders.Add(purchaseOrder);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -128,37 +128,37 @@ namespace TTMS.Controllers
             return View(purchaseOrder);
         }
 
-        // GET: PurchaseOrders/Edit/5
+        // GET: purchaseorders/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PurchaseOrder purchaseOrder = db.PurchaseOrders.Find(id);
+            purchaseorder purchaseOrder = db.purchaseorders.Find(id);
             if (purchaseOrder == null)
             {
                 return HttpNotFound();
             }
 
-            ViewBag.SupplierID = new SelectList(db.Suppliers, "ID", "OrganizationName");
-            ViewBag.Suppliers = db.Suppliers.ToList();
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
+            ViewBag.SupplierID = new SelectList(db.suppliers, "ID", "OrganizationName");
+            ViewBag.suppliers = db.suppliers.ToList();
+            ViewBag.ProductID = new SelectList(db.products, "ID", "Name");
             var purchaseOrderVM = new PurchaseOrderVM();
             purchaseOrderVM.purchaseOrder = purchaseOrder;
-            purchaseOrderVM._orderDetail = db.OrderDetails.Where(x => x.PurchaseOrderID == id).ToList();
-            purchaseOrderVM._orderDetail.Insert(0, new OrderDetail { });
+            purchaseOrderVM._orderDetail = db.orderdetails.Where(x => x.PurchaseOrderID == id).ToList();
+            purchaseOrderVM._orderDetail.Insert(0, new orderdetail { });
             return View("Create",purchaseOrderVM);
         }
 
-        // POST: PurchaseOrders/Edit/5
+        // POST: purchaseorders/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(/*[Bind(Include = "ID,PurchaseOrderNo,SupplierID,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")]*/ PurchaseOrderVM purchaseOrderVM)
         {
-            PurchaseOrder purchaseOrder = new PurchaseOrder();
+            purchaseorder purchaseOrder = new purchaseorder();
             purchaseOrder = purchaseOrderVM.purchaseOrder;
             if (ModelState.IsValid)
             {
@@ -169,14 +169,14 @@ namespace TTMS.Controllers
             return View(purchaseOrder);
         }
 
-        // GET: PurchaseOrders/Delete/5
+        // GET: purchaseorders/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PurchaseOrder purchaseOrder = db.PurchaseOrders.Find(id);
+            purchaseorder purchaseOrder = db.purchaseorders.Find(id);
             if (purchaseOrder == null)
             {
                 return HttpNotFound();
@@ -184,13 +184,13 @@ namespace TTMS.Controllers
             return View(purchaseOrder);
         }
 
-        // POST: PurchaseOrders/Delete/5
+        // POST: purchaseorders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PurchaseOrder purchaseOrder = db.PurchaseOrders.Find(id);
-            db.PurchaseOrders.Remove(purchaseOrder);
+            purchaseorder purchaseOrder = db.purchaseorders.Find(id);
+            db.purchaseorders.Remove(purchaseOrder);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

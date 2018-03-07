@@ -7,7 +7,7 @@ using System.Web;
 namespace TTMS.Models
 {
     [MetadataType(typeof(Order_MasterMetadata))]
-    public partial class Order_Master:IBaseEntity
+    public partial class order_master:IBaseEntity
     {
     }
     public class Order_MasterMetadata

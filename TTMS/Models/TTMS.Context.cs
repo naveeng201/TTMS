@@ -25,30 +25,36 @@ namespace TTMS.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<BrandsMaster> BrandsMasters { get; set; }
-        public virtual DbSet<ProductCategory> ProductCategories { get; set; }
-        public virtual DbSet<EmployeeAttendance> EmployeeAttendances { get; set; }
-        public virtual DbSet<Order_Employee> Order_Employee { get; set; }
-        public virtual DbSet<Unit> Units { get; set; }
-        public virtual DbSet<EmployeePerformance> EmployeePerformances { get; set; }
-        public virtual DbSet<Delivery> Deliveries { get; set; }
-        public virtual DbSet<Account> Accounts { get; set; }
-        public virtual DbSet<EmployeePayment> EmployeePayments { get; set; }
-        public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<Supplier> Suppliers { get; set; }
-        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
-        public virtual DbSet<PurchaseEntry> PurchaseEntries { get; set; }
-        public virtual DbSet<PurchaseEntryPayment> PurchaseEntryPayments { get; set; }
-        public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
-        public virtual DbSet<Address> Addresses { get; set; }
-        public virtual DbSet<CustomerAddress> CustomerAddresses { get; set; }
-        public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<OrderItem> OrderItems { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<SaleProduct> SaleProducts { get; set; }
-        public virtual DbSet<Order_Master> Order_Master { get; set; }
-        public virtual DbSet<ProductsInventory> ProductsInventories { get; set; }
-        public virtual DbSet<Order_Master_Items> Order_Master_Items { get; set; }
+        public virtual DbSet<account> accounts { get; set; }
+        public virtual DbSet<address> addresses { get; set; }
+        public virtual DbSet<aspnetrole> aspnetroles { get; set; }
+        public virtual DbSet<aspnetuserclaim> aspnetuserclaims { get; set; }
+        public virtual DbSet<aspnetuserlogin> aspnetuserlogins { get; set; }
+        public virtual DbSet<aspnetuser> aspnetusers { get; set; }
+        public virtual DbSet<brandsmaster> brandsmasters { get; set; }
+        public virtual DbSet<customeraddress> customeraddresses { get; set; }
+        public virtual DbSet<customer> customers { get; set; }
+        public virtual DbSet<delivery> deliveries { get; set; }
+        public virtual DbSet<employee> employees { get; set; }
+        public virtual DbSet<employeeattendance> employeeattendances { get; set; }
+        public virtual DbSet<employeecommission> employeecommissions { get; set; }
+        public virtual DbSet<employeepayment> employeepayments { get; set; }
+        public virtual DbSet<employeeperformance> employeeperformances { get; set; }
+        public virtual DbSet<order_employee> order_employee { get; set; }
+        public virtual DbSet<order_master> order_master { get; set; }
+        public virtual DbSet<order_master_items> order_master_items { get; set; }
+        public virtual DbSet<orderdetail> orderdetails { get; set; }
+        public virtual DbSet<orderitem> orderitems { get; set; }
+        public virtual DbSet<order> orders { get; set; }
+        public virtual DbSet<productcategory> productcategories { get; set; }
+        public virtual DbSet<product> products { get; set; }
+        public virtual DbSet<productsinventory> productsinventories { get; set; }
+        public virtual DbSet<purchaseentry> purchaseentries { get; set; }
+        public virtual DbSet<purchaseentrypayment> purchaseentrypayments { get; set; }
+        public virtual DbSet<purchaseorder> purchaseorders { get; set; }
+        public virtual DbSet<saleproduct> saleproducts { get; set; }
+        public virtual DbSet<supplier> suppliers { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<unit> units { get; set; }
     }
 }

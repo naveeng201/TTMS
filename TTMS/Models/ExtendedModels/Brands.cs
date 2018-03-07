@@ -7,7 +7,7 @@ using System.Web;
 namespace TTMS.Models
 {
     [MetadataType(typeof(BrandsMasterMetaData))]
-    public partial class BrandsMaster : IBaseEntity
+    public partial class brandsmaster : IBaseEntity
     {
 
     }

@@ -7,7 +7,7 @@ using System.Web;
 namespace TTMS.Models
 {
     [MetadataType(typeof(OrderDetailMetadata))]
-    public partial class OrderDetail:IBaseEntity
+    public partial class orderdetail:IBaseEntity
     {
     }
     public class OrderDetailMetadata

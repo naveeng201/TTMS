@@ -18,7 +18,7 @@ namespace TTMS.Controllers
         // GET: Suppliers
         public ActionResult Index()
         {
-            return View(db.Suppliers.ToList());
+            return View(db.suppliers.ToList());
         }
 
         // GET: Suppliers/Details/5
@@ -28,7 +28,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Supplier supplier = db.Suppliers.Find(id);
+            supplier supplier = db.suppliers.Find(id);
             if (supplier == null)
             {
                 return HttpNotFound();
@@ -45,11 +45,11 @@ namespace TTMS.Controllers
  
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,OrganizationName,Address,City,State,Country,Pin,ContactPersonName,ContactNo,EmailId,GSTNo,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Supplier supplier)
+        public ActionResult Create([Bind(Include = "ID,OrganizationName,Address,City,State,Country,Pin,ContactPersonName,ContactNo,EmailId,GSTNo,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] supplier supplier)
         {
             if (ModelState.IsValid)
             {
-                db.Suppliers.Add(supplier);
+                db.suppliers.Add(supplier);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -64,7 +64,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Supplier supplier = db.Suppliers.Find(id);
+            supplier supplier = db.suppliers.Find(id);
             if (supplier == null)
             {
                 return HttpNotFound();
@@ -74,7 +74,7 @@ namespace TTMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,OrganizationName,Address,City,State,Country,Pin,ContactPersonName,ContactNo,EmailId,GSTNo,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Supplier supplier)
+        public ActionResult Edit([Bind(Include = "ID,OrganizationName,Address,City,State,Country,Pin,ContactPersonName,ContactNo,EmailId,GSTNo,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] supplier supplier)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Supplier supplier = db.Suppliers.Find(id);
+            supplier supplier = db.suppliers.Find(id);
             if (supplier == null)
             {
                 return HttpNotFound();
@@ -105,8 +105,8 @@ namespace TTMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Supplier supplier = db.Suppliers.Find(id);
-            db.Suppliers.Remove(supplier);
+            supplier supplier = db.suppliers.Find(id);
+            db.suppliers.Remove(supplier);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

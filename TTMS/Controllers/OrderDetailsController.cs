@@ -18,7 +18,7 @@ namespace TTMS.Controllers
         // GET: OrderDetails
         public ActionResult Index()
         {
-            var orderDetails = db.OrderDetails.Include(o => o.Product).Include(o => o.PurchaseOrder);
+            var orderDetails = db.orderdetails.Include(o => o.product).Include(o => o.purchaseorder);
             return View(orderDetails.ToList());
         }
 
@@ -29,7 +29,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OrderDetail orderDetail = db.OrderDetails.Find(id);
+            orderdetail orderDetail = db.orderdetails.Find(id);
             if (orderDetail == null)
             {
                 return HttpNotFound();
@@ -40,8 +40,8 @@ namespace TTMS.Controllers
         // GET: OrderDetails/Create
         public ActionResult Create()
         {
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
-            ViewBag.PurchaseOrderID = new SelectList(db.PurchaseOrders, "ID", "PurchaseOrderNo");
+            ViewBag.ProductID = new SelectList(db.products, "ID", "Name");
+            ViewBag.PurchaseOrderID = new SelectList(db.purchaseorders, "ID", "PurchaseOrderNo");
             return View();
         }
 
@@ -50,17 +50,17 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,PurchaseOrderID,ProductID,ProductName,ProductColor,ProductType,Quantity,TypeOfUnits,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] OrderDetail orderDetail)
+        public ActionResult Create([Bind(Include = "ID,PurchaseOrderID,ProductID,ProductName,ProductColor,ProductType,Quantity,TypeOfUnits,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] orderdetail orderDetail)
         {
             if (ModelState.IsValid)
             {
-                db.OrderDetails.Add(orderDetail);
+                db.orderdetails.Add(orderDetail);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name", orderDetail.ProductID);
-            ViewBag.PurchaseOrderID = new SelectList(db.PurchaseOrders, "ID", "PurchaseOrderNo", orderDetail.PurchaseOrderID);
+            ViewBag.ProductID = new SelectList(db.products, "ID", "Name", orderDetail.ProductID);
+            ViewBag.PurchaseOrderID = new SelectList(db.purchaseorders, "ID", "PurchaseOrderNo", orderDetail.PurchaseOrderID);
             return View(orderDetail);
         }
 
@@ -71,13 +71,13 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OrderDetail orderDetail = db.OrderDetails.Find(id);
+            orderdetail orderDetail = db.orderdetails.Find(id);
             if (orderDetail == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name", orderDetail.ProductID);
-            ViewBag.PurchaseOrderID = new SelectList(db.PurchaseOrders, "ID", "PurchaseOrderNo", orderDetail.PurchaseOrderID);
+            ViewBag.ProductID = new SelectList(db.products, "ID", "Name", orderDetail.ProductID);
+            ViewBag.PurchaseOrderID = new SelectList(db.purchaseorders, "ID", "PurchaseOrderNo", orderDetail.PurchaseOrderID);
             return View(orderDetail);
         }
 
@@ -86,7 +86,7 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,PurchaseOrderID,ProductID,ProductName,ProductColor,ProductType,Quantity,TypeOfUnits,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] OrderDetail orderDetail)
+        public ActionResult Edit([Bind(Include = "ID,PurchaseOrderID,ProductID,ProductName,ProductColor,ProductType,Quantity,TypeOfUnits,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] orderdetail orderDetail)
         {
             if (ModelState.IsValid)
             {
@@ -94,8 +94,8 @@ namespace TTMS.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name", orderDetail.ProductID);
-            ViewBag.PurchaseOrderID = new SelectList(db.PurchaseOrders, "ID", "PurchaseOrderNo", orderDetail.PurchaseOrderID);
+            ViewBag.ProductID = new SelectList(db.products, "ID", "Name", orderDetail.ProductID);
+            ViewBag.PurchaseOrderID = new SelectList(db.purchaseorders, "ID", "PurchaseOrderNo", orderDetail.PurchaseOrderID);
             return View(orderDetail);
         }
 
@@ -106,7 +106,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OrderDetail orderDetail = db.OrderDetails.Find(id);
+            orderdetail orderDetail = db.orderdetails.Find(id);
             if (orderDetail == null)
             {
                 return HttpNotFound();
@@ -119,8 +119,8 @@ namespace TTMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            OrderDetail orderDetail = db.OrderDetails.Find(id);
-            db.OrderDetails.Remove(orderDetail);
+            orderdetail orderDetail = db.orderdetails.Find(id);
+            db.orderdetails.Remove(orderDetail);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

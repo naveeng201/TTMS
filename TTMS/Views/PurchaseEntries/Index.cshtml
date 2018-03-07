@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TTMS.Models.PurchaseEntry>
+﻿@model IEnumerable<TTMS.Models.purchaseentry>
 
  <script>
         $(document).ready(function () {
@@ -22,7 +22,7 @@
                     <div>Purchase Entry No.</div>
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.PurchaseOrder.Supplier.OrganizationName)
+                    @Html.DisplayNameFor(model => model.purchaseorder.supplier.OrganizationName)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Status)
@@ -41,10 +41,10 @@
                         @(rowNo += 1)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PurchaseOrder.PurchaseOrderNo)
+                        @Html.DisplayFor(modelItem => item.purchaseorder.PurchaseOrderNo)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PurchaseOrder.Supplier.OrganizationName)
+                        @Html.DisplayFor(modelItem => item.purchaseorder.supplier.OrganizationName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Status)

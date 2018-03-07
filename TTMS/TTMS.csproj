@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TTMS</RootNamespace>
     <AssemblyName>TTMS</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -25,6 +25,8 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,13 +46,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MySql.Data, Version=6.9.10.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.10.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\MySql.Data.Entity.EF6.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -58,15 +75,12 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\System.Web.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -108,6 +122,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -120,12 +135,6 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -197,35 +206,50 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Account.cs">
+    <Compile Include="Models\account.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Address.cs">
+    <Compile Include="Models\address.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BrandsMaster.cs">
+    <Compile Include="Models\aspnetrole.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Customer.cs">
+    <Compile Include="Models\aspnetuser.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CustomerAddress.cs">
+    <Compile Include="Models\aspnetuserclaim.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Delivery.cs">
+    <Compile Include="Models\aspnetuserlogin.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Employee.cs">
+    <Compile Include="Models\brandsmaster.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EmployeeAttendance.cs">
+    <Compile Include="Models\customer.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EmployeePayment.cs">
+    <Compile Include="Models\customeraddress.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EmployeePerformance.cs">
+    <Compile Include="Models\delivery.cs">
+      <DependentUpon>TTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\employee.cs">
+      <DependentUpon>TTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\employeeattendance.cs">
+      <DependentUpon>TTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\employeecommission.cs">
+      <DependentUpon>TTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\employeepayment.cs">
+      <DependentUpon>TTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\employeeperformance.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ExtendedModels\Brands.cs" />
@@ -250,46 +274,49 @@
     <Compile Include="Models\ExtendedModels\Unit.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Order.cs">
+    <Compile Include="Models\order.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\OrderDetail.cs">
+    <Compile Include="Models\orderdetail.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\OrderItem.cs">
+    <Compile Include="Models\orderitem.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Order_Employee.cs">
+    <Compile Include="Models\order_employee.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Order_Master.cs">
+    <Compile Include="Models\order_master.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Order_Master_Items.cs">
+    <Compile Include="Models\order_master_items.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Product.cs">
+    <Compile Include="Models\product.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ProductCategory.cs">
+    <Compile Include="Models\productcategory.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ProductsInventory.cs">
+    <Compile Include="Models\productsinventory.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PurchaseEntry.cs">
+    <Compile Include="Models\purchaseentry.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PurchaseEntryPayment.cs">
+    <Compile Include="Models\purchaseentrypayment.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PurchaseOrder.cs">
+    <Compile Include="Models\purchaseorder.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SaleProduct.cs">
+    <Compile Include="Models\saleproduct.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Supplier.cs">
+    <Compile Include="Models\supplier.cs">
+      <DependentUpon>TTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TTMS.Context.cs">
@@ -307,8 +334,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TTMS.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\TTMSEntities.cs" />
-    <Compile Include="Models\Unit.cs">
+    <Compile Include="Models\unit.cs">
       <DependentUpon>TTMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\CartProducts.cs" />
@@ -385,6 +411,11 @@
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
     <EntityDeploy Include="Models\TTMS.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>TTMS.Designer.cs</LastGenOutput>
@@ -392,11 +423,6 @@
     <Content Include="Models\TTMS.edmx.diagram">
       <DependentUpon>TTMS.edmx</DependentUpon>
     </Content>
-    <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="fonts\fontawesome-webfont.ttf" />
-    <Content Include="fonts\fontawesome-webfont.woff" />
-    <Content Include="fonts\fontawesome-webfont.woff2" />
-    <Content Include="fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\index.js" />

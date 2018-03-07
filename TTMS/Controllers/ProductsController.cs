@@ -15,21 +15,21 @@ namespace TTMS.Controllers
     {
         private TTMSEntities db = new TTMSEntities();
 
-        // GET: Products
+        // GET: products
         public ActionResult Index()
         {
-            var products = db.Products.Include(p => p.BrandsMaster).Include(p => p.ProductCategory);
+            var products = db.products.Include(p => p.brandsmaster).Include(p => p.productcategory);
             return View(products.ToList());
         }
 
-        // GET: Products/Details/5
+        // GET: products/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
+            product product = db.products.Find(id);
             if (product == null)
             {
                 return HttpNotFound();
@@ -37,56 +37,56 @@ namespace TTMS.Controllers
             return View(product);
         }
 
-        // GET: Products/Create
+        // GET: products/Create
         public ActionResult Create()
         {
-            ViewBag.BrandID = new SelectList(db.BrandsMasters, "ID", "BrandName");
-            ViewBag.ProductCategoryID = new SelectList(db.ProductCategories, "ID", "Name");
+            ViewBag.BrandID = new SelectList(db.brandsmasters, "ID", "BrandName");
+            ViewBag.ProductCategoryID = new SelectList(db.productcategories, "ID", "Name");
             return View();
         }
 
-        // POST: Products/Create
+        // POST: products/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,ShorName,Size,Color,Type,BrandID,ProductCategoryID,Price,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Product product)
+        public ActionResult Create([Bind(Include = "ID,Name,ShorName,Size,Color,Type,BrandID,ProductCategoryID,Price,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] product product)
         {
             if (ModelState.IsValid)
             {
-                db.Products.Add(product);
+                db.products.Add(product);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.BrandID = new SelectList(db.BrandsMasters, "ID", "BrandName", product.BrandID);
-            ViewBag.ProductCategoryID = new SelectList(db.ProductCategories, "ID", "Name", product.ProductCategoryID);
+            ViewBag.BrandID = new SelectList(db.brandsmasters, "ID", "BrandName", product.BrandID);
+            ViewBag.ProductCategoryID = new SelectList(db.productcategories, "ID", "Name", product.ProductCategoryID);
             return View(product);
         }
 
-        // GET: Products/Edit/5
+        // GET: products/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
+            product product = db.products.Find(id);
             if (product == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.BrandID = new SelectList(db.BrandsMasters, "ID", "BrandName", product.BrandID);
-            ViewBag.ProductCategoryID = new SelectList(db.ProductCategories, "ID", "Name", product.ProductCategoryID);
+            ViewBag.BrandID = new SelectList(db.brandsmasters, "ID", "BrandName", product.BrandID);
+            ViewBag.ProductCategoryID = new SelectList(db.productcategories, "ID", "Name", product.ProductCategoryID);
             return View(product);
         }
 
-        // POST: Products/Edit/5
+        // POST: products/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,ShorName,Size,Color,Type,BrandID,ProductCategoryID,Price,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Product product)
+        public ActionResult Edit([Bind(Include = "ID,Name,ShorName,Size,Color,Type,BrandID,ProductCategoryID,Price,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] product product)
         {
             if (ModelState.IsValid)
             {
@@ -94,19 +94,19 @@ namespace TTMS.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.BrandID = new SelectList(db.BrandsMasters, "ID", "BrandName", product.BrandID);
-            ViewBag.ProductCategoryID = new SelectList(db.ProductCategories, "ID", "Name", product.ProductCategoryID);
+            ViewBag.BrandID = new SelectList(db.brandsmasters, "ID", "BrandName", product.BrandID);
+            ViewBag.ProductCategoryID = new SelectList(db.productcategories, "ID", "Name", product.ProductCategoryID);
             return View(product);
         }
 
-        // GET: Products/Delete/5
+        // GET: products/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
+            product product = db.products.Find(id);
             if (product == null)
             {
                 return HttpNotFound();
@@ -114,13 +114,13 @@ namespace TTMS.Controllers
             return View(product);
         }
 
-        // POST: Products/Delete/5
+        // POST: products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Product product = db.Products.Find(id);
-            db.Products.Remove(product);
+            product product = db.products.Find(id);
+            db.products.Remove(product);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

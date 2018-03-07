@@ -7,7 +7,7 @@ namespace TTMS.Models
 {
     public class OrdersVM
     {
-        public Order order { set; get; }
-        public List<OrderItem> orderItems { set; get; }
+        public order order { set; get; }
+        public List<orderitem> orderItems { set; get; }
     }
 }

@@ -7,7 +7,7 @@ using System.Web;
 namespace TTMS.Models
 {
     [MetadataType(typeof(EmployeePaymentMetadata))]
-    public partial class EmployeePayment:IBaseEntity
+    public partial class employeepayment:IBaseEntity
     {
     }
     public class EmployeePaymentMetadata

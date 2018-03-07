@@ -7,7 +7,7 @@ using System.Web;
 namespace TTMS.Models 
 {
     [MetadataType(typeof(SuppliersMetadata))]
-    public partial class Supplier : IBaseEntity
+    public partial class supplier : IBaseEntity
     {
        
     }

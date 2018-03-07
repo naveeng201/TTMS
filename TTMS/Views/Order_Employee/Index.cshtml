@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TTMS.Models.Order_Employee>
+﻿@model IEnumerable<TTMS.Models.order_employee>
 
  
     <p>
@@ -28,7 +28,7 @@
                 @Html.DisplayNameFor(model => model.ModifiedBy)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Employee.FirstName)
+                @Html.DisplayNameFor(model => model.employee.FirstName)
             </th>
             <th></th>
         </tr>
@@ -45,7 +45,7 @@
                 @Html.DisplayFor(modelItem => item.NoOfWorksPerDay)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                @Html.DisplayFor(modelItem => item.employee.FirstName)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |

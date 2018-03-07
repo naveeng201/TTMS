@@ -1,0 +1,2596 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ttmsModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="accounts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Precision="6" Nullable="false" />
+          <Property Name="ExpendetureType" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ExpendetureAmount" Type="double" Nullable="false" />
+          <Property Name="ExpendetureRef" Type="varchar" MaxLength="200" />
+          <Property Name="ExpendetureImage" Type="longblob" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="address">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Address1" Type="varchar" MaxLength="500" />
+          <Property Name="Address2" Type="varchar" MaxLength="500" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="State" Type="varchar" MaxLength="50" />
+          <Property Name="Country" Type="varchar" MaxLength="50" />
+          <Property Name="Zip" Type="varchar" MaxLength="10" />
+          <Property Name="AddressType" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedDatet" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="aspnetroles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="aspnetuserclaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="longtext" />
+          <Property Name="ClaimValue" Type="longtext" />
+        </EntityType>
+        <EntityType Name="aspnetuserlogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="varchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="aspnetuserroles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="varchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="aspnetusers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bool" Nullable="false" />
+          <Property Name="PasswordHash" Type="longtext" />
+          <Property Name="SecurityStamp" Type="longtext" />
+          <Property Name="PhoneNumber" Type="longtext" />
+          <Property Name="PhoneNumberConfirmed" Type="bool" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bool" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" Precision="6" />
+          <Property Name="LockoutEnabled" Type="bool" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="brandsmaster">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BrandName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="customeraddress">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="AddressID" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="customers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerOrganizationName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ContactPersonName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ContactNo" Type="varchar" MaxLength="50" />
+          <Property Name="AlternateContactNo" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="delivery">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="int" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="DeliveryDate" Type="datetime" Precision="6" />
+          <Property Name="ChallanNo" Type="varchar" MaxLength="200" />
+          <Property Name="DeliveredProducts" Type="varchar" MaxLength="200" />
+          <Property Name="BalanceOrder" Type="varchar" MaxLength="200" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="200" />
+          <Property Name="ContactNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AlternateContactNo" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="longtext" />
+          <Property Name="City" Type="varchar" MaxLength="200" />
+          <Property Name="State" Type="varchar" MaxLength="200" />
+          <Property Name="Country" Type="varchar" MaxLength="200" />
+          <Property Name="Zip" Type="char" MaxLength="7" />
+          <Property Name="Designation" Type="varchar" MaxLength="200" />
+          <Property Name="MasterEmp" Type="bool" />
+          <Property Name="ExperiencedField" Type="varchar" MaxLength="500" />
+          <Property Name="Experience" Type="varchar" MaxLength="50" />
+          <Property Name="Salary" Type="int" />
+          <Property Name="NoLeavesPerMonth" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="employeeattendance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="6" Nullable="false" />
+          <Property Name="EndTime" Type="time" Precision="6" />
+          <Property Name="Remarks" Type="varchar" MaxLength="500" />
+          <Property Name="Status" Type="bool" Nullable="false" />
+        </EntityType>
+        <EntityType Name="employeecommission">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FieldOfExperience" Type="varchar" MaxLength="200" />
+          <Property Name="Field" Type="varchar" MaxLength="200" />
+          <Property Name="CommissionPricePerUnit" Type="double" />
+        </EntityType>
+        <EntityType Name="employeepayment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="PaymentID" Type="int" Nullable="false" />
+          <Property Name="PaymentDate" Type="date" Nullable="false" />
+          <Property Name="Amount" Type="double" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="employeeperformance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="JobType" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="order_employee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Precision="6" Nullable="false" />
+          <Property Name="Field" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="NoOfWorksPerDay" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="OrderID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="order_master">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="int" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="Material" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Quantity" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <EntityType Name="order_master_items">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderMasterID" Type="int" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="RemainingQuantity" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="orderdetails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseOrderID" Type="int" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="ProductName" Type="varchar" MaxLength="500" />
+          <Property Name="ProductColor" Type="varchar" MaxLength="200" />
+          <Property Name="ProductType" Type="varchar" MaxLength="200" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="ReceivedQuantity" Type="int" />
+          <Property Name="UnitID" Type="int" />
+          <Property Name="CostPrice" Type="double" />
+          <Property Name="MRP" Type="double" />
+          <Property Name="SalePrice" Type="double" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="orderitems">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="int" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Price" Type="double" />
+          <Property Name="CreatetdDatet" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="orders">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CustomerID" Type="int" />
+          <Property Name="AddressID" Type="int" />
+          <Property Name="DeliveryDate" Type="date" />
+          <Property Name="TotalPrice" Type="double" />
+          <Property Name="GST" Type="double" />
+          <Property Name="Discount" Type="double" />
+          <Property Name="GrandTotalWithTax" Type="double" />
+          <Property Name="Advance" Type="double" />
+          <Property Name="Status" Type="int" />
+          <Property Name="Remarks" Type="varchar" MaxLength="500" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="productcategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="products">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ShorName" Type="varchar" MaxLength="50" />
+          <Property Name="Size" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Color" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="200" />
+          <Property Name="BrandID" Type="int" />
+          <Property Name="ProductCategoryID" Type="int" />
+          <Property Name="Price" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="productsinventory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+        </EntityType>
+        <EntityType Name="purchaseentry">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseOrderID" Type="int" />
+          <Property Name="InvoiceChallan" Type="varchar" MaxLength="200" />
+          <Property Name="InvoiceChallanNo" Type="varchar" MaxLength="200" />
+          <Property Name="InvoiceDate" Type="datetime" Precision="6" />
+          <Property Name="CGST" Type="double" />
+          <Property Name="SGST" Type="double" />
+          <Property Name="DiscountAmount" Type="double" Nullable="false" />
+          <Property Name="TotalAmount" Type="double" Nullable="false" />
+          <Property Name="DueAmount" Type="double" />
+          <Property Name="Status" Type="bool" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="purchaseentrypayment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseEntryID" Type="int" Nullable="false" />
+          <Property Name="PaymentDate" Type="datetime" Precision="6" Nullable="false" />
+          <Property Name="PaymentMode" Type="varchar" MaxLength="200" />
+          <Property Name="PaymentRefNo" Type="varchar" MaxLength="200" />
+          <Property Name="PaidAmount" Type="double" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="purchaseorder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseOrderNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SupplierID" Type="int" Nullable="false" />
+          <Property Name="IsPurcheseEntry" Type="bool" Nullable="false" />
+          <Property Name="Status" Type="bool" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="saleproducts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ShortName" Type="varchar" MaxLength="50" />
+          <Property Name="Type" Type="varchar" MaxLength="500" />
+          <Property Name="Size" Type="varchar" MaxLength="50" />
+          <Property Name="Color" Type="varchar" MaxLength="50" />
+          <Property Name="Price" Type="double" />
+          <Property Name="Description" Type="longtext" />
+          <Property Name="ProductCategoryID" Type="int" />
+          <Property Name="BrandID" Type="int" />
+          <Property Name="UnitID" Type="int" />
+          <Property Name="Status" Type="int" />
+          <Property Name="ImagePath" Type="longtext" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="suppliers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrganizationName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="State" Type="varchar" MaxLength="50" />
+          <Property Name="Country" Type="varchar" MaxLength="50" />
+          <Property Name="Pin" Type="varchar" MaxLength="7" />
+          <Property Name="ContactPersonName" Type="varchar" MaxLength="200" />
+          <Property Name="ContactNo" Type="varchar" MaxLength="500" />
+          <Property Name="AlternateContactNo" Type="varchar" MaxLength="50" />
+          <Property Name="EmailId" Type="varchar" MaxLength="200" />
+          <Property Name="GSTNo" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="varchar" MaxLength="160" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="longblob" />
+        </EntityType>
+        <EntityType Name="units">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" Precision="6" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <Association Name="FK_CustomerAddress_Address">
+          <End Role="address" Type="Self.address" Multiplicity="1" />
+          <End Role="customeraddress" Type="Self.customeraddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="address">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="customeraddress">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerAddress_Customers">
+          <End Role="customers" Type="Self.customers" Multiplicity="1" />
+          <End Role="customeraddress" Type="Self.customeraddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="customeraddress">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="aspnetusers" Type="Self.aspnetusers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="aspnetuserclaims" Type="Self.aspnetuserclaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnetusers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="aspnetuserclaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="aspnetusers" Type="Self.aspnetusers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="aspnetuserlogins" Type="Self.aspnetuserlogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnetusers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="aspnetuserlogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="aspnetroles" Type="Self.aspnetroles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="aspnetuserroles" Type="Self.aspnetuserroles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnetroles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="aspnetuserroles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="aspnetusers" Type="Self.aspnetusers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="aspnetuserroles" Type="Self.aspnetuserroles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnetusers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="aspnetuserroles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="delivery" Type="Self.delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="delivery">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_Orders">
+          <End Role="orders" Type="Self.orders" Multiplicity="0..1" />
+          <End Role="delivery" Type="Self.delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="orders">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="delivery">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeAttendance_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="employeeattendance" Type="Self.employeeattendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="employeeattendance">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeePayment_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="employeepayment" Type="Self.employeepayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="employeepayment">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeePerformance_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="employeeperformance" Type="Self.employeeperformance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="employeeperformance">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Employee_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="order_employee" Type="Self.order_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="order_employee">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Master_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="order_master" Type="Self.order_master" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="order_master">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Master_Items_Order_Master">
+          <End Role="order_master" Type="Self.order_master" Multiplicity="1" />
+          <End Role="order_master_items" Type="Self.order_master_items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order_master">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="order_master_items">
+              <PropertyRef Name="OrderMasterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Master_Items_Products">
+          <End Role="products" Type="Self.products" Multiplicity="1" />
+          <End Role="order_master_items" Type="Self.order_master_items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="order_master_items">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Master_Orders">
+          <End Role="orders" Type="Self.orders" Multiplicity="1" />
+          <End Role="order_master" Type="Self.order_master" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="orders">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="order_master">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Order_Employee">
+          <End Role="orders" Type="Self.orders" Multiplicity="1" />
+          <End Role="order_employee" Type="Self.order_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="orders">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="order_employee">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_Products">
+          <End Role="products" Type="Self.products" Multiplicity="1" />
+          <End Role="orderdetails" Type="Self.orderdetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="orderdetails">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_PurchaseOrder">
+          <End Role="purchaseorder" Type="Self.purchaseorder" Multiplicity="1" />
+          <End Role="orderdetails" Type="Self.orderdetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="purchaseorder">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="orderdetails">
+              <PropertyRef Name="PurchaseOrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_Units">
+          <End Role="units" Type="Self.units" Multiplicity="0..1" />
+          <End Role="orderdetails" Type="Self.orderdetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="units">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="orderdetails">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderItems_Orders">
+          <End Role="orders" Type="Self.orders" Multiplicity="1" />
+          <End Role="orderitems" Type="Self.orderitems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="orders">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="orderitems">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderItems_SaleProducts">
+          <End Role="saleproducts" Type="Self.saleproducts" Multiplicity="1" />
+          <End Role="orderitems" Type="Self.orderitems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="saleproducts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="orderitems">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Address">
+          <End Role="address" Type="Self.address" Multiplicity="0..1" />
+          <End Role="orders" Type="Self.orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="address">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="orders">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_BrandsMaster">
+          <End Role="brandsmaster" Type="Self.brandsmaster" Multiplicity="0..1" />
+          <End Role="products" Type="Self.products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="brandsmaster">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="BrandID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ProductCategory">
+          <End Role="productcategory" Type="Self.productcategory" Multiplicity="0..1" />
+          <End Role="products" Type="Self.products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productcategory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="ProductCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductsInventory_Products">
+          <End Role="products" Type="Self.products" Multiplicity="1" />
+          <End Role="productsinventory" Type="Self.productsinventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="productsinventory">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseEntry_PurchaseOrder">
+          <End Role="purchaseorder" Type="Self.purchaseorder" Multiplicity="0..1" />
+          <End Role="purchaseentry" Type="Self.purchaseentry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="purchaseorder">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="purchaseentry">
+              <PropertyRef Name="PurchaseOrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseEntryPayment_PurchaseEntry">
+          <End Role="purchaseentry" Type="Self.purchaseentry" Multiplicity="1" />
+          <End Role="purchaseentrypayment" Type="Self.purchaseentrypayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="purchaseentry">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="purchaseentrypayment">
+              <PropertyRef Name="PurchaseEntryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrder_Suppliers">
+          <End Role="suppliers" Type="Self.suppliers" Multiplicity="1" />
+          <End Role="purchaseorder" Type="Self.purchaseorder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="suppliers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="purchaseorder">
+              <PropertyRef Name="SupplierID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleProducts_BrandsMaster">
+          <End Role="brandsmaster" Type="Self.brandsmaster" Multiplicity="0..1" />
+          <End Role="saleproducts" Type="Self.saleproducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="brandsmaster">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="saleproducts">
+              <PropertyRef Name="BrandID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleProducts_ProductCategory">
+          <End Role="productcategory" Type="Self.productcategory" Multiplicity="0..1" />
+          <End Role="saleproducts" Type="Self.saleproducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productcategory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="saleproducts">
+              <PropertyRef Name="ProductCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleProducts_Units">
+          <End Role="units" Type="Self.units" Multiplicity="0..1" />
+          <End Role="saleproducts" Type="Self.saleproducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="units">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="saleproducts">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ttmsModelStoreContainer">
+          <EntitySet Name="accounts" EntityType="Self.accounts" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="address" EntityType="Self.address" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="aspnetroles" EntityType="Self.aspnetroles" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="aspnetuserclaims" EntityType="Self.aspnetuserclaims" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="aspnetuserlogins" EntityType="Self.aspnetuserlogins" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="aspnetuserroles" EntityType="Self.aspnetuserroles" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="aspnetusers" EntityType="Self.aspnetusers" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="brandsmaster" EntityType="Self.brandsmaster" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="customeraddress" EntityType="Self.customeraddress" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="customers" EntityType="Self.customers" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="delivery" EntityType="Self.delivery" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="employee" EntityType="Self.employee" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="employeeattendance" EntityType="Self.employeeattendance" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="employeecommission" EntityType="Self.employeecommission" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="employeepayment" EntityType="Self.employeepayment" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="employeeperformance" EntityType="Self.employeeperformance" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="order_employee" EntityType="Self.order_employee" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="order_master" EntityType="Self.order_master" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="order_master_items" EntityType="Self.order_master_items" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="orderdetails" EntityType="Self.orderdetails" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="orderitems" EntityType="Self.orderitems" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="orders" EntityType="Self.orders" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="productcategory" EntityType="Self.productcategory" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="products" EntityType="Self.products" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="productsinventory" EntityType="Self.productsinventory" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="purchaseentry" EntityType="Self.purchaseentry" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="purchaseentrypayment" EntityType="Self.purchaseentrypayment" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="purchaseorder" EntityType="Self.purchaseorder" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="saleproducts" EntityType="Self.saleproducts" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="suppliers" EntityType="Self.suppliers" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="ttms" store:Type="Tables" />
+          <EntitySet Name="units" EntityType="Self.units" Schema="ttms" store:Type="Tables" />
+          <AssociationSet Name="FK_CustomerAddress_Address" Association="Self.FK_CustomerAddress_Address">
+            <End Role="address" EntitySet="address" />
+            <End Role="customeraddress" EntitySet="customeraddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerAddress_Customers" Association="Self.FK_CustomerAddress_Customers">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="customeraddress" EntitySet="customeraddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="aspnetusers" EntitySet="aspnetusers" />
+            <End Role="aspnetuserclaims" EntitySet="aspnetuserclaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="aspnetusers" EntitySet="aspnetusers" />
+            <End Role="aspnetuserlogins" EntitySet="aspnetuserlogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="aspnetroles" EntitySet="aspnetroles" />
+            <End Role="aspnetuserroles" EntitySet="aspnetuserroles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="aspnetusers" EntitySet="aspnetusers" />
+            <End Role="aspnetuserroles" EntitySet="aspnetuserroles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_Employee" Association="Self.FK_Delivery_Employee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="delivery" EntitySet="delivery" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_Orders" Association="Self.FK_Delivery_Orders">
+            <End Role="orders" EntitySet="orders" />
+            <End Role="delivery" EntitySet="delivery" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeAttendance_Employee" Association="Self.FK_EmployeeAttendance_Employee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="employeeattendance" EntitySet="employeeattendance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeePayment_Employee" Association="Self.FK_EmployeePayment_Employee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="employeepayment" EntitySet="employeepayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeePerformance_Employee" Association="Self.FK_EmployeePerformance_Employee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="employeeperformance" EntitySet="employeeperformance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Employee_Employee" Association="Self.FK_Order_Employee_Employee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="order_employee" EntitySet="order_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Master_Employee" Association="Self.FK_Order_Master_Employee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="order_master" EntitySet="order_master" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Master_Items_Order_Master" Association="Self.FK_Order_Master_Items_Order_Master">
+            <End Role="order_master" EntitySet="order_master" />
+            <End Role="order_master_items" EntitySet="order_master_items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Master_Items_Products" Association="Self.FK_Order_Master_Items_Products">
+            <End Role="products" EntitySet="products" />
+            <End Role="order_master_items" EntitySet="order_master_items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Master_Orders" Association="Self.FK_Order_Master_Orders">
+            <End Role="orders" EntitySet="orders" />
+            <End Role="order_master" EntitySet="order_master" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Order_Employee" Association="Self.FK_Order_Order_Employee">
+            <End Role="orders" EntitySet="orders" />
+            <End Role="order_employee" EntitySet="order_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Products" Association="Self.FK_OrderDetails_Products">
+            <End Role="products" EntitySet="products" />
+            <End Role="orderdetails" EntitySet="orderdetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_PurchaseOrder" Association="Self.FK_OrderDetails_PurchaseOrder">
+            <End Role="purchaseorder" EntitySet="purchaseorder" />
+            <End Role="orderdetails" EntitySet="orderdetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Units" Association="Self.FK_OrderDetails_Units">
+            <End Role="units" EntitySet="units" />
+            <End Role="orderdetails" EntitySet="orderdetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItems_Orders" Association="Self.FK_OrderItems_Orders">
+            <End Role="orders" EntitySet="orders" />
+            <End Role="orderitems" EntitySet="orderitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItems_SaleProducts" Association="Self.FK_OrderItems_SaleProducts">
+            <End Role="saleproducts" EntitySet="saleproducts" />
+            <End Role="orderitems" EntitySet="orderitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Address" Association="Self.FK_Orders_Address">
+            <End Role="address" EntitySet="address" />
+            <End Role="orders" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_BrandsMaster" Association="Self.FK_Products_BrandsMaster">
+            <End Role="brandsmaster" EntitySet="brandsmaster" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ProductCategory" Association="Self.FK_Products_ProductCategory">
+            <End Role="productcategory" EntitySet="productcategory" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductsInventory_Products" Association="Self.FK_ProductsInventory_Products">
+            <End Role="products" EntitySet="products" />
+            <End Role="productsinventory" EntitySet="productsinventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseEntry_PurchaseOrder" Association="Self.FK_PurchaseEntry_PurchaseOrder">
+            <End Role="purchaseorder" EntitySet="purchaseorder" />
+            <End Role="purchaseentry" EntitySet="purchaseentry" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseEntryPayment_PurchaseEntry" Association="Self.FK_PurchaseEntryPayment_PurchaseEntry">
+            <End Role="purchaseentry" EntitySet="purchaseentry" />
+            <End Role="purchaseentrypayment" EntitySet="purchaseentrypayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrder_Suppliers" Association="Self.FK_PurchaseOrder_Suppliers">
+            <End Role="suppliers" EntitySet="suppliers" />
+            <End Role="purchaseorder" EntitySet="purchaseorder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleProducts_BrandsMaster" Association="Self.FK_SaleProducts_BrandsMaster">
+            <End Role="brandsmaster" EntitySet="brandsmaster" />
+            <End Role="saleproducts" EntitySet="saleproducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleProducts_ProductCategory" Association="Self.FK_SaleProducts_ProductCategory">
+            <End Role="productcategory" EntitySet="productcategory" />
+            <End Role="saleproducts" EntitySet="saleproducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleProducts_Units" Association="Self.FK_SaleProducts_Units">
+            <End Role="units" EntitySet="units" />
+            <End Role="saleproducts" EntitySet="saleproducts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ttmsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="account">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="ExpendetureType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ExpendetureAmount" Type="Double" Nullable="false" />
+          <Property Name="ExpendetureRef" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ExpendetureImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+        </EntityType>
+        <EntityType Name="address">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Address2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Zip" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="AddressType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDatet" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="customeraddresses" Relationship="Self.FK_CustomerAddress_Address" FromRole="address" ToRole="customeraddress" />
+          <NavigationProperty Name="orders" Relationship="Self.FK_Orders_Address" FromRole="address" ToRole="orders" />
+        </EntityType>
+        <EntityType Name="aspnetrole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="aspnetusers" Relationship="Self.aspnetuserroles" FromRole="aspnetroles" ToRole="aspnetusers" />
+        </EntityType>
+        <EntityType Name="aspnetuserclaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClaimType" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="ClaimValue" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="aspnetuser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="aspnetuserclaims" ToRole="aspnetusers" />
+        </EntityType>
+        <EntityType Name="aspnetuserlogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="aspnetuser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="aspnetuserlogins" ToRole="aspnetusers" />
+        </EntityType>
+        <EntityType Name="aspnetuser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="aspnetuserclaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="aspnetusers" ToRole="aspnetuserclaims" />
+          <NavigationProperty Name="aspnetuserlogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="aspnetusers" ToRole="aspnetuserlogins" />
+          <NavigationProperty Name="aspnetroles" Relationship="Self.aspnetuserroles" FromRole="aspnetusers" ToRole="aspnetroles" />
+        </EntityType>
+        <EntityType Name="brandsmaster">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BrandName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="products" Relationship="Self.FK_Products_BrandsMaster" FromRole="brandsmaster" ToRole="products" />
+          <NavigationProperty Name="saleproducts" Relationship="Self.FK_SaleProducts_BrandsMaster" FromRole="brandsmaster" ToRole="saleproducts" />
+        </EntityType>
+        <EntityType Name="customeraddress">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="AddressID" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="address" Relationship="Self.FK_CustomerAddress_Address" FromRole="customeraddress" ToRole="address" />
+          <NavigationProperty Name="customer" Relationship="Self.FK_CustomerAddress_Customers" FromRole="customeraddress" ToRole="customers" />
+        </EntityType>
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerOrganizationName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ContactPersonName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AlternateContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="customeraddresses" Relationship="Self.FK_CustomerAddress_Customers" FromRole="customers" ToRole="customeraddress" />
+        </EntityType>
+        <EntityType Name="delivery">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="DeliveryDate" Type="DateTime" />
+          <Property Name="ChallanNo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DeliveredProducts" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="BalanceOrder" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="employee" Relationship="Self.FK_Delivery_Employee" FromRole="delivery" ToRole="employee" />
+          <NavigationProperty Name="order" Relationship="Self.FK_Delivery_Orders" FromRole="delivery" ToRole="orders" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AlternateContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Zip" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="Designation" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MasterEmp" Type="Boolean" />
+          <Property Name="ExperiencedField" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Experience" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Salary" Type="Int32" />
+          <Property Name="NoLeavesPerMonth" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="deliveries" Relationship="Self.FK_Delivery_Employee" FromRole="employee" ToRole="delivery" />
+          <NavigationProperty Name="employeeattendances" Relationship="Self.FK_EmployeeAttendance_Employee" FromRole="employee" ToRole="employeeattendance" />
+          <NavigationProperty Name="employeepayments" Relationship="Self.FK_EmployeePayment_Employee" FromRole="employee" ToRole="employeepayment" />
+          <NavigationProperty Name="employeeperformances" Relationship="Self.FK_EmployeePerformance_Employee" FromRole="employee" ToRole="employeeperformance" />
+          <NavigationProperty Name="order_employee" Relationship="Self.FK_Order_Employee_Employee" FromRole="employee" ToRole="order_employee" />
+          <NavigationProperty Name="order_master" Relationship="Self.FK_Order_Master_Employee" FromRole="employee" ToRole="order_master" />
+        </EntityType>
+        <EntityType Name="employeeattendance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Nullable="false" />
+          <Property Name="EndTime" Type="Time" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="employee" Relationship="Self.FK_EmployeeAttendance_Employee" FromRole="employeeattendance" ToRole="employee" />
+        </EntityType>
+        <EntityType Name="employeecommission">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FieldOfExperience" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Field" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CommissionPricePerUnit" Type="Double" />
+        </EntityType>
+        <EntityType Name="employeepayment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="PaymentID" Type="Int32" Nullable="false" />
+          <Property Name="PaymentDate" Type="DateTime" Nullable="false" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="employee" Relationship="Self.FK_EmployeePayment_Employee" FromRole="employeepayment" ToRole="employee" />
+        </EntityType>
+        <EntityType Name="employeeperformance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="JobType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="employee" Relationship="Self.FK_EmployeePerformance_Employee" FromRole="employeeperformance" ToRole="employee" />
+        </EntityType>
+        <EntityType Name="order_employee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="Field" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NoOfWorksPerDay" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="employee" Relationship="Self.FK_Order_Employee_Employee" FromRole="order_employee" ToRole="employee" />
+          <NavigationProperty Name="order" Relationship="Self.FK_Order_Order_Employee" FromRole="order_employee" ToRole="orders" />
+        </EntityType>
+        <EntityType Name="order_master">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="Material" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Quantity" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="employee" Relationship="Self.FK_Order_Master_Employee" FromRole="order_master" ToRole="employee" />
+          <NavigationProperty Name="order_master_items" Relationship="Self.FK_Order_Master_Items_Order_Master" FromRole="order_master" ToRole="order_master_items" />
+          <NavigationProperty Name="order" Relationship="Self.FK_Order_Master_Orders" FromRole="order_master" ToRole="orders" />
+        </EntityType>
+        <EntityType Name="order_master_items">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderMasterID" Type="Int32" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="RemainingQuantity" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="order_master" Relationship="Self.FK_Order_Master_Items_Order_Master" FromRole="order_master_items" ToRole="order_master" />
+          <NavigationProperty Name="product" Relationship="Self.FK_Order_Master_Items_Products" FromRole="order_master_items" ToRole="products" />
+        </EntityType>
+        <EntityType Name="orderdetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseOrderID" Type="Int32" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ProductColor" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ProductType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="ReceivedQuantity" Type="Int32" />
+          <Property Name="UnitID" Type="Int32" />
+          <Property Name="CostPrice" Type="Double" />
+          <Property Name="MRP" Type="Double" />
+          <Property Name="SalePrice" Type="Double" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="product" Relationship="Self.FK_OrderDetails_Products" FromRole="orderdetails" ToRole="products" />
+          <NavigationProperty Name="purchaseorder" Relationship="Self.FK_OrderDetails_PurchaseOrder" FromRole="orderdetails" ToRole="purchaseorder" />
+          <NavigationProperty Name="unit" Relationship="Self.FK_OrderDetails_Units" FromRole="orderdetails" ToRole="units" />
+        </EntityType>
+        <EntityType Name="orderitem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Price" Type="Double" />
+          <Property Name="CreatetdDatet" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="order" Relationship="Self.FK_OrderItems_Orders" FromRole="orderitems" ToRole="orders" />
+          <NavigationProperty Name="saleproduct" Relationship="Self.FK_OrderItems_SaleProducts" FromRole="orderitems" ToRole="saleproducts" />
+        </EntityType>
+        <EntityType Name="order">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CustomerID" Type="Int32" />
+          <Property Name="AddressID" Type="Int32" />
+          <Property Name="DeliveryDate" Type="DateTime" />
+          <Property Name="TotalPrice" Type="Double" />
+          <Property Name="GST" Type="Double" />
+          <Property Name="Discount" Type="Double" />
+          <Property Name="GrandTotalWithTax" Type="Double" />
+          <Property Name="Advance" Type="Double" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="address" Relationship="Self.FK_Orders_Address" FromRole="orders" ToRole="address" />
+          <NavigationProperty Name="deliveries" Relationship="Self.FK_Delivery_Orders" FromRole="orders" ToRole="delivery" />
+          <NavigationProperty Name="order_employee" Relationship="Self.FK_Order_Order_Employee" FromRole="orders" ToRole="order_employee" />
+          <NavigationProperty Name="order_master" Relationship="Self.FK_Order_Master_Orders" FromRole="orders" ToRole="order_master" />
+          <NavigationProperty Name="orderitems" Relationship="Self.FK_OrderItems_Orders" FromRole="orders" ToRole="orderitems" />
+        </EntityType>
+        <EntityType Name="productcategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="products" Relationship="Self.FK_Products_ProductCategory" FromRole="productcategory" ToRole="products" />
+          <NavigationProperty Name="saleproducts" Relationship="Self.FK_SaleProducts_ProductCategory" FromRole="productcategory" ToRole="saleproducts" />
+        </EntityType>
+        <EntityType Name="product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ShorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Size" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Color" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="BrandID" Type="Int32" />
+          <Property Name="ProductCategoryID" Type="Int32" />
+          <Property Name="Price" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="brandsmaster" Relationship="Self.FK_Products_BrandsMaster" FromRole="products" ToRole="brandsmaster" />
+          <NavigationProperty Name="order_master_items" Relationship="Self.FK_Order_Master_Items_Products" FromRole="products" ToRole="order_master_items" />
+          <NavigationProperty Name="orderdetails" Relationship="Self.FK_OrderDetails_Products" FromRole="products" ToRole="orderdetails" />
+          <NavigationProperty Name="productcategory" Relationship="Self.FK_Products_ProductCategory" FromRole="products" ToRole="productcategory" />
+          <NavigationProperty Name="productsinventories" Relationship="Self.FK_ProductsInventory_Products" FromRole="products" ToRole="productsinventory" />
+        </EntityType>
+        <EntityType Name="productsinventory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <NavigationProperty Name="product" Relationship="Self.FK_ProductsInventory_Products" FromRole="productsinventory" ToRole="products" />
+        </EntityType>
+        <EntityType Name="purchaseentry">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseOrderID" Type="Int32" />
+          <Property Name="InvoiceChallan" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="InvoiceChallanNo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="InvoiceDate" Type="DateTime" />
+          <Property Name="CGST" Type="Double" />
+          <Property Name="SGST" Type="Double" />
+          <Property Name="DiscountAmount" Type="Double" Nullable="false" />
+          <Property Name="TotalAmount" Type="Double" Nullable="false" />
+          <Property Name="DueAmount" Type="Double" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="purchaseorder" Relationship="Self.FK_PurchaseEntry_PurchaseOrder" FromRole="purchaseentry" ToRole="purchaseorder" />
+          <NavigationProperty Name="purchaseentrypayments" Relationship="Self.FK_PurchaseEntryPayment_PurchaseEntry" FromRole="purchaseentry" ToRole="purchaseentrypayment" />
+        </EntityType>
+        <EntityType Name="purchaseentrypayment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseEntryID" Type="Int32" Nullable="false" />
+          <Property Name="PaymentDate" Type="DateTime" Nullable="false" />
+          <Property Name="PaymentMode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentRefNo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PaidAmount" Type="Double" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="purchaseentry" Relationship="Self.FK_PurchaseEntryPayment_PurchaseEntry" FromRole="purchaseentrypayment" ToRole="purchaseentry" />
+        </EntityType>
+        <EntityType Name="purchaseorder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseOrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SupplierID" Type="Int32" Nullable="false" />
+          <Property Name="IsPurcheseEntry" Type="Boolean" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="orderdetails" Relationship="Self.FK_OrderDetails_PurchaseOrder" FromRole="purchaseorder" ToRole="orderdetails" />
+          <NavigationProperty Name="purchaseentries" Relationship="Self.FK_PurchaseEntry_PurchaseOrder" FromRole="purchaseorder" ToRole="purchaseentry" />
+          <NavigationProperty Name="supplier" Relationship="Self.FK_PurchaseOrder_Suppliers" FromRole="purchaseorder" ToRole="suppliers" />
+        </EntityType>
+        <EntityType Name="saleproduct">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ShortName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Size" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Double" />
+          <Property Name="Description" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="ProductCategoryID" Type="Int32" />
+          <Property Name="BrandID" Type="Int32" />
+          <Property Name="UnitID" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="ImagePath" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="brandsmaster" Relationship="Self.FK_SaleProducts_BrandsMaster" FromRole="saleproducts" ToRole="brandsmaster" />
+          <NavigationProperty Name="orderitems" Relationship="Self.FK_OrderItems_SaleProducts" FromRole="saleproducts" ToRole="orderitems" />
+          <NavigationProperty Name="productcategory" Relationship="Self.FK_SaleProducts_ProductCategory" FromRole="saleproducts" ToRole="productcategory" />
+          <NavigationProperty Name="unit" Relationship="Self.FK_SaleProducts_Units" FromRole="saleproducts" ToRole="units" />
+        </EntityType>
+        <EntityType Name="supplier">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrganizationName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Pin" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="ContactPersonName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ContactNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AlternateContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmailId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="GSTNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="purchaseorders" Relationship="Self.FK_PurchaseOrder_Suppliers" FromRole="suppliers" ToRole="purchaseorder" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="160" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="unit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="orderdetails" Relationship="Self.FK_OrderDetails_Units" FromRole="units" ToRole="orderdetails" />
+          <NavigationProperty Name="saleproducts" Relationship="Self.FK_SaleProducts_Units" FromRole="units" ToRole="saleproducts" />
+        </EntityType>
+        <Association Name="FK_CustomerAddress_Address">
+          <End Role="address" Type="Self.address" Multiplicity="1" />
+          <End Role="customeraddress" Type="Self.customeraddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="address">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="customeraddress">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Address">
+          <End Role="address" Type="Self.address" Multiplicity="0..1" />
+          <End Role="orders" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="address">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="orders">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="aspnetusers" Type="Self.aspnetuser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="aspnetuserclaims" Type="Self.aspnetuserclaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnetusers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="aspnetuserclaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="aspnetusers" Type="Self.aspnetuser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="aspnetuserlogins" Type="Self.aspnetuserlogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnetusers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="aspnetuserlogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_BrandsMaster">
+          <End Role="brandsmaster" Type="Self.brandsmaster" Multiplicity="0..1" />
+          <End Role="products" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="brandsmaster">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="BrandID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleProducts_BrandsMaster">
+          <End Role="brandsmaster" Type="Self.brandsmaster" Multiplicity="0..1" />
+          <End Role="saleproducts" Type="Self.saleproduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="brandsmaster">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="saleproducts">
+              <PropertyRef Name="BrandID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerAddress_Customers">
+          <End Role="customers" Type="Self.customer" Multiplicity="1" />
+          <End Role="customeraddress" Type="Self.customeraddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="customeraddress">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="delivery" Type="Self.delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="delivery">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_Orders">
+          <End Role="orders" Type="Self.order" Multiplicity="0..1" />
+          <End Role="delivery" Type="Self.delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="orders">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="delivery">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeAttendance_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="employeeattendance" Type="Self.employeeattendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="employeeattendance">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeePayment_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="employeepayment" Type="Self.employeepayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="employeepayment">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeePerformance_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="employeeperformance" Type="Self.employeeperformance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="employeeperformance">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Employee_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="order_employee" Type="Self.order_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="order_employee">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Master_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="order_master" Type="Self.order_master" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="order_master">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Order_Employee">
+          <End Role="orders" Type="Self.order" Multiplicity="1" />
+          <End Role="order_employee" Type="Self.order_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="orders">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="order_employee">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Master_Items_Order_Master">
+          <End Role="order_master" Type="Self.order_master" Multiplicity="1" />
+          <End Role="order_master_items" Type="Self.order_master_items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order_master">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="order_master_items">
+              <PropertyRef Name="OrderMasterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Master_Orders">
+          <End Role="orders" Type="Self.order" Multiplicity="1" />
+          <End Role="order_master" Type="Self.order_master" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="orders">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="order_master">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Master_Items_Products">
+          <End Role="products" Type="Self.product" Multiplicity="1" />
+          <End Role="order_master_items" Type="Self.order_master_items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="order_master_items">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_Products">
+          <End Role="products" Type="Self.product" Multiplicity="1" />
+          <End Role="orderdetails" Type="Self.orderdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="orderdetails">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_PurchaseOrder">
+          <End Role="purchaseorder" Type="Self.purchaseorder" Multiplicity="1" />
+          <End Role="orderdetails" Type="Self.orderdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="purchaseorder">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="orderdetails">
+              <PropertyRef Name="PurchaseOrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_Units">
+          <End Role="units" Type="Self.unit" Multiplicity="0..1" />
+          <End Role="orderdetails" Type="Self.orderdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="units">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="orderdetails">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderItems_Orders">
+          <End Role="orders" Type="Self.order" Multiplicity="1" />
+          <End Role="orderitems" Type="Self.orderitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="orders">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="orderitems">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderItems_SaleProducts">
+          <End Role="saleproducts" Type="Self.saleproduct" Multiplicity="1" />
+          <End Role="orderitems" Type="Self.orderitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="saleproducts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="orderitems">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ProductCategory">
+          <End Role="productcategory" Type="Self.productcategory" Multiplicity="0..1" />
+          <End Role="products" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productcategory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="ProductCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleProducts_ProductCategory">
+          <End Role="productcategory" Type="Self.productcategory" Multiplicity="0..1" />
+          <End Role="saleproducts" Type="Self.saleproduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productcategory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="saleproducts">
+              <PropertyRef Name="ProductCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductsInventory_Products">
+          <End Role="products" Type="Self.product" Multiplicity="1" />
+          <End Role="productsinventory" Type="Self.productsinventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="productsinventory">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseEntry_PurchaseOrder">
+          <End Role="purchaseorder" Type="Self.purchaseorder" Multiplicity="0..1" />
+          <End Role="purchaseentry" Type="Self.purchaseentry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="purchaseorder">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="purchaseentry">
+              <PropertyRef Name="PurchaseOrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseEntryPayment_PurchaseEntry">
+          <End Role="purchaseentry" Type="Self.purchaseentry" Multiplicity="1" />
+          <End Role="purchaseentrypayment" Type="Self.purchaseentrypayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="purchaseentry">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="purchaseentrypayment">
+              <PropertyRef Name="PurchaseEntryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrder_Suppliers">
+          <End Role="suppliers" Type="Self.supplier" Multiplicity="1" />
+          <End Role="purchaseorder" Type="Self.purchaseorder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="suppliers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="purchaseorder">
+              <PropertyRef Name="SupplierID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleProducts_Units">
+          <End Role="units" Type="Self.unit" Multiplicity="0..1" />
+          <End Role="saleproducts" Type="Self.saleproduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="units">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="saleproducts">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="aspnetuserroles">
+          <End Role="aspnetroles" Type="Self.aspnetrole" Multiplicity="*" />
+          <End Role="aspnetusers" Type="Self.aspnetuser" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="ttmsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="accounts" EntityType="Self.account" />
+          <EntitySet Name="addresses" EntityType="Self.address" />
+          <EntitySet Name="aspnetroles" EntityType="Self.aspnetrole" />
+          <EntitySet Name="aspnetuserclaims" EntityType="Self.aspnetuserclaim" />
+          <EntitySet Name="aspnetuserlogins" EntityType="Self.aspnetuserlogin" />
+          <EntitySet Name="aspnetusers" EntityType="Self.aspnetuser" />
+          <EntitySet Name="brandsmasters" EntityType="Self.brandsmaster" />
+          <EntitySet Name="customeraddresses" EntityType="Self.customeraddress" />
+          <EntitySet Name="customers" EntityType="Self.customer" />
+          <EntitySet Name="deliveries" EntityType="Self.delivery" />
+          <EntitySet Name="employees" EntityType="Self.employee" />
+          <EntitySet Name="employeeattendances" EntityType="Self.employeeattendance" />
+          <EntitySet Name="employeecommissions" EntityType="Self.employeecommission" />
+          <EntitySet Name="employeepayments" EntityType="Self.employeepayment" />
+          <EntitySet Name="employeeperformances" EntityType="Self.employeeperformance" />
+          <EntitySet Name="order_employee" EntityType="Self.order_employee" />
+          <EntitySet Name="order_master" EntityType="Self.order_master" />
+          <EntitySet Name="order_master_items" EntityType="Self.order_master_items" />
+          <EntitySet Name="orderdetails" EntityType="Self.orderdetail" />
+          <EntitySet Name="orderitems" EntityType="Self.orderitem" />
+          <EntitySet Name="orders" EntityType="Self.order" />
+          <EntitySet Name="productcategories" EntityType="Self.productcategory" />
+          <EntitySet Name="products" EntityType="Self.product" />
+          <EntitySet Name="productsinventories" EntityType="Self.productsinventory" />
+          <EntitySet Name="purchaseentries" EntityType="Self.purchaseentry" />
+          <EntitySet Name="purchaseentrypayments" EntityType="Self.purchaseentrypayment" />
+          <EntitySet Name="purchaseorders" EntityType="Self.purchaseorder" />
+          <EntitySet Name="saleproducts" EntityType="Self.saleproduct" />
+          <EntitySet Name="suppliers" EntityType="Self.supplier" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="units" EntityType="Self.unit" />
+          <AssociationSet Name="FK_CustomerAddress_Address" Association="Self.FK_CustomerAddress_Address">
+            <End Role="address" EntitySet="addresses" />
+            <End Role="customeraddress" EntitySet="customeraddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Address" Association="Self.FK_Orders_Address">
+            <End Role="address" EntitySet="addresses" />
+            <End Role="orders" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="aspnetusers" EntitySet="aspnetusers" />
+            <End Role="aspnetuserclaims" EntitySet="aspnetuserclaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="aspnetusers" EntitySet="aspnetusers" />
+            <End Role="aspnetuserlogins" EntitySet="aspnetuserlogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_BrandsMaster" Association="Self.FK_Products_BrandsMaster">
+            <End Role="brandsmaster" EntitySet="brandsmasters" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleProducts_BrandsMaster" Association="Self.FK_SaleProducts_BrandsMaster">
+            <End Role="brandsmaster" EntitySet="brandsmasters" />
+            <End Role="saleproducts" EntitySet="saleproducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerAddress_Customers" Association="Self.FK_CustomerAddress_Customers">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="customeraddress" EntitySet="customeraddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_Employee" Association="Self.FK_Delivery_Employee">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="delivery" EntitySet="deliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_Orders" Association="Self.FK_Delivery_Orders">
+            <End Role="orders" EntitySet="orders" />
+            <End Role="delivery" EntitySet="deliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeAttendance_Employee" Association="Self.FK_EmployeeAttendance_Employee">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="employeeattendance" EntitySet="employeeattendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeePayment_Employee" Association="Self.FK_EmployeePayment_Employee">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="employeepayment" EntitySet="employeepayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeePerformance_Employee" Association="Self.FK_EmployeePerformance_Employee">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="employeeperformance" EntitySet="employeeperformances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Employee_Employee" Association="Self.FK_Order_Employee_Employee">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="order_employee" EntitySet="order_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Master_Employee" Association="Self.FK_Order_Master_Employee">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="order_master" EntitySet="order_master" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Order_Employee" Association="Self.FK_Order_Order_Employee">
+            <End Role="orders" EntitySet="orders" />
+            <End Role="order_employee" EntitySet="order_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Master_Items_Order_Master" Association="Self.FK_Order_Master_Items_Order_Master">
+            <End Role="order_master" EntitySet="order_master" />
+            <End Role="order_master_items" EntitySet="order_master_items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Master_Orders" Association="Self.FK_Order_Master_Orders">
+            <End Role="orders" EntitySet="orders" />
+            <End Role="order_master" EntitySet="order_master" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Master_Items_Products" Association="Self.FK_Order_Master_Items_Products">
+            <End Role="products" EntitySet="products" />
+            <End Role="order_master_items" EntitySet="order_master_items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Products" Association="Self.FK_OrderDetails_Products">
+            <End Role="products" EntitySet="products" />
+            <End Role="orderdetails" EntitySet="orderdetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_PurchaseOrder" Association="Self.FK_OrderDetails_PurchaseOrder">
+            <End Role="purchaseorder" EntitySet="purchaseorders" />
+            <End Role="orderdetails" EntitySet="orderdetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Units" Association="Self.FK_OrderDetails_Units">
+            <End Role="units" EntitySet="units" />
+            <End Role="orderdetails" EntitySet="orderdetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItems_Orders" Association="Self.FK_OrderItems_Orders">
+            <End Role="orders" EntitySet="orders" />
+            <End Role="orderitems" EntitySet="orderitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItems_SaleProducts" Association="Self.FK_OrderItems_SaleProducts">
+            <End Role="saleproducts" EntitySet="saleproducts" />
+            <End Role="orderitems" EntitySet="orderitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ProductCategory" Association="Self.FK_Products_ProductCategory">
+            <End Role="productcategory" EntitySet="productcategories" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleProducts_ProductCategory" Association="Self.FK_SaleProducts_ProductCategory">
+            <End Role="productcategory" EntitySet="productcategories" />
+            <End Role="saleproducts" EntitySet="saleproducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductsInventory_Products" Association="Self.FK_ProductsInventory_Products">
+            <End Role="products" EntitySet="products" />
+            <End Role="productsinventory" EntitySet="productsinventories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseEntry_PurchaseOrder" Association="Self.FK_PurchaseEntry_PurchaseOrder">
+            <End Role="purchaseorder" EntitySet="purchaseorders" />
+            <End Role="purchaseentry" EntitySet="purchaseentries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseEntryPayment_PurchaseEntry" Association="Self.FK_PurchaseEntryPayment_PurchaseEntry">
+            <End Role="purchaseentry" EntitySet="purchaseentries" />
+            <End Role="purchaseentrypayment" EntitySet="purchaseentrypayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrder_Suppliers" Association="Self.FK_PurchaseOrder_Suppliers">
+            <End Role="suppliers" EntitySet="suppliers" />
+            <End Role="purchaseorder" EntitySet="purchaseorders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleProducts_Units" Association="Self.FK_SaleProducts_Units">
+            <End Role="units" EntitySet="units" />
+            <End Role="saleproducts" EntitySet="saleproducts" />
+          </AssociationSet>
+          <AssociationSet Name="aspnetuserroles" Association="Self.aspnetuserroles">
+            <End Role="aspnetroles" EntitySet="aspnetroles" />
+            <End Role="aspnetusers" EntitySet="aspnetusers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ttmsModelStoreContainer" CdmEntityContainer="ttmsEntities">
+          <EntitySetMapping Name="accounts">
+            <EntityTypeMapping TypeName="ttmsModel.account">
+              <MappingFragment StoreEntitySet="accounts">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ExpendetureType" ColumnName="ExpendetureType" />
+                <ScalarProperty Name="ExpendetureAmount" ColumnName="ExpendetureAmount" />
+                <ScalarProperty Name="ExpendetureRef" ColumnName="ExpendetureRef" />
+                <ScalarProperty Name="ExpendetureImage" ColumnName="ExpendetureImage" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="addresses">
+            <EntityTypeMapping TypeName="ttmsModel.address">
+              <MappingFragment StoreEntitySet="address">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="AddressType" ColumnName="AddressType" />
+                <ScalarProperty Name="CreatedDatet" ColumnName="CreatedDatet" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="aspnetroles">
+            <EntityTypeMapping TypeName="ttmsModel.aspnetrole">
+              <MappingFragment StoreEntitySet="aspnetroles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="aspnetuserclaims">
+            <EntityTypeMapping TypeName="ttmsModel.aspnetuserclaim">
+              <MappingFragment StoreEntitySet="aspnetuserclaims">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="aspnetuserlogins">
+            <EntityTypeMapping TypeName="ttmsModel.aspnetuserlogin">
+              <MappingFragment StoreEntitySet="aspnetuserlogins">
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="aspnetusers">
+            <EntityTypeMapping TypeName="ttmsModel.aspnetuser">
+              <MappingFragment StoreEntitySet="aspnetusers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="brandsmasters">
+            <EntityTypeMapping TypeName="ttmsModel.brandsmaster">
+              <MappingFragment StoreEntitySet="brandsmaster">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customeraddresses">
+            <EntityTypeMapping TypeName="ttmsModel.customeraddress">
+              <MappingFragment StoreEntitySet="customeraddress">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customers">
+            <EntityTypeMapping TypeName="ttmsModel.customer">
+              <MappingFragment StoreEntitySet="customers">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CustomerOrganizationName" ColumnName="CustomerOrganizationName" />
+                <ScalarProperty Name="ContactPersonName" ColumnName="ContactPersonName" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="AlternateContactNo" ColumnName="AlternateContactNo" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="deliveries">
+            <EntityTypeMapping TypeName="ttmsModel.delivery">
+              <MappingFragment StoreEntitySet="delivery">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="ChallanNo" ColumnName="ChallanNo" />
+                <ScalarProperty Name="DeliveredProducts" ColumnName="DeliveredProducts" />
+                <ScalarProperty Name="BalanceOrder" ColumnName="BalanceOrder" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employees">
+            <EntityTypeMapping TypeName="ttmsModel.employee">
+              <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="AlternateContactNo" ColumnName="AlternateContactNo" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="MasterEmp" ColumnName="MasterEmp" />
+                <ScalarProperty Name="ExperiencedField" ColumnName="ExperiencedField" />
+                <ScalarProperty Name="Experience" ColumnName="Experience" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="NoLeavesPerMonth" ColumnName="NoLeavesPerMonth" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employeeattendances">
+            <EntityTypeMapping TypeName="ttmsModel.employeeattendance">
+              <MappingFragment StoreEntitySet="employeeattendance">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employeecommissions">
+            <EntityTypeMapping TypeName="ttmsModel.employeecommission">
+              <MappingFragment StoreEntitySet="employeecommission">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FieldOfExperience" ColumnName="FieldOfExperience" />
+                <ScalarProperty Name="Field" ColumnName="Field" />
+                <ScalarProperty Name="CommissionPricePerUnit" ColumnName="CommissionPricePerUnit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employeepayments">
+            <EntityTypeMapping TypeName="ttmsModel.employeepayment">
+              <MappingFragment StoreEntitySet="employeepayment">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employeeperformances">
+            <EntityTypeMapping TypeName="ttmsModel.employeeperformance">
+              <MappingFragment StoreEntitySet="employeeperformance">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="JobType" ColumnName="JobType" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="order_employee">
+            <EntityTypeMapping TypeName="ttmsModel.order_employee">
+              <MappingFragment StoreEntitySet="order_employee">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Field" ColumnName="Field" />
+                <ScalarProperty Name="NoOfWorksPerDay" ColumnName="NoOfWorksPerDay" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="order_master">
+            <EntityTypeMapping TypeName="ttmsModel.order_master">
+              <MappingFragment StoreEntitySet="order_master">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="Material" ColumnName="Material" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="order_master_items">
+            <EntityTypeMapping TypeName="ttmsModel.order_master_items">
+              <MappingFragment StoreEntitySet="order_master_items">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="OrderMasterID" ColumnName="OrderMasterID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="RemainingQuantity" ColumnName="RemainingQuantity" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="orderdetails">
+            <EntityTypeMapping TypeName="ttmsModel.orderdetail">
+              <MappingFragment StoreEntitySet="orderdetails">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PurchaseOrderID" ColumnName="PurchaseOrderID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductColor" ColumnName="ProductColor" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ReceivedQuantity" ColumnName="ReceivedQuantity" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="CostPrice" ColumnName="CostPrice" />
+                <ScalarProperty Name="MRP" ColumnName="MRP" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="orderitems">
+            <EntityTypeMapping TypeName="ttmsModel.orderitem">
+              <MappingFragment StoreEntitySet="orderitems">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="CreatetdDatet" ColumnName="CreatetdDatet" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="orders">
+            <EntityTypeMapping TypeName="ttmsModel.order">
+              <MappingFragment StoreEntitySet="orders">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="GST" ColumnName="GST" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="GrandTotalWithTax" ColumnName="GrandTotalWithTax" />
+                <ScalarProperty Name="Advance" ColumnName="Advance" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="productcategories">
+            <EntityTypeMapping TypeName="ttmsModel.productcategory">
+              <MappingFragment StoreEntitySet="productcategory">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="products">
+            <EntityTypeMapping TypeName="ttmsModel.product">
+              <MappingFragment StoreEntitySet="products">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ShorName" ColumnName="ShorName" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+                <ScalarProperty Name="ProductCategoryID" ColumnName="ProductCategoryID" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="productsinventories">
+            <EntityTypeMapping TypeName="ttmsModel.productsinventory">
+              <MappingFragment StoreEntitySet="productsinventory">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="purchaseentries">
+            <EntityTypeMapping TypeName="ttmsModel.purchaseentry">
+              <MappingFragment StoreEntitySet="purchaseentry">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PurchaseOrderID" ColumnName="PurchaseOrderID" />
+                <ScalarProperty Name="InvoiceChallan" ColumnName="InvoiceChallan" />
+                <ScalarProperty Name="InvoiceChallanNo" ColumnName="InvoiceChallanNo" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="CGST" ColumnName="CGST" />
+                <ScalarProperty Name="SGST" ColumnName="SGST" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="DueAmount" ColumnName="DueAmount" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="purchaseentrypayments">
+            <EntityTypeMapping TypeName="ttmsModel.purchaseentrypayment">
+              <MappingFragment StoreEntitySet="purchaseentrypayment">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PurchaseEntryID" ColumnName="PurchaseEntryID" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="PaymentMode" ColumnName="PaymentMode" />
+                <ScalarProperty Name="PaymentRefNo" ColumnName="PaymentRefNo" />
+                <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="purchaseorders">
+            <EntityTypeMapping TypeName="ttmsModel.purchaseorder">
+              <MappingFragment StoreEntitySet="purchaseorder">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PurchaseOrderNo" ColumnName="PurchaseOrderNo" />
+                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
+                <ScalarProperty Name="IsPurcheseEntry" ColumnName="IsPurcheseEntry" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="saleproducts">
+            <EntityTypeMapping TypeName="ttmsModel.saleproduct">
+              <MappingFragment StoreEntitySet="saleproducts">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ProductCategoryID" ColumnName="ProductCategoryID" />
+                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="suppliers">
+            <EntityTypeMapping TypeName="ttmsModel.supplier">
+              <MappingFragment StoreEntitySet="suppliers">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Pin" ColumnName="Pin" />
+                <ScalarProperty Name="ContactPersonName" ColumnName="ContactPersonName" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="AlternateContactNo" ColumnName="AlternateContactNo" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="GSTNo" ColumnName="GSTNo" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ttmsModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="units">
+            <EntityTypeMapping TypeName="ttmsModel.unit">
+              <MappingFragment StoreEntitySet="units">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="aspnetuserroles" TypeName="ttmsModel.aspnetuserroles" StoreEntitySet="aspnetuserroles">
+            <EndProperty Name="aspnetroles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="aspnetusers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

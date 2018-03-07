@@ -18,7 +18,7 @@ namespace TTMS.Controllers
         // GET: BrandsMasters
         public ActionResult Index()
         {
-            return View(db.BrandsMasters.ToList());
+            return View(db.brandsmasters.ToList());
         }
 
         // GET: BrandsMasters/Details/5
@@ -28,7 +28,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BrandsMaster brandsMaster = db.BrandsMasters.Find(id);
+            brandsmaster brandsMaster = db.brandsmasters.Find(id);
             if (brandsMaster == null)
             {
                 return HttpNotFound();
@@ -47,11 +47,11 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,BrandName,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] BrandsMaster brandsMaster)
+        public ActionResult Create([Bind(Include = "ID,BrandName,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] brandsmaster brandsMaster)
         {
             if (ModelState.IsValid)
             {
-                db.BrandsMasters.Add(brandsMaster);
+                db.brandsmasters.Add(brandsMaster);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BrandsMaster brandsMaster = db.BrandsMasters.Find(id);
+            brandsmaster brandsMaster = db.brandsmasters.Find(id);
             if (brandsMaster == null)
             {
                 return HttpNotFound();
@@ -79,7 +79,7 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,BrandName,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] BrandsMaster brandsMaster)
+        public ActionResult Edit([Bind(Include = "ID,BrandName,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] brandsmaster brandsMaster)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BrandsMaster brandsMaster = db.BrandsMasters.Find(id);
+            brandsmaster brandsMaster = db.brandsmasters.Find(id);
             if (brandsMaster == null)
             {
                 return HttpNotFound();
@@ -110,8 +110,8 @@ namespace TTMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            BrandsMaster brandsMaster = db.BrandsMasters.Find(id);
-            db.BrandsMasters.Remove(brandsMaster);
+            brandsmaster brandsMaster = db.brandsmasters.Find(id);
+            db.brandsmasters.Remove(brandsMaster);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

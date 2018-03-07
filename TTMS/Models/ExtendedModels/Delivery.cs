@@ -7,7 +7,7 @@ using System.Web;
 namespace TTMS.Models
 {
     [MetadataType(typeof(DeliveryMetadata))]
-    public partial class Delivery: IBaseEntity
+    public partial class delivery: IBaseEntity
     {
     }
     public class DeliveryMetadata

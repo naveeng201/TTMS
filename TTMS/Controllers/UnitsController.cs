@@ -18,7 +18,7 @@ namespace TTMS.Controllers
         // GET: Units
         public ActionResult Index()
         {
-            return View(db.Units.ToList());
+            return View(db.units.ToList());
         }
 
         // GET: Units/Details/5
@@ -28,7 +28,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Unit unit = db.Units.Find(id);
+            unit unit = db.units.Find(id);
             if (unit == null)
             {
                 return HttpNotFound();
@@ -47,11 +47,11 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Unit unit)
+        public ActionResult Create([Bind(Include = "ID,Name,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] unit unit)
         {
             if (ModelState.IsValid)
             {
-                db.Units.Add(unit);
+                db.units.Add(unit);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Unit unit = db.Units.Find(id);
+            unit unit = db.units.Find(id);
             if (unit == null)
             {
                 return HttpNotFound();
@@ -79,7 +79,7 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Unit unit)
+        public ActionResult Edit([Bind(Include = "ID,Name,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] unit unit)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Unit unit = db.Units.Find(id);
+            unit unit = db.units.Find(id);
             if (unit == null)
             {
                 return HttpNotFound();
@@ -110,8 +110,8 @@ namespace TTMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Unit unit = db.Units.Find(id);
-            db.Units.Remove(unit);
+            unit unit = db.units.Find(id);
+            db.units.Remove(unit);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

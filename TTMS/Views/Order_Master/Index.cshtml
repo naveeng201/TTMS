@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TTMS.Models.Order_Master>
+﻿@model IEnumerable<TTMS.Models.order_master>
 
  
     <p>
@@ -10,7 +10,7 @@
                 @Html.DisplayName("Employee Name")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order.OrderNo)
+                @Html.DisplayNameFor(model => model.order.OrderNo)
             </th>
             <th>Status</th>
         </tr>
@@ -18,10 +18,10 @@
     @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Employee.FirstName)    @Html.DisplayFor(modelItem => item.Employee.LastName)
+                @Html.DisplayFor(modelItem => item.employee.FirstName)    @Html.DisplayFor(modelItem => item.Employee.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Order.OrderNo)
+                @Html.DisplayFor(modelItem => item.order.OrderNo)
             </td>
             <td>
                 @if (item.Status == 4)

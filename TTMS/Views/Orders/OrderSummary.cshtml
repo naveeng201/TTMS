@@ -96,8 +96,8 @@
                                         {
                                             double subtotoal = (double)@item.Price * (int)@item.Quantity;
                                             <tr>
-                                                <td><img id="img1" src="~\@Url.Content(@item.SaleProduct.ImagePath)" height="100" width="75" /></td>
-                                                <td class="text-center">@item.SaleProduct.Name</td>
+                                                <td><img id="img1" src="~\@Url.Content(@item.saleproduct.ImagePath)" height="100" width="75" /></td>
+                                                <td class="text-center">@item.saleproduct.Name</td>
                                                 <td class="text-center">@item.Quantity</td>
                                                 <td class="text-right">₹ @item.Price</td>
                                                 <td class="text-right">₹ @subtotoal.ToString()</td>

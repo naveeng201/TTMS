@@ -18,7 +18,7 @@ namespace TTMS.Controllers
         // GET: PurchaseEntryPayments
         public ActionResult Index()
         {
-            var purchaseEntryPayments = db.PurchaseEntryPayments.Include(p => p.PurchaseEntry);
+            var purchaseEntryPayments = db.purchaseentrypayments.Include(p => p.purchaseentry);
             return View(purchaseEntryPayments.ToList());
         }
 
@@ -29,7 +29,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PurchaseEntryPayment purchaseEntryPayment = db.PurchaseEntryPayments.Find(id);
+            purchaseentrypayment purchaseEntryPayment = db.purchaseentrypayments.Find(id);
             if (purchaseEntryPayment == null)
             {
                 return HttpNotFound();
@@ -40,8 +40,8 @@ namespace TTMS.Controllers
         // GET: PurchaseEntryPayments/Create
         public ActionResult Create(int iPurchaseEntryID)
         {
-            ViewBag.PurchaseEntryID = new SelectList(db.PurchaseEntries, "ID", "InvoiceChallan");
-            PurchaseEntryPayment objPayment = new PurchaseEntryPayment();
+            ViewBag.PurchaseEntryID = new SelectList(db.purchaseentries, "ID", "InvoiceChallan");
+            purchaseentrypayment objPayment = new purchaseentrypayment();
             objPayment.PurchaseEntryID = iPurchaseEntryID;
             objPayment.PaymentDate = DateTime.Now;
             objPayment.PaidAmount = 0;
@@ -62,16 +62,16 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(PurchaseEntryPayment purchaseEntryPayment)
+        public ActionResult Create(purchaseentrypayment purchaseEntryPayment)
         {
             if (ModelState.IsValid)
             {
-                db.PurchaseEntryPayments.Add(purchaseEntryPayment);
+                db.purchaseentrypayments.Add(purchaseEntryPayment);
                 db.SaveChanges();
                 return RedirectToAction("Index", "PurchaseEntries");
             }
 
-            ViewBag.PurchaseEntryID = new SelectList(db.PurchaseEntries, "ID", "InvoiceChallan", purchaseEntryPayment.PurchaseEntryID);
+            ViewBag.PurchaseEntryID = new SelectList(db.purchaseentries, "ID", "InvoiceChallan", purchaseEntryPayment.PurchaseEntryID);
             return View(purchaseEntryPayment);
         }
 
@@ -82,12 +82,12 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PurchaseEntryPayment purchaseEntryPayment = db.PurchaseEntryPayments.Find(id);
+            purchaseentrypayment purchaseEntryPayment = db.purchaseentrypayments.Find(id);
             if (purchaseEntryPayment == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.PurchaseEntryID = new SelectList(db.PurchaseEntries, "ID", "InvoiceChallan", purchaseEntryPayment.PurchaseEntryID);
+            ViewBag.PurchaseEntryID = new SelectList(db.purchaseentries, "ID", "InvoiceChallan", purchaseEntryPayment.PurchaseEntryID);
             return View(purchaseEntryPayment);
         }
 
@@ -96,7 +96,7 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,PurchaseEntryID,PaymentDate,PaymentMode,PaymentRefNo,PaidAmount,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] PurchaseEntryPayment purchaseEntryPayment)
+        public ActionResult Edit([Bind(Include = "ID,PurchaseEntryID,PaymentDate,PaymentMode,PaymentRefNo,PaidAmount,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] purchaseentrypayment purchaseEntryPayment)
         {
             if (ModelState.IsValid)
             {
@@ -104,7 +104,7 @@ namespace TTMS.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.PurchaseEntryID = new SelectList(db.PurchaseEntries, "ID", "InvoiceChallan", purchaseEntryPayment.PurchaseEntryID);
+            ViewBag.PurchaseEntryID = new SelectList(db.purchaseentries, "ID", "InvoiceChallan", purchaseEntryPayment.PurchaseEntryID);
             return View(purchaseEntryPayment);
         }
 
@@ -115,7 +115,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PurchaseEntryPayment purchaseEntryPayment = db.PurchaseEntryPayments.Find(id);
+            purchaseentrypayment purchaseEntryPayment = db.purchaseentrypayments.Find(id);
             if (purchaseEntryPayment == null)
             {
                 return HttpNotFound();
@@ -128,8 +128,8 @@ namespace TTMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PurchaseEntryPayment purchaseEntryPayment = db.PurchaseEntryPayments.Find(id);
-            db.PurchaseEntryPayments.Remove(purchaseEntryPayment);
+            purchaseentrypayment purchaseEntryPayment = db.purchaseentrypayments.Find(id);
+            db.purchaseentrypayments.Remove(purchaseEntryPayment);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

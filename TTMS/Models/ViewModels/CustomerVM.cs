@@ -7,8 +7,8 @@ namespace TTMS.Models
 {
     public class CustomerVM
     {
-        public Customer customer { get; set; }
-        public CustomerAddress customerAddress { get; set; }
-        public Address address { get; set; }
+        public customer customer { get; set; }
+        public customeraddress customerAddress { get; set; }
+        public address address { get; set; }
     }
 }

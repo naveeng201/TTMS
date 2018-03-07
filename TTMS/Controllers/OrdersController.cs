@@ -16,17 +16,17 @@ namespace TTMS.Controllers
     {
         private TTMSEntities db = new TTMSEntities();
 
-        // GET: Orders
+        // GET: orders
         public ActionResult Index()
         {
-            return View(db.Orders.ToList());
+            return View(db.orders.ToList());
         }
 
-        public ActionResult Add(SaleProduct sp)
+        public ActionResult Add(saleproduct sp)
         {
             if (Session["cart"] == null)
             {
-                List<SaleProduct> li = new List<SaleProduct>();
+                List<saleproduct> li = new List<saleproduct>();
                 li.Add(sp);
                 Session["cart"] = li;
                 ViewBag.cart = li.Count();
@@ -34,7 +34,7 @@ namespace TTMS.Controllers
             }
             else
             {
-                List<SaleProduct> li = (List<SaleProduct>)Session["cart"];
+                List<saleproduct> li = (List<saleproduct>)Session["cart"];
                 li.Add(sp);
                 Session["cart"] = li;
                 ViewBag.cart = li.Count();
@@ -45,7 +45,7 @@ namespace TTMS.Controllers
 
         public ActionResult AddToCart()
         {
-            List<SaleProduct> spList = (List <SaleProduct>) Session["cart"];
+            List<saleproduct> spList = (List <saleproduct>) Session["cart"];
             return View(spList);
         }
 
@@ -55,7 +55,7 @@ namespace TTMS.Controllers
 
             if (Session["cart"] != null)
             {
-                var prodList = (List<SaleProduct>)Session["cart"];
+                var prodList = (List<saleproduct>)Session["cart"];
                 var groupedProds = prodList.GroupBy(info => info.ID).Select(g => new {
                     ID = g.Key,
                     Count = g.Count()
@@ -76,7 +76,7 @@ namespace TTMS.Controllers
         }
         public ActionResult Remove(CartProduct sp)
         {
-            List<SaleProduct> li = (List<SaleProduct>)Session["cart"];
+            List<saleproduct> li = (List<saleproduct>)Session["cart"];
             li.RemoveAll(x => x.ID == sp.productID);
             Session["cart"] = li;
             Session["count"] = Convert.ToInt32(Session["count"]) - 1;
@@ -88,15 +88,15 @@ namespace TTMS.Controllers
         public ActionResult PlaceOrder(List<CartProduct> cpList)
         {
             OrderVM orderVM = new OrderVM();
-            orderVM.address = new Address();
-            orderVM.customer = new Customer();
-            orderVM.orderItems = new List<OrderItem>();
+            orderVM.address = new address();
+            orderVM.customer = new customer();
+            orderVM.orderItems = new List<orderitem>();
             double total = 0;
             if (cpList != null)
             {
                 foreach (var cProd in cpList)
                 {
-                    OrderItem oi = new OrderItem();
+                    orderitem oi = new orderitem();
                     oi.ProductID = cProd.productID;
                     oi.Price = cProd.price;
                     oi.Quantity = cProd.quantity;
@@ -104,7 +104,7 @@ namespace TTMS.Controllers
                     if (cProd.price != 0 && cProd.quantity != 0)
                         total = ((double)cProd.price * cProd.quantity) + total;
                 }
-                orderVM.order = new Order();
+                orderVM.order = new order();
                 orderVM.order.TotalPrice = total;
                 orderVM.order.GST = 5;
                 orderVM.order.GrandTotalWithTax = total;
@@ -117,78 +117,79 @@ namespace TTMS.Controllers
 
         public ActionResult NewOrder()
         {
-            IEnumerable<SaleProduct> productsList = db.SaleProducts.ToList();
+            IEnumerable<saleproduct> productsList = db.saleproducts.ToList();
             return View(productsList);
         }
 
-        // GET: Orders/Create
+        // GET: orders/Create
         public ActionResult Create()
         {
             ViewBag.Edit = false;
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
+            ViewBag.ProductID = new SelectList(db.products, "ID", "Name");
             OrdersVM objOrders = new OrdersVM();
-            objOrders.order = new Order();
-            objOrders.orderItems = new List<OrderItem> { new OrderItem() };
+            objOrders.order = new order();
+            objOrders.orderItems = new List<orderitem> { new orderitem() };
             return View(objOrders);
         }
 
-        // POST: Orders/Create
+        // POST: orders/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(/*[Bind(Include = "ID,OrderNo,CustomerOrganizationName,Address,City,State,Country,Zip,ContactPersonName,ContactNo,ProductType,Size,Quantity,DeliveryDate,PricePerUnit,TotalPrice,GrandTotalWithTax,Advance,Remarks,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")]*/ OrderVM orderVM)
+        public ActionResult Create(OrderVM orderVM)
         {
             if (ModelState.IsValid)
             {
-                var CustAddress = new CustomerAddress();
-                CustAddress.Customer = orderVM.customer;
-                CustAddress.Address = orderVM.address;
+                var CustAddress = new customeraddress();
+                CustAddress.customer = orderVM.customer;
+                CustAddress.address = orderVM.address;
                 if (orderVM.customer.ID == 0)
                 {
-                    db.CustomerAddresses.Add(CustAddress);
+                    db.customeraddresses.Add(CustAddress);
                     db.SaveChanges();
                 }
 
-                Order objOrder = orderVM.order;
-                objOrder.OrderItems = orderVM.orderItems;
+                order objOrder = orderVM.order;
+                objOrder.orderitems = orderVM.orderItems;
                 objOrder.OrderNo = GenerateOrderNo();
-                objOrder.AddressID = CustAddress.Address.ID;
-                objOrder.CustomerID = CustAddress.Customer.ID;
-                db.Orders.Add(objOrder);
+                objOrder.AddressID = CustAddress.address.ID;
+                objOrder.CustomerID = CustAddress.customer.ID;
+                db.orders.Add(objOrder);
                 db.SaveChanges();
                 // return RedirectToAction("OrderSuccess", orderVM);
                 Session["cart"] = null;
                 Session["count"] = null;
-                ViewBag.NewOrder = true;
+                return RedirectToAction("Details","Orders", new { id = objOrder.ID, newOrder= true });
             }
-            return View("OrderSummary", orderVM);
+            return View(orderVM);
         }
 
-        // GET: Orders/Details/5
-        public ActionResult Details(int? id)
+        // GET: orders/Details/5
+        public ActionResult Details(int? id, bool newOrder = false)
         {
+            ViewBag.NewOrder = newOrder;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             OrderVM objOrder = new OrderVM();
-            objOrder.order = db.Orders.Find(id);
-            objOrder.orderItems = db.OrderItems.Where(x => x.OrderID == id).ToList();
-            objOrder.address = db.Addresses.Find(objOrder.order.AddressID);
-            objOrder.customer = db.Customers.Find(objOrder.order.CustomerID);
+            objOrder.order = db.orders.Find(id);
+            objOrder.orderItems = db.orderitems.Where(x => x.OrderID == id).ToList();
+            objOrder.address = db.addresses.Find(objOrder.order.AddressID);
+            objOrder.customer = db.customers.Find(objOrder.order.CustomerID);
              
             return View("OrderSummary", objOrder);
         }
 
-        // GET: Orders/Edit/5
+        // GET: orders/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            order order = db.orders.Find(id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -196,12 +197,12 @@ namespace TTMS.Controllers
             return View(order);
         }
 
-        // POST: Orders/Edit/5
+        // POST: orders/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,OrderNo,CustomerOrganizationName,Address,City,State,Country,Zip,ContactPersonName,ContactNo,ProductType,Size,Quantity,DeliveryDate,PricePerUnit,TotalPrice,GrandTotalWithTax,Advance,Remarks,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Order order)
+        public ActionResult Edit([Bind(Include = "ID,OrderNo,CustomerOrganizationName,Address,City,State,Country,Zip,ContactPersonName,ContactNo,ProductType,Size,Quantity,DeliveryDate,PricePerUnit,TotalPrice,GrandTotalWithTax,Advance,Remarks,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] order order)
         {
             if (ModelState.IsValid)
             {
@@ -212,14 +213,14 @@ namespace TTMS.Controllers
             return View(order);
         }
 
-        // GET: Orders/Delete/5
+        // GET: orders/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            order order = db.orders.Find(id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -227,18 +228,18 @@ namespace TTMS.Controllers
             return View(order);
         }
 
-        // POST: Orders/Delete/5
+        // POST: orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var orderItems = db.OrderItems.Where(x => x.OrderID == id).ToList();
-            foreach(OrderItem oi in orderItems)
+            var orderItems = db.orderitems.Where(x => x.OrderID == id).ToList();
+            foreach(orderitem oi in orderItems)
             {
-                db.OrderItems.Remove(oi);
+                db.orderitems.Remove(oi);
             }
-            Order order = db.Orders.Find(id);
-            db.Orders.Remove(order);
+            order order = db.orders.Find(id);
+            db.orders.Remove(order);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -255,7 +256,7 @@ namespace TTMS.Controllers
         [HttpGet]
         public JsonResult GetCustomers(string strCust)
         {
-            var result = from c in db.Customers
+            var result = from c in db.customers
                          where c.CustomerOrganizationName.Contains(strCust)
                          select new
                          {
@@ -269,9 +270,9 @@ namespace TTMS.Controllers
         [HttpGet]
         public JsonResult GetCustomersAddress(int id)
         {
-            var result = from c in db.Customers
-                         join ca in db.CustomerAddresses on c.ID equals ca.CustomerID
-                         join a in db.Addresses on ca.AddressID equals a.ID
+            var result = from c in db.customers
+                         join ca in db.customeraddresses on c.ID equals ca.CustomerID
+                         join a in db.addresses on ca.AddressID equals a.ID
                          where c.ID == id
                          select new
                          {
@@ -299,7 +300,7 @@ namespace TTMS.Controllers
             Random rand = new Random();
             int randNo = rand.Next(00000, 99999);
             string OrderNo = string.Format("{0}{1}{2}{3}{4}", "A",userId.Substring(userId.Length - 4),  monthpart, datepart, randNo);
-            if (db.Orders.Any(x => x.OrderNo == OrderNo))
+            if (db.orders.Any(x => x.OrderNo == OrderNo))
             {
                 GenerateOrderNo();
             }

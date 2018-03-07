@@ -17,7 +17,7 @@ namespace TTMS.Controllers
         // GET: ProductsInventories
         public ActionResult Index()
         {
-            var productsInventories = db.ProductsInventories.Include(p => p.Product);
+            var productsInventories = db.productsinventories.Include(p => p.product);
             return View(productsInventories.ToList());
         }
 
@@ -28,7 +28,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProductsInventory productsInventory = db.ProductsInventories.Find(id);
+            productsinventory productsInventory = db.productsinventories.Find(id);
             if (productsInventory == null)
             {
                 return HttpNotFound();
@@ -39,7 +39,7 @@ namespace TTMS.Controllers
         // GET: ProductsInventories/Create
         public ActionResult Create()
         {
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
+            ViewBag.ProductID = new SelectList(db.products, "ID", "Name");
             return View();
         }
 
@@ -48,16 +48,16 @@ namespace TTMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,ProductID,Quantity,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate")] ProductsInventory productsInventory)
+        public ActionResult Create([Bind(Include = "ID,ProductID,Quantity,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate")] productsinventory productsInventory)
         {
             if (ModelState.IsValid)
             {
-                db.ProductsInventories.Add(productsInventory);
+                db.productsinventories.Add(productsInventory);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name", productsInventory.ProductID);
+            ViewBag.ProductID = new SelectList(db.products, "ID", "Name", productsInventory.ProductID);
             return View(productsInventory);
         }
 
@@ -68,12 +68,12 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProductsInventory productsInventory = db.ProductsInventories.Find(id);
+            productsinventory productsInventory = db.productsinventories.Find(id);
             if (productsInventory == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name", productsInventory.ProductID);
+            ViewBag.ProductID = new SelectList(db.products, "ID", "Name", productsInventory.ProductID);
             return View(productsInventory);
         }
 
@@ -82,7 +82,7 @@ namespace TTMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,ProductID,Quantity,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate")] ProductsInventory productsInventory)
+        public ActionResult Edit([Bind(Include = "ID,ProductID,Quantity,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate")] productsinventory productsInventory)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace TTMS.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name", productsInventory.ProductID);
+            ViewBag.ProductID = new SelectList(db.products, "ID", "Name", productsInventory.ProductID);
             return View(productsInventory);
         }
 
@@ -101,7 +101,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProductsInventory productsInventory = db.ProductsInventories.Find(id);
+            productsinventory productsInventory = db.productsinventories.Find(id);
             if (productsInventory == null)
             {
                 return HttpNotFound();
@@ -114,8 +114,8 @@ namespace TTMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ProductsInventory productsInventory = db.ProductsInventories.Find(id);
-            db.ProductsInventories.Remove(productsInventory);
+            productsinventory productsInventory = db.productsinventories.Find(id);
+            db.productsinventories.Remove(productsInventory);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

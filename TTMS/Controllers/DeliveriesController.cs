@@ -18,7 +18,7 @@ namespace TTMS.Controllers
         // GET: Deliveries
         public ActionResult Index()
         {
-            var deliveries = db.Deliveries.Include(d => d.Order);
+            var deliveries = db.deliveries.Include(d => d.order);
             return View(deliveries.ToList());
         }
 
@@ -29,7 +29,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Delivery delivery = db.Deliveries.Find(id);
+            delivery delivery = db.deliveries.Find(id);
             if (delivery == null)
             {
                 return HttpNotFound();
@@ -40,15 +40,15 @@ namespace TTMS.Controllers
         // GET: Deliveries/Create
         public ActionResult Create()
         {
-            var employees = from emp in db.Employees
+            var employees = from emp in db.employees
                             where emp.MasterEmp != true
                             select new
                             {
                                 ID = emp.ID,
                                 Name = emp.FirstName + ", " + emp.LastName
                             };
-            var orders = from o in db.Orders
-                         join om in db.Order_Master on o.ID equals om.OrderID
+            var orders = from o in db.orders
+                         join om in db.order_master on o.ID equals om.OrderID
                          where om.Status == 4
                          select new { ID = o.ID, OrderNo = o.OrderNo };
             ViewBag.EmployeeID = new SelectList(employees, "ID", "Name");
@@ -61,16 +61,16 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,OrderID,EmployeeID,DeliveryDate,ChallanNo,DeliveredProducts,BalanceOrder,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Delivery delivery)
+        public ActionResult Create([Bind(Include = "ID,OrderID,EmployeeID,DeliveryDate,ChallanNo,DeliveredProducts,BalanceOrder,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] delivery delivery)
         {
             if (ModelState.IsValid)
             {
-                db.Deliveries.Add(delivery);
+                db.deliveries.Add(delivery);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.OrderID = new SelectList(db.Orders, "ID", "OrderNo", delivery.OrderID);
+            ViewBag.OrderID = new SelectList(db.orders, "ID", "OrderNo", delivery.OrderID);
             return View(delivery);
         }
 
@@ -81,12 +81,12 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Delivery delivery = db.Deliveries.Find(id);
+            delivery delivery = db.deliveries.Find(id);
             if (delivery == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.OrderID = new SelectList(db.Orders, "ID", "OrderNo", delivery.OrderID);
+            ViewBag.OrderID = new SelectList(db.orders, "ID", "OrderNo", delivery.OrderID);
             return View(delivery);
         }
 
@@ -95,7 +95,7 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,OrderID,EmployeeID,DeliveryDate,ChallanNo,DeliveredProducts,BalanceOrder,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Delivery delivery)
+        public ActionResult Edit([Bind(Include = "ID,OrderID,EmployeeID,DeliveryDate,ChallanNo,DeliveredProducts,BalanceOrder,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] delivery delivery)
         {
             if (ModelState.IsValid)
             {
@@ -103,7 +103,7 @@ namespace TTMS.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.OrderID = new SelectList(db.Orders, "ID", "OrderNo", delivery.OrderID);
+            ViewBag.OrderID = new SelectList(db.orders, "ID", "OrderNo", delivery.OrderID);
             return View(delivery);
         }
 
@@ -114,7 +114,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Delivery delivery = db.Deliveries.Find(id);
+            delivery delivery = db.deliveries.Find(id);
             if (delivery == null)
             {
                 return HttpNotFound();
@@ -127,8 +127,8 @@ namespace TTMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Delivery delivery = db.Deliveries.Find(id);
-            db.Deliveries.Remove(delivery);
+            delivery delivery = db.deliveries.Find(id);
+            db.deliveries.Remove(delivery);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

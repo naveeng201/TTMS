@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TTMS.Models.SaleProduct>
+﻿@model IEnumerable<TTMS.Models.saleproduct>
 
 <script>
     $(document).ready(function () {
@@ -38,7 +38,7 @@
                             <div class="panel-body">
                                 <div class="col-sm-3 col-md-6" style="color:blue">
                                     <a href="http://localhost:57146/@x.ImagePath" class="cloud-zoom" rel="adjustX: 10, adjustY:-4">
-                                        <img src="..\@Url.Content(@x.ImagePath)" />
+                                        <img src="..\@Url.Content(@x.ImagePath)"  height="200" width="180"/>
                                     </a>
                                 </div>
                                 <div class="col-sm-9 col-md-6">

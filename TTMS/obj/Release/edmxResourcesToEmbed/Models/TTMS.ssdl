@@ -15,12 +15,56 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
   </EntityType>
+  <EntityType Name="Address">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Address1" Type="nvarchar" MaxLength="500" />
+    <Property Name="Address2" Type="nvarchar" MaxLength="500" />
+    <Property Name="City" Type="nvarchar" MaxLength="50" />
+    <Property Name="State" Type="nvarchar" MaxLength="50" />
+    <Property Name="Country" Type="nvarchar" MaxLength="50" />
+    <Property Name="Zip" Type="nvarchar" MaxLength="10" />
+    <Property Name="AddressType" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreatedDatet" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
   <EntityType Name="BrandsMaster">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="BrandName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
+  <EntityType Name="CustomerAddress">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="AddressID" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
+  <EntityType Name="Customers">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerOrganizationName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="ContactPersonName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="ContactNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="AlternateContactNo" Type="nvarchar" MaxLength="50" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
@@ -119,6 +163,7 @@
     <Property Name="CreatedBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
+    <Property Name="OrderID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Order_Master">
     <Key>
@@ -127,8 +172,21 @@
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="OrderID" Type="int" Nullable="false" />
     <Property Name="EmployeeID" Type="int" Nullable="false" />
-    <Property Name="Material" Type="nvarchar" MaxLength="500" Nullable="false" />
-    <Property Name="Quantity" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="Order_Master_Items">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderMasterID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="RemainingQuantity" Type="int" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
@@ -155,28 +213,35 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
   </EntityType>
+  <EntityType Name="OrderItems">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" />
+    <Property Name="Price" Type="float" />
+    <Property Name="CreatetdDatet" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
   <EntityType Name="Orders">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="OrderNo" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="CustomerOrganizationName" Type="nvarchar" MaxLength="500" Nullable="false" />
-    <Property Name="Address" Type="nvarchar" MaxLength="500" Nullable="false" />
-    <Property Name="City" Type="nvarchar" MaxLength="200" />
-    <Property Name="State" Type="nvarchar" MaxLength="200" />
-    <Property Name="Country" Type="nvarchar" MaxLength="200" />
-    <Property Name="Zip" Type="nchar" MaxLength="10" />
-    <Property Name="ContactPersonName" Type="nvarchar" MaxLength="200" Nullable="false" />
-    <Property Name="ContactNo" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="ProductType" Type="int" />
-    <Property Name="Size" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="Quantity" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CustomerID" Type="int" />
+    <Property Name="AddressID" Type="int" />
     <Property Name="DeliveryDate" Type="date" />
-    <Property Name="PricePerUnit" Type="float" />
     <Property Name="TotalPrice" Type="float" />
+    <Property Name="GST" Type="float" />
+    <Property Name="Discount" Type="float" />
     <Property Name="GrandTotalWithTax" Type="float" />
     <Property Name="Advance" Type="float" />
+    <Property Name="Status" Type="int" />
     <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedBy" Type="int" />
@@ -211,6 +276,18 @@
     <Property Name="CreatedBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
+  <EntityType Name="ProductsInventory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
   </EntityType>
   <EntityType Name="PurchaseEntry">
     <Key>
@@ -261,6 +338,28 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
   </EntityType>
+  <EntityType Name="SaleProducts">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="ShortName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Type" Type="nvarchar" MaxLength="500" />
+    <Property Name="Size" Type="nvarchar" MaxLength="50" />
+    <Property Name="Color" Type="nvarchar" MaxLength="50" />
+    <Property Name="Price" Type="float" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="ProductCategoryID" Type="int" />
+    <Property Name="BrandID" Type="int" />
+    <Property Name="UnitID" Type="int" />
+    <Property Name="Status" Type="int" />
+    <Property Name="ImagePath" Type="nvarchar(max)" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
   <EntityType Name="Suppliers">
     <Key>
       <PropertyRef Name="ID" />
@@ -293,6 +392,42 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
   </EntityType>
+  <Association Name="FK_CustomerAddress_Address">
+    <End Role="Address" Type="Self.Address" Multiplicity="1" />
+    <End Role="CustomerAddress" Type="Self.CustomerAddress" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Address">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CustomerAddress">
+        <PropertyRef Name="AddressID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CustomerAddress_Customers">
+    <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+    <End Role="CustomerAddress" Type="Self.CustomerAddress" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CustomerAddress">
+        <PropertyRef Name="CustomerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Delivery_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Delivery" Type="Self.Delivery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Delivery">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Delivery_Orders">
     <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
     <End Role="Delivery" Type="Self.Delivery" Multiplicity="*" />
@@ -341,6 +476,54 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Order_Employee_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Order_Employee" Type="Self.Order_Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order_Employee">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Master_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Order_Master" Type="Self.Order_Master" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order_Master">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Master_Items_Order_Master">
+    <End Role="Order_Master" Type="Self.Order_Master" Multiplicity="1" />
+    <End Role="Order_Master_Items" Type="Self.Order_Master_Items" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order_Master">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order_Master_Items">
+        <PropertyRef Name="OrderMasterID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Master_Items_Products">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="Order_Master_Items" Type="Self.Order_Master_Items" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order_Master_Items">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Order_Master_Orders">
     <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
     <End Role="Order_Master" Type="Self.Order_Master" Multiplicity="*" />
@@ -349,6 +532,18 @@
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="Order_Master">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Order_Employee">
+    <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+    <End Role="Order_Employee" Type="Self.Order_Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Orders">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order_Employee">
         <PropertyRef Name="OrderID" />
       </Dependent>
     </ReferentialConstraint>
@@ -389,6 +584,42 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_OrderItems_Orders">
+    <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+    <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Orders">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="OrderItems">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderItems_SaleProducts">
+    <End Role="SaleProducts" Type="Self.SaleProducts" Multiplicity="1" />
+    <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SaleProducts">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="OrderItems">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Address">
+    <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Address">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="AddressID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Products_BrandsMaster">
     <End Role="BrandsMaster" Type="Self.BrandsMaster" Multiplicity="0..1" />
     <End Role="Products" Type="Self.Products" Multiplicity="*" />
@@ -410,6 +641,18 @@
       </Principal>
       <Dependent Role="Products">
         <PropertyRef Name="ProductCategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProductsInventory_Products">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductsInventory" Type="Self.ProductsInventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ProductsInventory">
+        <PropertyRef Name="ProductID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -449,9 +692,48 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_SaleProducts_BrandsMaster">
+    <End Role="BrandsMaster" Type="Self.BrandsMaster" Multiplicity="0..1" />
+    <End Role="SaleProducts" Type="Self.SaleProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BrandsMaster">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="SaleProducts">
+        <PropertyRef Name="BrandID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SaleProducts_ProductCategory">
+    <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
+    <End Role="SaleProducts" Type="Self.SaleProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategory">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="SaleProducts">
+        <PropertyRef Name="ProductCategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SaleProducts_Units">
+    <End Role="Units" Type="Self.Units" Multiplicity="0..1" />
+    <End Role="SaleProducts" Type="Self.SaleProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Units">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="SaleProducts">
+        <PropertyRef Name="UnitID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="TTMSModelStoreContainer">
     <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="BrandsMaster" EntityType="Self.BrandsMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CustomerAddress" EntityType="Self.CustomerAddress" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Delivery" EntityType="Self.Delivery" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="EmployeeAttendance" EntityType="Self.EmployeeAttendance" Schema="dbo" store:Type="Tables" />
@@ -459,15 +741,31 @@
     <EntitySet Name="EmployeePerformance" EntityType="Self.EmployeePerformance" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Order_Employee" EntityType="Self.Order_Employee" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Order_Master" EntityType="Self.Order_Master" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Order_Master_Items" EntityType="Self.Order_Master_Items" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderItems" EntityType="Self.OrderItems" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductsInventory" EntityType="Self.ProductsInventory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PurchaseEntry" EntityType="Self.PurchaseEntry" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PurchaseEntryPayment" EntityType="Self.PurchaseEntryPayment" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PurchaseOrder" EntityType="Self.PurchaseOrder" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SaleProducts" EntityType="Self.SaleProducts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Units" EntityType="Self.Units" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_CustomerAddress_Address" Association="Self.FK_CustomerAddress_Address">
+      <End Role="Address" EntitySet="Address" />
+      <End Role="CustomerAddress" EntitySet="CustomerAddress" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CustomerAddress_Customers" Association="Self.FK_CustomerAddress_Customers">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="CustomerAddress" EntitySet="CustomerAddress" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Delivery_Employee" Association="Self.FK_Delivery_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Delivery" EntitySet="Delivery" />
+    </AssociationSet>
     <AssociationSet Name="FK_Delivery_Orders" Association="Self.FK_Delivery_Orders">
       <End Role="Orders" EntitySet="Orders" />
       <End Role="Delivery" EntitySet="Delivery" />
@@ -484,9 +782,29 @@
       <End Role="Employee" EntitySet="Employee" />
       <End Role="EmployeePerformance" EntitySet="EmployeePerformance" />
     </AssociationSet>
+    <AssociationSet Name="FK_Order_Employee_Employee" Association="Self.FK_Order_Employee_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Order_Employee" EntitySet="Order_Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Master_Employee" Association="Self.FK_Order_Master_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Order_Master" EntitySet="Order_Master" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Master_Items_Order_Master" Association="Self.FK_Order_Master_Items_Order_Master">
+      <End Role="Order_Master" EntitySet="Order_Master" />
+      <End Role="Order_Master_Items" EntitySet="Order_Master_Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Master_Items_Products" Association="Self.FK_Order_Master_Items_Products">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Order_Master_Items" EntitySet="Order_Master_Items" />
+    </AssociationSet>
     <AssociationSet Name="FK_Order_Master_Orders" Association="Self.FK_Order_Master_Orders">
       <End Role="Orders" EntitySet="Orders" />
       <End Role="Order_Master" EntitySet="Order_Master" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Order_Employee" Association="Self.FK_Order_Order_Employee">
+      <End Role="Orders" EntitySet="Orders" />
+      <End Role="Order_Employee" EntitySet="Order_Employee" />
     </AssociationSet>
     <AssociationSet Name="FK_OrderDetails_Products" Association="Self.FK_OrderDetails_Products">
       <End Role="Products" EntitySet="Products" />
@@ -500,6 +818,18 @@
       <End Role="Units" EntitySet="Units" />
       <End Role="OrderDetails" EntitySet="OrderDetails" />
     </AssociationSet>
+    <AssociationSet Name="FK_OrderItems_Orders" Association="Self.FK_OrderItems_Orders">
+      <End Role="Orders" EntitySet="Orders" />
+      <End Role="OrderItems" EntitySet="OrderItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderItems_SaleProducts" Association="Self.FK_OrderItems_SaleProducts">
+      <End Role="SaleProducts" EntitySet="SaleProducts" />
+      <End Role="OrderItems" EntitySet="OrderItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Address" Association="Self.FK_Orders_Address">
+      <End Role="Address" EntitySet="Address" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
     <AssociationSet Name="FK_Products_BrandsMaster" Association="Self.FK_Products_BrandsMaster">
       <End Role="BrandsMaster" EntitySet="BrandsMaster" />
       <End Role="Products" EntitySet="Products" />
@@ -507,6 +837,10 @@
     <AssociationSet Name="FK_Products_ProductCategory" Association="Self.FK_Products_ProductCategory">
       <End Role="ProductCategory" EntitySet="ProductCategory" />
       <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProductsInventory_Products" Association="Self.FK_ProductsInventory_Products">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductsInventory" EntitySet="ProductsInventory" />
     </AssociationSet>
     <AssociationSet Name="FK_PurchaseEntry_PurchaseOrder" Association="Self.FK_PurchaseEntry_PurchaseOrder">
       <End Role="PurchaseOrder" EntitySet="PurchaseOrder" />
@@ -519,6 +853,18 @@
     <AssociationSet Name="FK_PurchaseOrder_Suppliers" Association="Self.FK_PurchaseOrder_Suppliers">
       <End Role="Suppliers" EntitySet="Suppliers" />
       <End Role="PurchaseOrder" EntitySet="PurchaseOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SaleProducts_BrandsMaster" Association="Self.FK_SaleProducts_BrandsMaster">
+      <End Role="BrandsMaster" EntitySet="BrandsMaster" />
+      <End Role="SaleProducts" EntitySet="SaleProducts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SaleProducts_ProductCategory" Association="Self.FK_SaleProducts_ProductCategory">
+      <End Role="ProductCategory" EntitySet="ProductCategory" />
+      <End Role="SaleProducts" EntitySet="SaleProducts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SaleProducts_Units" Association="Self.FK_SaleProducts_Units">
+      <End Role="Units" EntitySet="Units" />
+      <End Role="SaleProducts" EntitySet="SaleProducts" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

@@ -7,9 +7,9 @@ namespace TTMS.Models
 {
     public class PurchaseEntryVM
     {
-        public PurchaseOrder purchaseOrder { get; set; }
-        public PurchaseEntry purchaseEntry { get; set; }
-        public List<OrderDetail> _orderDetail { get; set; }
+        public purchaseorder purchaseOrder { get; set; }
+        public purchaseentry purchaseEntry { get; set; }
+        public List<orderdetail> _orderDetail { get; set; }
 
     }
 }

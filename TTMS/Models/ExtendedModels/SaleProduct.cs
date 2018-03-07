@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace TTMS.Models
 {
     [MetadataType(typeof(SaleProductMetadata))]
-    public partial class SaleProduct
+    public partial class saleproduct
     {
     }
     public class SaleProductMetadata

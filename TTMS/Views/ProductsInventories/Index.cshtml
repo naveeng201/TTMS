@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TTMS.Models.ProductsInventory>
+﻿@model IEnumerable<TTMS.Models.productsinventory>
 
  
     @*<p>
@@ -7,7 +7,7 @@
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Product.Name)
+                @Html.DisplayNameFor(model => model.product.Name)
             </th>
             <th>
                 @Html.DisplayName("Available Quantity")
@@ -18,7 +18,7 @@
     @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Product.Name)
+                @Html.DisplayFor(modelItem => item.product.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)

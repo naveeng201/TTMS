@@ -14,21 +14,21 @@ namespace TTMS.Controllers
     {
         private TTMSEntities db = new TTMSEntities();
 
-        // GET: Order_Master
+        // GET: order_master
         public ActionResult Index()
         {
-            var order_Master = db.Order_Master.Include(o => o.Order);
+            var order_Master = db.order_master.Include(o => o.order);
             return View(order_Master.ToList());
         }
 
-        // GET: Order_Master/Details/5
+        // GET: order_master/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order_Master order_Master = db.Order_Master.Find(id);
+            order_master order_Master = db.order_master.Find(id);
             if (order_Master == null)
             {
                 return HttpNotFound();
@@ -36,21 +36,21 @@ namespace TTMS.Controllers
             return View(order_Master);
         }
 
-        // GET: Order_Master/Create
+        // GET: order_master/Create
         public ActionResult Create()
         {
-            var orders = from order in db.Orders
-                         where !(from om in db.Order_Master select om.OrderID).Contains(order.ID)
+            var orders = from order in db.orders
+                         where !(from om in db.order_master select om.OrderID).Contains(order.ID)
                          select order;
             ViewBag.OrderID = new SelectList(orders, "ID", "OrderNo");
-            var employees = from emp in db.Employees
+            var employees = from emp in db.employees
                             where emp.MasterEmp == true
                             select new {
                                 ID = emp.ID,
                                 Name = emp.FirstName + ", " + emp.LastName
                             };
             ViewBag.EmployeeID = new SelectList(employees, "ID", "Name");
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
+            ViewBag.ProductID = new SelectList(db.products, "ID", "Name");
             List<SelectListItem> items = new List<SelectListItem> {
                 new SelectListItem{Text = statusEnum.NewOrder.ToString(), Value = "5" },
                 new SelectListItem{Text = statusEnum.InProgress.ToString(), Value="6"},
@@ -66,7 +66,7 @@ namespace TTMS.Controllers
             return View(orderMasterVM);
         }
 
-        // POST: Order_Master/Create
+        // POST: order_master/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -74,7 +74,7 @@ namespace TTMS.Controllers
         public ActionResult Create(Order_MasterVM order_MasterVM)
         {
             order_MasterVM.order_Master_products.RemoveAt(0);
-            Order_Master OM = new Order_Master();
+            order_master OM = new order_master();
             OM.EmployeeID = order_MasterVM.EmployeeID;
             OM.OrderID = order_MasterVM.OrderID;
             OM.Status =Convert.ToInt32(order_MasterVM.Status);
@@ -82,18 +82,18 @@ namespace TTMS.Controllers
             {
                 foreach(var x in order_MasterVM.order_Master_products)
                 {
-                    Order_Master_Items obj = new Order_Master_Items();
+                    order_master_items obj = new order_master_items();
                     obj.ProductID = x.ProductID;
                     obj.Quantity = x.Quantity;
                     obj.RemainingQuantity = x.RemainingQuantity;
-                    OM.Order_Master_Items.Add(obj);
+                    OM.order_master_items.Add(obj);
 
                     // update inventery
-                    var objPI = db.ProductsInventories.Where(p => p.ProductID == x.ProductID).SingleOrDefault();
+                    var objPI = db.productsinventories.Where(p => p.ProductID == x.ProductID).SingleOrDefault();
                     if (objPI != null)
                     {
                         objPI.Quantity = objPI.Quantity - (int)x.Quantity;
-                        db.ProductsInventories.Attach(objPI);
+                        db.productsinventories.Attach(objPI);
                         db.Entry(objPI).State = EntityState.Modified;
                         db.SaveChanges();
                     }
@@ -102,7 +102,7 @@ namespace TTMS.Controllers
                         throw new Exception("One or more product does not exist or it does not have required quantity.");
                     }
                 }
-                db.Order_Master.Add(OM);
+                db.order_master.Add(OM);
 
                 
 
@@ -110,18 +110,18 @@ namespace TTMS.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.OrderID = new SelectList(db.Orders, "ID", "OrderNo", order_MasterVM.OrderID);
+            ViewBag.OrderID = new SelectList(db.orders, "ID", "OrderNo", order_MasterVM.OrderID);
             return View(order_MasterVM);
         }
 
-        // GET: Order_Master/Edit/5
+        // GET: order_master/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order_Master order_Master = db.Order_Master.Find(id);
+            order_master order_Master = db.order_master.Find(id);
             if (order_Master == null)
             {
                 return HttpNotFound();
@@ -129,8 +129,8 @@ namespace TTMS.Controllers
 
             Order_MasterVM orderMasterVM = new Order_MasterVM();
             orderMasterVM.order_Master_products = new List<OrderMasterProducts>();
-            orderMasterVM.OrderNo = order_Master.Order.OrderNo;
-            orderMasterVM.EmployeeName = order_Master.Employee.FirstName +" "+ order_Master.Employee.LastName;
+            orderMasterVM.OrderNo = order_Master.order.OrderNo;
+            orderMasterVM.EmployeeName = order_Master.employee.FirstName +" "+ order_Master.employee.LastName;
             orderMasterVM.Status = order_Master.Status.ToString();
 
             List<SelectListItem> items = new List<SelectListItem> {
@@ -140,11 +140,11 @@ namespace TTMS.Controllers
             };
             ViewBag.Status = new SelectList(items, "Value", "Text", orderMasterVM.Status);
 
-            foreach (var omi in db.Order_Master_Items.Where(x => x.OrderMasterID == order_Master.ID).ToList())
+            foreach (var omi in db.order_master_items.Where(x => x.OrderMasterID == order_Master.ID).ToList())
             {
                 OrderMasterProducts objOMP = new OrderMasterProducts();
                 objOMP.ID = omi.ID;
-                objOMP.Name = omi.Product.Name;
+                objOMP.Name = omi.product.Name;
                 objOMP.ProductID = omi.ProductID;
                 objOMP.Quantity = omi.Quantity;
                 objOMP.RemainingQuantity = 0;
@@ -154,7 +154,7 @@ namespace TTMS.Controllers
             return View(orderMasterVM);
         }
 
-        // POST: Order_Master/Edit/5
+        // POST: order_master/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -165,16 +165,16 @@ namespace TTMS.Controllers
             {
                 foreach(var omp in order_MasterVM.order_Master_products)
                 {
-                    var orderMasterItems = db.Order_Master_Items.Where(x => x.ID == omp.ID).FirstOrDefault();
+                    var orderMasterItems = db.order_master_items.Where(x => x.ID == omp.ID).FirstOrDefault();
                     orderMasterItems.RemainingQuantity = omp.RemainingQuantity;
                     db.Entry(orderMasterItems).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    var objPI = db.ProductsInventories.Where(p => p.ProductID == omp.ProductID).SingleOrDefault();
+                    var objPI = db.productsinventories.Where(p => p.ProductID == omp.ProductID).SingleOrDefault();
                     if (objPI != null)
                     {
                         objPI.Quantity = objPI.Quantity + (int)omp.RemainingQuantity;
-                        db.ProductsInventories.Attach(objPI);
+                        db.productsinventories.Attach(objPI);
                         db.Entry(objPI).State = EntityState.Modified;
                         db.SaveChanges();
                     }
@@ -183,7 +183,7 @@ namespace TTMS.Controllers
                         throw new Exception("One or more product does not exist or it does not have required quantity.");
                     }
                 }
-                var order_Master = db.Order_Master.Where(x => x.ID == order_MasterVM.ID).FirstOrDefault();
+                var order_Master = db.order_master.Where(x => x.ID == order_MasterVM.ID).FirstOrDefault();
                 order_Master.Status = Convert.ToInt32(order_MasterVM.Status);
                 db.Entry(order_Master).State = EntityState.Modified;
                 db.SaveChanges();
@@ -192,14 +192,14 @@ namespace TTMS.Controllers
             return View(order_MasterVM);
         }
 
-        // GET: Order_Master/Delete/5
+        // GET: order_master/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order_Master order_Master = db.Order_Master.Find(id);
+            order_master order_Master = db.order_master.Find(id);
             if (order_Master == null)
             {
                 return HttpNotFound();
@@ -207,13 +207,13 @@ namespace TTMS.Controllers
             return View(order_Master);
         }
 
-        // POST: Order_Master/Delete/5
+        // POST: order_master/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Order_Master order_Master = db.Order_Master.Find(id);
-            db.Order_Master.Remove(order_Master);
+            order_master order_Master = db.order_master.Find(id);
+            db.order_master.Remove(order_Master);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -222,8 +222,8 @@ namespace TTMS.Controllers
         {
 
             //do the logic for taking the value for textbox
-            var result = from  pi in db.ProductsInventories
-                         join c in db.Products on pi.ProductID equals c.ID
+            var result = from  pi in db.productsinventories
+                         join c in db.products on pi.ProductID equals c.ID
                          where c.ID == id
                          select new { c.Price, c.ShorName,pi.Quantity };
             if(result.ToList().Count <= 0)

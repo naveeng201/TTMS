@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TTMS.Models.SaleProduct>
+﻿@model IEnumerable<TTMS.Models.saleproduct>
 <script>
         $(document).ready(function () {
             var oTable = $('#tblProducts').dataTable({
@@ -42,13 +42,13 @@
 
             
             <th>
-                @Html.DisplayNameFor(model => model.BrandsMaster.BrandName)
+                @Html.DisplayNameFor(model => model.brandsmaster.BrandName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductCategory.Name)
+                @Html.DisplayNameFor(model => model.productcategory.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Unit.Name)
+                @Html.DisplayNameFor(model => model.unit.Name)
             </th>
             <th></th>
         </tr>
@@ -85,13 +85,13 @@
            
              
             <td>
-                @Html.DisplayFor(modelItem => item.BrandsMaster.BrandName)
+                @Html.DisplayFor(modelItem => item.brandsmaster.BrandName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductCategory.Name)
+                @Html.DisplayFor(modelItem => item.productcategory.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Unit.Name)
+                @Html.DisplayFor(modelItem => item.unit.Name)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TTMS.Models.ProductCategory>
+﻿@model IEnumerable<TTMS.Models.productcategory>
 
  
 <!DOCTYPE html>
@@ -9,8 +9,9 @@
     <title>Index</title>
 </head>
 <body>
+    <br />
     <p>
-        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Create New", "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-primary" })
     </p>
     <table class="table">
         <tr>

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TTMS.Models.Delivery>
+﻿@model IEnumerable<TTMS.Models.delivery>
 
 <script>
         $(document).ready(function () {
@@ -33,7 +33,7 @@
                     @Html.DisplayNameFor(model => model.BalanceOrder)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Order.OrderNo)
+                    @Html.DisplayNameFor(model => model.order.OrderNo)
                 </th>
                 <th></th>
             </tr>
@@ -58,7 +58,7 @@
                         @Html.DisplayFor(modelItem => item.BalanceOrder)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Order.OrderNo)
+                        @Html.DisplayFor(modelItem => item.order.OrderNo)
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |

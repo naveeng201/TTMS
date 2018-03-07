@@ -40,7 +40,7 @@ function printDiv(divName) {
                     <address>
                         <strong>Payment Details:</strong><br>
                         @{
-                            List<TTMS.Models.PurchaseEntryPayment> pelist = (List<TTMS.Models.PurchaseEntryPayment>)ViewBag.PaymentHistory;
+                            List<TTMS.Models.purchaseentrypayment> pelist = (List<TTMS.Models.purchaseentrypayment>)ViewBag.PaymentHistory;
                             int x = 0;
                             foreach(var ph in pelist)
                             {
@@ -86,8 +86,8 @@ function printDiv(divName) {
                                     foreach (var item in Model._orderDetail)
                                     {
                                         <tr>
-                                            <td>@Html.DisplayFor(model => model._orderDetail[i].Product.Name)</td>
-                                            <td class="text-center">@Html.DisplayFor(model => model._orderDetail[i].Product.ProductCategory.Name)</td>
+                                            <td>@Html.DisplayFor(model => model._orderDetail[i].product.Name)</td>
+                                            <td class="text-center">@Html.DisplayFor(model => model._orderDetail[i].product.productcategory.Name)</td>
                                             <td class="text-center">@Html.DisplayFor(model => model._orderDetail[i].Quantity)</td>
                                             <td class="text-right">Rs. @Html.DisplayFor(model => model._orderDetail[i].CostPrice)</td>
                                             <td class="text-right">Rs. 0</td>

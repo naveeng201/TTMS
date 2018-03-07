@@ -17,7 +17,7 @@ namespace TTMS.Controllers
         // GET: Customers
         public ActionResult Index()
         {
-            return View(db.Customers.ToList());
+            return View(db.customers.ToList());
         }
 
         // GET: Customers/Details/5
@@ -27,7 +27,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Find(id);
+            customer customer = db.customers.Find(id);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -54,13 +54,13 @@ namespace TTMS.Controllers
 
                // db.Customers.Add(customerVM.customer);
                 //db.Addresses.Add(customerVM.address);
-                var CustAddress = new CustomerAddress
+                var CustAddress = new customeraddress
                 {
-                    Customer = customerVM.customer,
-                    Address = customerVM.address
+                    customer = customerVM.customer,
+                    address = customerVM.address
                 };
                 //db.Customers.Add(customer);
-                db.CustomerAddresses.Add(CustAddress);
+                db.customeraddresses.Add(CustAddress);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -74,7 +74,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Find(id);
+            customer customer = db.customers.Find(id);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -87,7 +87,7 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,CustomerOrganizationName,ContactPersonName,ContactNo,AlternateContactNo,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Customer customer)
+        public ActionResult Edit([Bind(Include = "ID,CustomerOrganizationName,ContactPersonName,ContactNo,AlternateContactNo,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +105,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Find(id);
+            customer customer = db.customers.Find(id);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -118,8 +118,8 @@ namespace TTMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            db.Customers.Remove(customer);
+            customer customer = db.customers.Find(id);
+            db.customers.Remove(customer);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

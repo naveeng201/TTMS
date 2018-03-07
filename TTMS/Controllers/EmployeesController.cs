@@ -18,7 +18,7 @@ namespace TTMS.Controllers
         // GET: Employees
         public ActionResult Index()
         {
-            return View(db.Employees.ToList());
+            return View(db.employees.ToList());
         }
 
         // GET: Employees/Details/5
@@ -28,7 +28,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employees.Find(id);
+            employee employee = db.employees.Find(id);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -47,11 +47,11 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,ContactNo,AlternateContactNo,Address,City,State,Country,Zip,Designation,MasterEmp,ExperiencedField,Experience,Salary,NoLeavesPerMonth,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Employee employee)
+        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,ContactNo,AlternateContactNo,Address,City,State,Country,Zip,Designation,MasterEmp,ExperiencedField,Experience,Salary,NoLeavesPerMonth,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] employee employee)
         {
             if (ModelState.IsValid)
             {
-                db.Employees.Add(employee);
+                db.employees.Add(employee);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employees.Find(id);
+            employee employee = db.employees.Find(id);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -79,7 +79,7 @@ namespace TTMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,ContactNo,AlternateContactNo,Address,City,State,Country,Zip,Designation,MasterEmp,ExperiencedField,Experience,Salary,NoLeavesPerMonth,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] Employee employee)
+        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,ContactNo,AlternateContactNo,Address,City,State,Country,Zip,Designation,MasterEmp,ExperiencedField,Experience,Salary,NoLeavesPerMonth,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy")] employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace TTMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employees.Find(id);
+            employee employee = db.employees.Find(id);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -110,8 +110,8 @@ namespace TTMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Employee employee = db.Employees.Find(id);
-            db.Employees.Remove(employee);
+            employee employee = db.employees.Find(id);
+            db.employees.Remove(employee);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
